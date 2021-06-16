@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "noEmit": true,
+        "module": "es2020",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+    },
+}
