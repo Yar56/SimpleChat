@@ -13,7 +13,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import reducers from './reducers/index.js';
 
-import App from './App.jsx';
+import App from './components/App.jsx';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
