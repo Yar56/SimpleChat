@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
@@ -96,10 +96,10 @@ const LoginPage = () => {
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span className="mr-2">Нет аккаунта?</span>
-                <Button as={NavLink} to="/signup">
+                <span className="m-2">Нет аккаунта?</span>
+                <Link to="/signup">
                   Регистрация
-                </Button>
+                </Link>
               </div>
             </div>
           </div>
