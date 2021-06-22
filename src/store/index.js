@@ -1,27 +1,31 @@
-// @ts-check
-
 import { configureStore } from '@reduxjs/toolkit';
-
-import feedsReducer from '../features/feeds/feedsSlice.js';
+import { combineReducers } from 'redux';
+import channelsReducer from '../features/channels/channelsSlice.js';
 import messagesReducer from '../features/messages/messagesSlice.js';
 import currentChannelIdReducer from './currentChannelIdSlice.js';
 
-const reducer = {
-  feeds: feedsReducer,
-  messages: messagesReducer,
-  currentChannelId: currentChannelIdReducer,
-};
+const reducer = combineReducers({
+  channelsInfo: combineReducers({
+    channels: channelsReducer,
+    currentChannelId: currentChannelIdReducer,
+  }),
+  messagesInfo: messagesReducer,
+});
 
 const preloadedState = {
-  feeds: [
-    { id: 1, name: 'general', removable: false },
-    { id: 2, name: 'random', removable: false },
-  ],
-  messages: [
-    { feedId: 1, name: 'ha' },
-    { feedId: 1, name: 'hi' },
-  ],
-  currentChannelId: 1,
+  channelsInfo: {
+    channels: [
+      { id: 1, name: 'general', removable: false },
+      { id: 2, name: 'random', removable: false },
+    ],
+    currentChannelId: 1,
+  },
+  messagesInfo: {
+    messages: [
+      { feedId: 1, name: 'ha' },
+      { feedId: 1, name: 'hi' },
+    ],
+  },
 };
 
 export default configureStore({

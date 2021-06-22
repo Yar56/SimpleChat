@@ -11,11 +11,12 @@ import { Button, Navbar } from 'react-bootstrap';
 import Login from './components/LoginPage.jsx';
 import NotFound from './components/NotFound.jsx';
 import SignUp from './components/SignUp.jsx';
-import AddFeedButton from './features/feeds/AddFeedButton.js';
-import FeedsList from './features/feeds/FeedsList.js';
+import AddFeedButton from './features/channels/AddChannelButton.js';
+import FeedsList from './features/channels/ChannelsList.js';
 
 import authContext from './contexts/index.js';
 import useAuth from './hooks/index.js';
+import ChatContainer from './components/ChatContainer.jsx';
 
 const AuthProvider = ({ children }) => {
   // FIXME: возможно нужно переделать получения head с хранилища
@@ -92,15 +93,17 @@ const App = () => (
             <SignUp />
           </Route>
           <ChatRoute exact path="/">
-            <div className="container h-100 my-4 overflow-hidden rounded shadow">
-              <div className="row h-100 bg-white">
-                <div className="col-12 col-md-2 border-end pt-5 px-0 bg-light">
-                  <AddFeedButton />
-                  <FeedsList />
+            <ChatContainer>
+              <div className="col-12 col-md-2 border-end pt-5 px-0 bg-light">
+                <AddFeedButton />
+                <FeedsList />
+              </div>
+              <div className="col p-0 h-100">
+                <div className="d-flex flex-column h-100">
+                  2
                 </div>
               </div>
-
-            </div>
+            </ChatContainer>
           </ChatRoute>
           <Route path="*">
             <NotFound />

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AddFeedButton = () => (
+const AddChannelButton = () => (
   <div className="d-flex justify-content-between mb-2 px-4">
     <span>Каналы</span>
     <button type="button" className="p-0 text-primary btn btn-group-vertical">
@@ -13,4 +13,4 @@ const AddFeedButton = () => (
   </div>
 );
 
-export default AddFeedButton;
+export default AddChannelButton;
