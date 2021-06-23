@@ -13,6 +13,9 @@ import NotFound from './components/NotFound.jsx';
 import SignUp from './components/SignUp.jsx';
 import AddFeedButton from './features/channels/AddChannelButton.js';
 import FeedsList from './features/channels/ChannelsList.js';
+import MessagesTitle from './features/messages/MessagesTitle.js';
+import MessagesBox from './features/messages/MessagesBox.js';
+import AddMessageForm from './features/messages/AddMessageForm.js';
 
 import authContext from './contexts/index.js';
 import useAuth from './hooks/index.js';
@@ -83,9 +86,6 @@ const App = () => (
           </div>
         </Navbar>
         <Switch>
-          {/* <Route exact path="/">
-            {!isAuth ? <Redirect to="/login" /> : <MainContent />}
-          </Route> */}
           <Route path="/login">
             <Login />
           </Route>
@@ -100,7 +100,9 @@ const App = () => (
               </div>
               <div className="col p-0 h-100">
                 <div className="d-flex flex-column h-100">
-                  2
+                  <MessagesTitle />
+                  <MessagesBox />
+                  <AddMessageForm />
                 </div>
               </div>
             </ChatContainer>

@@ -22,8 +22,33 @@ const preloadedState = {
   },
   messagesInfo: {
     messages: [
-      { feedId: 1, name: 'ha' },
-      { feedId: 1, name: 'hi' },
+      {
+        body: 'ha', channelId: 1, username: 'admin', id: 1,
+      },
+      {
+        body: 'hi', channelId: 1, username: 'admin', id: 2,
+      },
+      {
+        body: 'hihul', channelId: 1, username: 'admin', id: 3,
+      },
+      {
+        body: 'hihul', channelId: 1, username: 'admin', id: 4,
+      },
+      {
+        body: 'hihul', channelId: 1, username: 'admin', id: 5,
+      },
+      {
+        body: 'hihul', channelId: 1, username: 'admin', id: 6,
+      },
+      {
+        body: 'hihul', channelId: 1, username: 'admin', id: 7,
+      },
+      {
+        body: 'hihul', channelId: 1, username: 'admin', id: 8,
+      },
+      {
+        body: 'hihul', channelId: 1, username: 'admin', id: 9,
+      },
     ],
   },
 };
