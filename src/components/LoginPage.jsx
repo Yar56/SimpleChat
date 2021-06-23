@@ -7,7 +7,6 @@ import useAuth from '../hooks/index.js';
 import routes from '../routes.js';
 
 import icon from '../../assets/images/login.png';
-
 // const SignupSchema = Yup.object().shape({
 //   username: Yup.string().required(),
 //   password: Yup.string().required(),
