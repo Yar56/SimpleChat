@@ -6,6 +6,8 @@ import axios from 'axios';
 import useAuth from '../hooks/index.js';
 import routes from '../routes.js';
 
+import icon from '../../assets/images/login.png';
+
 // const SignupSchema = Yup.object().shape({
 //   username: Yup.string().required(),
 //   password: Yup.string().required(),
@@ -48,11 +50,11 @@ const LoginPage = () => {
   return (
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
-        <div className="col-12 col-md-10 col-lg-6 col-xxl-6">
+        <div className="col-12 col-md-10 col-lg-8 col-xxl-6">
           <div className="card shadow-sm">
             <div className="card-body row p-5">
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img src="https://img.icons8.com/cute-clipart/200/000000/chat.png" className="rounded-circle" alt="Войти" />
+                <img src={icon} alt="Войти" />
               </div>
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
                 <h1>Войти</h1>
