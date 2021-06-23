@@ -42,9 +42,9 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        loader: 'file-loader',
-        options: {
-          publicPath: '/images/',
+        // loader: 'file-loader?name=[name].[ext]',
+        use: {
+          loader: 'url-loader',
         },
       },
     ],
