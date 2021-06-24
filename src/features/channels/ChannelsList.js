@@ -1,22 +1,22 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { selectAllChannels, selectActiveChannelId, fetchChannels } from './channelsSlice.js';
-import useAuth from '../../hooks/index.js';
+import { selectAllChannels, selectActiveChannelId } from './channelsSlice.js';
+// import useAuth from '../../hooks/index.js';
 // import routes from '../../routes.js';
 
 const ChannelsList = () => {
   const channels = useSelector(selectAllChannels);
   const activeChannelId = useSelector(selectActiveChannelId);
-  const auth = useAuth();
+  // const auth = useAuth();
 
-  const dispath = useDispatch();
-  const { token } = auth.getAuthHeader();
-  // const channelsPath = routes.channelsPath();
+  // const dispath = useDispatch();
+  // const { token } = auth.getAuthHeader();
+  // // const channelsPath = routes.channelsPath();
 
-  useEffect(() => {
-    dispath(fetchChannels(token));
-  }, []);
+  // useEffect(() => {
+  //   dispath(fetchChannels(token));
+  // }, []);
 
   const renderChannels = channels.map((channel) => {
     const style = classNames('w-100 px-4 rounded-0 text-start btn', {

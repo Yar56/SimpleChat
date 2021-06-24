@@ -1,16 +1,31 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, nanoid } from '@reduxjs/toolkit';
 
-// const initialState = [
-//   { id: 1, name: 'general', removable: false },
-//   { id: 2, title: 'Second Post', removable: false },
-// ];
+const initialState = {
+  messages: [
+    {
+      body: 'f', channelId: 1, username: 'admin', id: 3,
+    },
+  ],
+};
 
 const messagesSlice = createSlice({
-  name: 'messagesInfo/messages',
-  initialState: null,
+  name: 'messagesInfo',
+  initialState,
   reducers: {
-    messageAdded(state, action) {
-      state.push(action.payload);
+    messagesAdded: {
+      reducer(state, action) {
+        state.messages.push(action.payload);
+      },
+      prepare(body, channelId, username) {
+        return {
+          payload: {
+            id: nanoid(),
+            body,
+            username,
+            channelId,
+          },
+        };
+      },
     },
   },
 });

@@ -11,11 +11,6 @@ import { Button, Navbar } from 'react-bootstrap';
 import Login from './components/LoginPage.jsx';
 import NotFound from './components/NotFound.jsx';
 import SignUp from './components/SignUp.jsx';
-import AddFeedButton from './features/channels/AddChannelButton.js';
-import FeedsList from './features/channels/ChannelsList.js';
-import MessagesTitle from './features/messages/MessagesTitle.js';
-import MessagesBox from './features/messages/MessagesBox.js';
-import AddMessageForm from './features/messages/AddMessageForm.js';
 
 import authContext from './contexts/index.js';
 import useAuth from './hooks/index.js';
@@ -93,19 +88,7 @@ const App = () => (
             <SignUp />
           </Route>
           <ChatRoute exact path="/">
-            <ChatContainer>
-              <div className="col-12 col-md-2 border-end pt-5 px-0 bg-light">
-                <AddFeedButton />
-                <FeedsList />
-              </div>
-              <div className="col p-0 h-100">
-                <div className="d-flex flex-column h-100">
-                  <MessagesTitle />
-                  <MessagesBox />
-                  <AddMessageForm />
-                </div>
-              </div>
-            </ChatContainer>
+            <ChatContainer />
           </ChatRoute>
           <Route path="*">
             <NotFound />
