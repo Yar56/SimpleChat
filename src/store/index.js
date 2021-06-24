@@ -19,6 +19,8 @@ const preloadedState = {
       { id: 2, name: 'random', removable: false },
     ],
     currentChannelId: 1,
+    // status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed',
+    // error: null,
   },
   messagesInfo: {
     messages: [

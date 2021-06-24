@@ -6,7 +6,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // ];
 
 const messagesSlice = createSlice({
-  name: 'messages',
+  name: 'messagesInfo/messages',
   initialState: null,
   reducers: {
     messageAdded(state, action) {

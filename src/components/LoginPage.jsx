@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { Button, Form } from 'react-bootstrap';
+import {
+  Button, Form, Container, Row, Col,
+} from 'react-bootstrap';
 import axios from 'axios';
 import useAuth from '../hooks/index.js';
 import routes from '../routes.js';
@@ -34,7 +36,6 @@ const LoginPage = () => {
         const res = await axios.post(routes.loginPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
         auth.logIn();
-
         history.replace('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
@@ -48,14 +49,14 @@ const LoginPage = () => {
   });
 
   return (
-    <div className="container-fluid h-100">
-      <div className="row justify-content-center align-content-center h-100">
-        <div className="col-12 col-md-10 col-lg-8 col-xxl-6">
+    <Container fluid className="h-100">
+      <Row className="row justify-content-center align-content-center h-100">
+        <Col className="col-12 col-md-10 col-lg-8 col-xxl-6">
           <div className="card shadow-sm">
             <div className="card-body row p-5">
-              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+              <Col className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                 <img src={imgLogin} alt="Войти" />
-              </div>
+              </Col>
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
                 <h1>Войти</h1>
                 <Form.Group className="form-floating mb-3 form-group">
@@ -105,9 +106,9 @@ const LoginPage = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

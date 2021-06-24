@@ -1,13 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { selectActiveChannelId, selectChannelById } from '../channels/channelsSlice.js';
 
 const MessagesTitle = () => {
-  const currentChannelId = useSelector((state) => state.channelsInfo.currentChannelId);
-  const [currentChannel] = useSelector((state) => state.channelsInfo.channels
-    .filter((channel) => channel.id === currentChannelId));
+  const activeChannelId = useSelector(selectActiveChannelId);
 
+  const currentChannel = useSelector((state) => selectChannelById(state, activeChannelId));
+
+  // TODO: cделать селектор в messagesSlice если он будет использоватся
+  // где то еще, иначе оставить так
   const messagesCount = useSelector((state) => state.messagesInfo.messages
-    .filter((message) => message.channelId === currentChannelId)).length;
+    .filter((message) => message.channelId === activeChannelId)).length;
 
   return (
     <div className="bg-light mb-4 p-3 shadow-sm small">
