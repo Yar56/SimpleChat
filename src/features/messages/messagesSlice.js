@@ -2,9 +2,9 @@ import { createSlice, nanoid } from '@reduxjs/toolkit';
 
 const initialState = {
   messages: [
-    {
-      body: 'f', channelId: 1, username: 'admin', id: 3,
-    },
+    // {
+    //   body: 'f', channelId: 1, username: 'admin', id: 3,
+    // },
   ],
 };
 

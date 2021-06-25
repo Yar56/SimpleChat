@@ -12,6 +12,9 @@ const MessagesTitle = () => {
   const messagesCount = useSelector((state) => state.messagesInfo.messages
     .filter((message) => message.channelId === activeChannelId)).length;
 
+  if (!currentChannel) {
+    return null;
+  }
   return (
     <div className="bg-light mb-4 p-3 shadow-sm small">
       <p className="m-0">

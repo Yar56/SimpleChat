@@ -6,6 +6,10 @@ const MessagesBox = () => {
   const messagesByCurrentChannel = useSelector((state) => state.messagesInfo.messages
     .filter((message) => message.channelId === currentChannelId));
 
+  if (!messagesByCurrentChannel) {
+    return null;
+  }
+
   const renderMessages = messagesByCurrentChannel.map((message) => (
     <div className="text-break mb-2" key={message.id}>
       <b>{message.username}</b>

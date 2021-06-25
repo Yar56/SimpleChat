@@ -1,4 +1,4 @@
-import { createSlice, nanoid, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 // import { messageAdded } from '../messages/messagesSlice.js';
 
@@ -8,14 +8,13 @@ export const setInitialState = createAsyncThunk('channelsInfo/setInitialState', 
       Authorization: `Bearer ${token}`,
     },
   });
-  // console.log(response.data);
   return response.data;
 });
 const initialState = {
   channels: [
-    { id: 1, name: 'fake', removable: false },
+    // { id: 1, name: 'fake', removable: false },
   ],
-  currentChannelId: 1,
+  currentChannelId: null,
   status: 'idle',
   error: null,
 };
@@ -23,39 +22,16 @@ const initialState = {
 const channelsSlice = createSlice({
   name: 'channelsInfo',
   initialState,
-  reducers: {
-    channelAdded: {
-      reducer(state, action) {
-        console.log(state);
-        state.channels.push(action.payload);
-      },
-      prepare(name, removable) {
-        return {
-          payload: {
-            id: nanoid(),
-            name,
-            removable,
-          },
-        };
-      },
-    },
-  },
-  extraReducers: {
-    [setInitialState.pending]: (state) => {
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(setInitialState.pending, (state) => {
       state.status = 'loading';
-    },
-    [setInitialState.fulfilled]: (state, action) => {
+    });
+    builder.addCase(setInitialState.fulfilled, (state, action) => {
       state.status = 'succeeded';
-      // Add any fetched posts to the array
-
+      state.channels = [];
       state.channels = state.channels.concat(action.payload.channels);
-      // TODO: сдедать добавление сообщений и currentChannel
-      // messageAdded(action.payload.messages)
-    },
-    [setInitialState.rejected]: (state, action) => {
-      state.status = 'failed';
-      state.error = action.error.message;
-    },
+    });
   },
 });
 
