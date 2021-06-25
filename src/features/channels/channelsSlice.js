@@ -30,6 +30,8 @@ const channelsSlice = createSlice({
     builder.addCase(setInitialState.fulfilled, (state, action) => {
       state.status = 'succeeded';
       state.channels = [];
+      state.currentChannelId = null;
+      state.currentChannelId = action.payload.currentChannelId;
       state.channels = state.channels.concat(action.payload.channels);
     });
   },

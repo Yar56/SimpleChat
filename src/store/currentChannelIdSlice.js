@@ -6,6 +6,7 @@ const currentChannelIdSlice = createSlice({
   reducers: {
     setCurrentChannelId: (action) => action.payload,
   },
+
 });
 
 export const { setCurrentChannelId } = currentChannelIdSlice.actions;

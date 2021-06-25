@@ -1,11 +1,8 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { setInitialState } from '../channels/channelsSlice.js';
 
 const initialState = {
-  messages: [
-    // {
-    //   body: 'f', channelId: 1, username: 'admin', id: 3,
-    // },
-  ],
+  messages: [],
 };
 
 const messagesSlice = createSlice({
@@ -27,6 +24,12 @@ const messagesSlice = createSlice({
         };
       },
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(setInitialState.fulfilled, (state, action) => {
+      state.messages = [];
+      state.messages = state.messages.concat(action.payload.messages);
+    });
   },
 });
 
