@@ -8,13 +8,13 @@ import {
 } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
 
-import Login from './components/LoginPage.jsx';
-import NotFound from './components/NotFound.jsx';
-import SignUp from './components/SignUp.jsx';
+import Login from '../components/LoginPage.jsx';
+import NotFound from '../components/NotFound.jsx';
+import SignUp from '../components/SignUp.jsx';
 
-import authContext from './contexts/index.js';
-import useAuth from './hooks/index.js';
-import ChatContainer from './components/ChatContainer.jsx';
+import authContext from '../contexts/index.js';
+import useAuth from '../hooks/index.js';
+import ChatContainer from '../components/ChatContainer.jsx';
 
 const AuthProvider = ({ children }) => {
   // FIXME: возможно нужно переделать получения head с хранилища
