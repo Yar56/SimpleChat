@@ -1,4 +1,4 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { setInitialState } from '../channels/channelsSlice.js';
 
 const initialState = {
@@ -9,17 +9,20 @@ const messagesSlice = createSlice({
   name: 'messagesInfo',
   initialState,
   reducers: {
-    messagesAdded: {
+    addMessage: {
       reducer(state, action) {
+        // console.log(action.payload)
         state.messages.push(action.payload);
       },
-      prepare(body, channelId, username) {
+      prepare({
+        body, channelId, username, id,
+      }) {
         return {
           payload: {
-            id: nanoid(),
             body,
-            username,
             channelId,
+            username,
+            id,
           },
         };
       },
@@ -33,6 +36,6 @@ const messagesSlice = createSlice({
   },
 });
 
-export const { messageAdded } = messagesSlice.actions;
+export const { addMessage } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

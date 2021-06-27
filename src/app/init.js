@@ -1,13 +1,13 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { io } from 'socket.io-client';
+
 import store from '../store/index.js';
 import App from './App.jsx';
 
 const init = () => {
   // TODO: add i18next
-  const socket = io();
-  console.log(socket);
+  // const socket = io();
+  // console.log(socket);
   const vdom = (
     <React.StrictMode>
       <Provider store={store}>

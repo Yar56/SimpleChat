@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-// import { messageAdded } from '../messages/messagesSlice.js';
 
 export const setInitialState = createAsyncThunk('channelsInfo/setInitialState', async (token) => {
   const response = await axios.get('/api/v1/data', {
@@ -11,9 +10,7 @@ export const setInitialState = createAsyncThunk('channelsInfo/setInitialState', 
   return response.data;
 });
 const initialState = {
-  channels: [
-    // { id: 1, name: 'fake', removable: false },
-  ],
+  channels: [],
   currentChannelId: null,
   status: 'idle',
   error: null,

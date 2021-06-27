@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 const MessagesBox = () => {
@@ -10,6 +10,11 @@ const MessagesBox = () => {
     return null;
   }
 
+  const messagesBox = useRef();
+  useEffect(() => {
+    messagesBox.current.scrollTop = messagesBox.current.scrollHeight;
+  });
+
   const renderMessages = messagesByCurrentChannel.map((message) => (
     <div className="text-break mb-2" key={message.id}>
       <b>{message.username}</b>
@@ -18,7 +23,7 @@ const MessagesBox = () => {
     </div>
   ));
   return (
-    <div id="messages-box" className="chat-messages overflow-auto px-5 ">
+    <div id="messages-box" className="chat-messages overflow-auto px-5" ref={messagesBox}>
       {renderMessages}
     </div>
   );
