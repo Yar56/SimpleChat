@@ -66,7 +66,6 @@ const LoginPage = () => {
                     placeholder="Ваш ник"
                     name="username"
                     id="username"
-                    className="form-control"
                     autoComplete="username"
                     isInvalid={authFailed}
                     required
@@ -84,7 +83,6 @@ const LoginPage = () => {
                     type="password"
                     name="password"
                     id="password"
-                    className="form-control"
                     autoComplete="password"
                     isInvalid={authFailed}
                     required

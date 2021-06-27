@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormik } from 'formik';
 import {
   Button, Form, InputGroup, FormControl,
@@ -6,13 +6,15 @@ import {
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 
 const AddMessageForm = () => {
-  const [message, setMessage] = useState();
-  console.log(message, setMessage);
   const formik = useFormik({
     initialValues: {
       message: '',
     },
     onSubmit: async (values) => {
+      formik.resetForm();
+      console.log(values);
+    },
+    onChange: (values) => {
       console.log(values);
     },
   });
@@ -20,15 +22,19 @@ const AddMessageForm = () => {
   return (
     <div className="mt-auto px-5 py-3">
       <Form noValidate className="py-1 border rounded-2" onSubmit={formik.handleSubmit}>
-        <InputGroup className="input-group has-validation">
+        <InputGroup>
           <FormControl
-            onChange={formik.onChange}
-            className="border-0 p-0 ps-2 form-control"
+            onChange={formik.handleChange}
+            value={formik.values.message}
             placeholder="Введите сообщение..."
+            name="message"
+            className="border-0 p-0 ps-2"
           />
-          <Button type="submit" variant="btn btn-group-vertical" disabled>
-            <ArrowRightSquare size={20} fill="currentColor" />
-          </Button>
+          <InputGroup.Append>
+            <Button type="submit" variant="btn btn-group-vertical" disabled={!formik.isValid || !formik.dirty}>
+              <ArrowRightSquare size={20} fill="currentColor" />
+            </Button>
+          </InputGroup.Append>
         </InputGroup>
       </Form>
     </div>
