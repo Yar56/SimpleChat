@@ -6,14 +6,14 @@ import {
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useDispatch } from 'react-redux';
 import useSocket from '../../hooks/useSocket/index.js';
-
+import useAuth from '../../hooks/useAuth/index.js';
 import { addMessage } from './messagesSlice.js';
 
 const AddMessageForm = () => {
   const dispatch = useDispatch();
 
   const socket = useSocket();
-
+  const { user: { username } } = useAuth();
   const input = useRef();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const AddMessageForm = () => {
     },
     onSubmit: (values) => {
       formik.resetForm();
-      socket.emit('newMessage', { body: values.message, channelId: 1, username: 'admin' }, (res) => {
+      socket.emit('newMessage', { body: values.message, channelId: 1, username }, (res) => {
         console.log(res);
       });
     },
