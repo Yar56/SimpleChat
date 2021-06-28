@@ -11,10 +11,12 @@ import { Button, Navbar } from 'react-bootstrap';
 import Login from '../components/LoginPage.jsx';
 import NotFound from '../components/NotFound.jsx';
 import SignUp from '../components/SignUp.jsx';
-
-import authContext from '../contexts/index.js';
-import useAuth from '../hooks/index.js';
 import ChatContainer from '../components/ChatContainer.jsx';
+
+import AuthContext from '../contexts/AuthContext.js';
+import SocketContext from '../contexts/SocketContext.js';
+import useSocket from '../hooks/useSocket/index.js';
+import useAuth from '../hooks/useAuth/index.js';
 
 const AuthProvider = ({ children }) => {
   // FIXME: возможно нужно переделать получения head с хранилища
@@ -32,7 +34,7 @@ const AuthProvider = ({ children }) => {
     setUserData(null);
   };
   return (
-    <authContext.Provider
+    <AuthContext.Provider
       value={{
         getAuthHeader,
         user,
@@ -41,12 +43,14 @@ const AuthProvider = ({ children }) => {
       }}
     >
       {children}
-    </authContext.Provider>
+    </AuthContext.Provider>
   );
 };
+// const SocketProvider = ({ children, io }) => (
+//   <SocketContext.Provider value={io}>{children}</SocketContext.Provider>);
 
 const AuthButton = () => {
-  const auth = useContext(authContext);
+  const auth = useContext(AuthContext);
   const head = auth.getAuthHeader();
 
   if (head) {
@@ -57,14 +61,14 @@ const AuthButton = () => {
 
 const ChatRoute = ({ children, path }) => {
   const auth = useAuth();
-
+  const socket = useSocket(SocketContext);
   const token = auth.getAuthHeader();
 
   return (
     <Route
       path={path}
       render={() => (token
-        ? children
+        ? <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
         : <Redirect to="/login" />)}
     />
   );

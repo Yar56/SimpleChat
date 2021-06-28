@@ -5,13 +5,23 @@ import {
 } from 'react-bootstrap';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useDispatch } from 'react-redux';
-import { io } from 'socket.io-client';
+import useSocket from '../../hooks/useSocket/index.js';
+
 import { addMessage } from './messagesSlice.js';
 
 const AddMessageForm = () => {
   const dispatch = useDispatch();
-  const socket = io();
+
+  const socket = useSocket();
+
   const input = useRef();
+
+  useEffect(() => {
+    socket.on('newMessage', (message) => {
+      console.log(message);
+      dispatch(addMessage(message));
+    });
+  }, []);
   useEffect(() => {
     input.current.focus();
   });
@@ -19,16 +29,10 @@ const AddMessageForm = () => {
     initialValues: {
       message: '',
     },
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       formik.resetForm();
-      console.log(values);
-      console.log(io);
-      socket.emit('newMessage', { body: values.message, channelId: 1, username: 'admin' }, (response) => {
-        console.log(response);
-      });
-      socket.on('newMessage', (res) => {
+      socket.emit('newMessage', { body: values.message, channelId: 1, username: 'admin' }, (res) => {
         console.log(res);
-        dispatch(addMessage(res));
       });
     },
     onChange: (values) => {

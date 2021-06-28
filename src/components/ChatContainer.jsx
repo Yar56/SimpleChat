@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 import { setInitialState } from '../features/channels/channelsSlice.js';
-import useAuth from '../hooks/index.js';
+import useAuth from '../hooks/useAuth/index.js';
 // import { selectAllChannels } from '../features/channels/channelsSlice.js';
 
 import AddFeedButton from '../features/channels/AddChannelButton.js';

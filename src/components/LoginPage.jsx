@@ -5,7 +5,7 @@ import {
   Button, Form, Container, Row, Col,
 } from 'react-bootstrap';
 import axios from 'axios';
-import useAuth from '../hooks/index.js';
+import useAuth from '../hooks/useAuth/index.js';
 import routes from '../routes.js';
 
 import imgLogin from '../../assets/images/login.png';
