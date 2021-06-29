@@ -36,11 +36,10 @@ const AddMessageForm = () => {
   const input = useRef();
 
   useEffect(() => {
-    // console.log(messages);
-    // console.log(isSending);
     setTimeout(() => {
       setIsSending(false);
     }, 100);
+    input.current.focus();
   }, [isSending]);
 
   useEffect(() => {
@@ -57,8 +56,7 @@ const AddMessageForm = () => {
       message: '',
     },
     onSubmit: ({ message }) => {
-      socket.volatile.emit('newMessage', { body: message, channelId: 1, username }, withTimeout((r) => {
-        console.log(r);
+      socket.volatile.emit('newMessage', { body: message, channelId: 1, username }, withTimeout(() => {
         setIsSending(true);
         formik.resetForm();
         input.current.focus();
