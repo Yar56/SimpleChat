@@ -19,7 +19,12 @@ const initialState = {
 const channelsSlice = createSlice({
   name: 'channelsInfo',
   initialState,
-  reducers: {},
+  reducers: {
+    setActiveChannel(state, action) {
+      // console.log(action.payload.id);
+      state.currentChannelId = action.payload.id;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(setInitialState.pending, (state) => {
       state.status = 'loading';
@@ -34,7 +39,7 @@ const channelsSlice = createSlice({
   },
 });
 
-export const { feedAdded } = channelsSlice.actions;
+export const { setActiveChannel } = channelsSlice.actions;
 
 export default channelsSlice.reducer;
 

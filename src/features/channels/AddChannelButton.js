@@ -2,7 +2,7 @@ import React from 'react';
 import { PlusSquare } from 'react-bootstrap-icons';
 
 const AddChannelButton = () => (
-  <div className="d-flex justify-content-between mb-2 px-4">
+  <div className="d-flex justify-content-between mb-2 px-4 pe-2">
     <span>Каналы</span>
     <button type="button" className="p-0 text-primary btn btn-group-vertical">
       <PlusSquare size={20} />

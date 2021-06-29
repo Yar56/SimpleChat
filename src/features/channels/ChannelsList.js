@@ -1,41 +1,71 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
-import { selectAllChannels, selectActiveChannelId } from './channelsSlice.js';
+import {
+  Nav, Button, ButtonGroup, Dropdown,
+} from 'react-bootstrap';
+import { selectAllChannels, selectActiveChannelId, setActiveChannel } from './channelsSlice.js';
 // import useAuth from '../../hooks/index.js';
 // import routes from '../../routes.js';
 
 const ChannelsList = () => {
   const channels = useSelector(selectAllChannels);
   const activeChannelId = useSelector(selectActiveChannelId);
-  // const auth = useAuth();
+  const dispatch = useDispatch();
 
-  // const dispath = useDispatch();
-  // const { token } = auth.getAuthHeader();
-  // // const channelsPath = routes.channelsPath();
+  const handleChangeChannel = (id) => (e) => {
+    console.log(e);
+    if (e.target.id) {
+      console.log('dropdown!');
+      return;
+    }
+    dispatch(setActiveChannel({ id }));
+  };
 
-  // useEffect(() => {
-  //   dispath(fetchChannels(token));
-  // }, []);
+  const createButton = (channelName, style) => (
+    <Button type="button" variant="" className={style}>
+      <span className="me-1">#</span>
+      {channelName}
+    </Button>
+  );
 
   const renderChannels = channels.map((channel) => {
-    const style = classNames('w-100 px-4 rounded-0 text-start btn', {
+    const channelButtonStyle = classNames('w-100 rounded-0 shadow-none text-start', {
+      'text-truncate': channel.removable,
       'btn-secondary': (channel.id === activeChannelId),
     });
+    const toggleButtonStyle = classNames('flex-grow-0', {
+      'btn-secondary': (channel.id === activeChannelId),
+    });
+    const withDropDown = (
+      <Dropdown as={ButtonGroup} className="d-flex">
+        {createButton(channel.name, channelButtonStyle)}
+
+        <Dropdown.Toggle split variant="" id="dropdown-split-basic" className={toggleButtonStyle} />
+        <Dropdown.Menu>
+          <Dropdown.Item href="#">Удалить</Dropdown.Item>
+          <Dropdown.Item href="#">Переименовать</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+    const withoutDropDown = (
+      <Button type="button" variant="" className={channelButtonStyle}>
+        <span className="me-1">#</span>
+        {channel.name}
+      </Button>
+    );
+
     return (
-      <li className="nav-item" key={channel.id}>
-        <button type="button" className={style}>
-          <span className="me-1">#</span>
-          {channel.name}
-        </button>
-      </li>
+      <Nav.Item as="li" className="w-100" key={channel.id} onClick={handleChangeChannel(channel.id)}>
+        {channel.removable === false ? withoutDropDown : withDropDown}
+      </Nav.Item>
     );
   });
 
   return (
-    <ul className="nav flex-column nav-pills nav-fill">
+    <Nav as="ul" fill variant="pills" className="flex-column px-2">
       {renderChannels}
-    </ul>
+    </Nav>
   );
 };
 

@@ -78,7 +78,7 @@ const App = () => (
   <AuthProvider>
     <Router>
       <div className="d-flex flex-column h-100">
-        <Navbar className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
+        <Navbar bg="white" expand="lg" className="shadow-sm">
           <div className="container">
             <Navbar.Brand as={Link} to="/" className="navbar-brand">Hexlet Chat</Navbar.Brand>
             <AuthButton />

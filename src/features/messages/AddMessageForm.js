@@ -49,7 +49,7 @@ const AddMessageForm = () => {
       dispatch(addMessage(message));
     });
     return () => socket.off('newMessage');
-  }, []);
+  }, [socket]);
 
   const formik = useFormik({
     initialValues: {
@@ -62,6 +62,7 @@ const AddMessageForm = () => {
         input.current.focus();
         console.log('success!');
       }, () => {
+        // TODO: Нужно блокировать input на 2 сек
         setIsSending(true);
         input.current.focus();
         console.log('timeout!');
