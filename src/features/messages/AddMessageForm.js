@@ -4,10 +4,11 @@ import {
   Button, Form, InputGroup, FormControl,
 } from 'react-bootstrap';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useSocket from '../../hooks/useSocket/index.js';
 import useAuth from '../../hooks/useAuth/index.js';
 import { addMessage } from './messagesSlice.js';
+import { selectActiveChannelId } from '../channels/channelsSlice.js';
 
 const withTimeout = (onSuccess, onTimeout, timeout) => {
   // eslint-disable-next-line functional/no-let
@@ -34,6 +35,7 @@ const AddMessageForm = () => {
   const socket = useSocket();
   const { user: { username } } = useAuth();
   const input = useRef();
+  const currentChannelId = useSelector(selectActiveChannelId);
 
   useEffect(() => {
     setTimeout(() => {
@@ -56,7 +58,7 @@ const AddMessageForm = () => {
       message: '',
     },
     onSubmit: ({ message }) => {
-      socket.volatile.emit('newMessage', { body: message, channelId: 1, username }, withTimeout(() => {
+      socket.volatile.emit('newMessage', { body: message, channelId: currentChannelId, username }, withTimeout(() => {
         setIsSending(true);
         formik.resetForm();
         input.current.focus();

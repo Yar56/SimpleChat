@@ -1,19 +1,23 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { selectAllMessages } from './messagesSlice.js';
+import { selectActiveChannelId } from '../channels/channelsSlice.js';
 
 const MessagesBox = () => {
-  const currentChannelId = useSelector((state) => state.channelsInfo.currentChannelId);
+  const currentChannelId = useSelector(selectActiveChannelId);
   const messagesByCurrentChannel = useSelector((state) => state.messagesInfo.messages
     .filter((message) => message.channelId === currentChannelId));
+
+  const allMessages = useSelector(selectAllMessages);
+  const messagesBox = useRef();
 
   if (!messagesByCurrentChannel) {
     return null;
   }
 
-  const messagesBox = useRef();
   useEffect(() => {
     messagesBox.current.scrollTop = messagesBox.current.scrollHeight;
-  });
+  }, [allMessages]);
 
   const renderMessages = messagesByCurrentChannel.map((message) => (
     <div className="text-break mb-2" key={message.id}>

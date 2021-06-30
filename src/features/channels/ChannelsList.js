@@ -14,7 +14,6 @@ const ChannelsList = () => {
   const dispatch = useDispatch();
 
   const handleChangeChannel = (id) => (e) => {
-    console.log(e);
     if (e.target.id) {
       console.log('dropdown!');
       return;
