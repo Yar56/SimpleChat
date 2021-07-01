@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
-import { setInitialState } from '../features/channels/channelsSlice.js';
+import * as yup from 'yup';
+import { setInitialState, selectAllChannels } from '../features/channels/channelsSlice.js';
 import useAuth from '../hooks/useAuth/index.js';
 
 import getModal from '../features/modals/index.js';
@@ -19,6 +20,7 @@ const ChatContainer = () => {
   const dispatch = useDispatch();
   const { token } = auth.getAuthHeader();
 
+  const allChannels = useSelector(selectAllChannels);
   const channelsStatus = useSelector((state) => state.channelsInfo.status);
   const isOpened = useSelector(selectIsOpenedModal);
   const typeModal = useSelector(selectModalType);
@@ -28,9 +30,20 @@ const ChatContainer = () => {
     if (!isOpen) {
       return null;
     }
+    const validateChannelName = (channels) => () => {
+      const blackListNames = channels.map((channel) => channel.name);
+      return yup.string().min(3, 'коротко').notOneOf(blackListNames, 'уже есть такое');
+    };
     const Component = getModal(type);
     // modalInfo={modalInfo} setItems={setItems} onHide={hideModal}
-    return <Component isOpened={isOpened} onHide={onHide} />;
+    return (
+      <Component
+        isOpened={isOpened}
+        onHide={onHide}
+        validate={validateChannelName}
+        allChannels={allChannels}
+      />
+    );
   };
 
   useEffect(() => {
