@@ -2,6 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 // import { combineReducers } from 'redux';
 import channelsReducer from '../features/channels/channelsSlice.js';
 import messagesReducer from '../features/messages/messagesSlice.js';
+import modalsReducer from '../features/modals/modalsSlice.js';
+
 // import currentChannelIdReducer from './currentChannelIdSlice.js';
 
 // const reducer = combineReducers({
@@ -15,6 +17,7 @@ import messagesReducer from '../features/messages/messagesSlice.js';
 const reducer = {
   channelsInfo: channelsReducer,
   messagesInfo: messagesReducer,
+  modal: modalsReducer,
 };
 
 // const preloadedState = {

@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import {
   Nav, Button, ButtonGroup, Dropdown,
 } from 'react-bootstrap';
+import { PlusSquare } from 'react-bootstrap-icons';
 import { selectAllChannels, selectActiveChannelId, setActiveChannel } from './channelsSlice.js';
-// import useAuth from '../../hooks/index.js';
-// import routes from '../../routes.js';
+import { openModal } from '../modals/modalsSlice.js';
 
 const ChannelsList = () => {
   const channels = useSelector(selectAllChannels);
@@ -62,9 +62,18 @@ const ChannelsList = () => {
   });
 
   return (
-    <Nav as="ul" fill variant="pills" className="flex-column px-2">
-      {renderChannels}
-    </Nav>
+    <>
+      <div className="d-flex justify-content-between mb-2 px-4 pe-2">
+        <span>Каналы</span>
+        <button type="button" className="p-0 text-primary btn btn-group-vertical" onClick={() => dispatch(openModal({ type: 'addChannel' }))}>
+          <PlusSquare size={20} />
+          <span className="visually-hidden">+</span>
+        </button>
+      </div>
+      <Nav as="ul" fill variant="pills" className="flex-column px-2">
+        {renderChannels}
+      </Nav>
+    </>
   );
 };
 

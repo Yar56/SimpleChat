@@ -9,11 +9,11 @@ const init = () => {
   // const socket = io();
   // console.log(socket);
   const vdom = (
-    <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </React.StrictMode>
+
+    <Provider store={store}>
+      <App />
+    </Provider>
+
   );
 
   return vdom;
