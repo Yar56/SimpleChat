@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import { PlusSquare } from 'react-bootstrap-icons';
 import {
-  selectAllChannels, selectActiveChannelId, setActiveChannel, removeChannel,
+  selectAllChannels, selectActiveChannelId, setActiveChannel, removeChannel, renameChannel,
 } from './channelsSlice.js';
 import { openModal } from '../modals/modalsSlice.js';
 import useSocket from '../../hooks/useSocket/index.js';
@@ -32,10 +32,17 @@ const ChannelsList = () => {
     socket.on('removeChannel', ({ id: channelId }) => {
       console.log(channelId);
       dispatch(removeChannel({ channelId }));
-      // TODO: исправить id
+      // TODO: подумать над дефолтным id и удалить все сообщения этого канала
       dispatch(setActiveChannel({ id: 1 }));
     });
     return () => socket.off('newMessage');
+  }, []);
+
+  useEffect(() => {
+    socket.on('renameChannel', (response) => {
+      dispatch(renameChannel({ id: response.id, name: response.name }));
+    });
+    return () => socket.off('renameChannel');
   }, []);
 
   const createButton = (channelName, style) => (
@@ -69,7 +76,7 @@ const ChannelsList = () => {
           <Dropdown.Item
             active={false}
             href="#"
-            onClick={() => dispatch(openModal({ type: 'renameChannel' }))}
+            onClick={() => dispatch(openModal({ type: 'renameChannel', extra: { channelId: channel.id } }))}
           >
             Переименовать
           </Dropdown.Item>

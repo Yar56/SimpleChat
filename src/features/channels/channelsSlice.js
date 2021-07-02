@@ -29,6 +29,10 @@ const channelsSlice = createSlice({
     removeChannel(state, action) {
       state.channels = state.channels.filter((channel) => channel.id !== action.payload.channelId);
     },
+    renameChannel(state, { payload }) {
+      state.channels[state.channels
+        .findIndex((channel) => channel.id === payload.id)].name = payload.name;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(setInitialState.pending, (state) => {
@@ -44,7 +48,9 @@ const channelsSlice = createSlice({
   },
 });
 
-export const { setActiveChannel, addChannel, removeChannel } = channelsSlice.actions;
+export const {
+  setActiveChannel, addChannel, removeChannel, renameChannel,
+} = channelsSlice.actions;
 
 export default channelsSlice.reducer;
 

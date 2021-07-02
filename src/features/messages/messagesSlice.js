@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { setInitialState } from '../channels/channelsSlice.js';
+import { setInitialState, removeChannel } from '../channels/channelsSlice.js';
 
 const initialState = {
   messages: [],
@@ -32,6 +32,9 @@ const messagesSlice = createSlice({
     builder.addCase(setInitialState.fulfilled, (state, action) => {
       state.messages = [];
       state.messages = state.messages.concat(action.payload.messages);
+    });
+    builder.addCase(removeChannel, (state, { payload }) => {
+      state.messages = state.messages.filter((message) => message.id === payload.id);
     });
   },
 });

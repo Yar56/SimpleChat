@@ -1,47 +1,84 @@
-import React, { useEffect, useRef } from 'react';
-import { useFormik } from 'formik';
-import { Modal, FormGroup, FormControl } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-const generateOnSubmit = ({ modalInfo, setItems, onHide }) => (values) => {
-  setItems((items) => {
-    const item = items.find((i) => i.id === modalInfo.item.id);
-    item.body = values.body;
-  });
-  onHide();
-};
+import {
+  Modal, FormGroup, FormControl, Button, Form,
+} from 'react-bootstrap';
+
+import { useFormik } from 'formik';
+import useSocket from '../../hooks/useSocket/index.js';
+import { selectExtraModal } from './modalsSlice.js';
+import { selectChannelById } from '../channels/channelsSlice.js';
+import withTimeout from '../../utils/withTimeout.js';
 
 const Rename = (props) => {
-  const { onHide, modalInfo } = props;
-  const { item } = modalInfo;
-  const f = useFormik({ onSubmit: generateOnSubmit(props), initialValues: item });
   const inputRef = useRef();
+  const [isDisabled, setIsDisabled] = useState(false);
+  const socket = useSocket();
+  const { channelId } = useSelector(selectExtraModal);
+  const activeChannel = useSelector((state) => selectChannelById(state, channelId));
+
+  const {
+    isOpened, onHide, allChannels, validateChannelName,
+  } = props;
+  const validate = validateChannelName(allChannels);
+
+  const f = useFormik({
+    initialValues: { body: '' },
+    validationSchema: validate,
+    onSubmit: ({ body }) => {
+      setIsDisabled(true);
+      socket.volatile.emit('renameChannel', { id: channelId, name: body }, withTimeout((response) => {
+        console.log(response);
+
+        setTimeout(() => {
+          onHide();
+        }, 200);
+      }, () => {
+        setIsDisabled(false);
+        inputRef.current.select();
+        console.log('timeout!');
+      }, 2000));
+    },
+    validateOnChange: false,
+    validateOnBlur: false,
+  });
+
   useEffect(() => {
+    inputRef.current.value = activeChannel.name;
     inputRef.current.select();
   }, []);
 
   return (
-    <Modal.Dialog>
-      <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>Rename</Modal.Title>
+    <Modal dialogAs={Modal.Dialog} show={isOpened} centered onHide={onHide}>
+      <Modal.Header>
+        <Modal.Title>Переименовать канал</Modal.Title>
+        <button onClick={onHide} aria-label="Close" data-bs-dismiss="modal" type="button" className="btn btn-close" />
       </Modal.Header>
 
       <Modal.Body>
-        <form onSubmit={f.handleSubmit}>
+        <Form onSubmit={f.handleSubmit}>
           <FormGroup>
             <FormControl
               required
               ref={inputRef}
               onChange={f.handleChange}
-              onBlur={f.handleBlur}
               value={f.values.body}
               data-testid="input-body"
               name="body"
+              className="mb-2"
+              isInvalid={!!f.errors.body}
+              disabled={isDisabled}
             />
+            <Form.Control.Feedback type="invalid">{f.errors.body}</Form.Control.Feedback>
+            <div className="d-flex justify-content-end">
+              <Button onClick={onHide} type="button" variant="secondary" className="me-2">Отменить</Button>
+              <Button type="submit" variant="primary">Отправить</Button>
+            </div>
           </FormGroup>
-          <input type="submit" className="btn btn-primary" value="submit" />
-        </form>
+        </Form>
       </Modal.Body>
-    </Modal.Dialog>
+    </Modal>
   );
 };
 
