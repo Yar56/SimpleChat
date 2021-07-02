@@ -3,9 +3,8 @@ import {
   Modal, FormGroup, FormControl, Button, Form,
 } from 'react-bootstrap';
 // import _ from 'lodash';
-import * as yup from 'yup';
 import { useFormik } from 'formik';
-// import * as Yup from 'yup';
+
 // const generateOnSubmit = ({ setItems, onHide }) => (values) => {
 //   const item = { id: _.uniqueId(), body: values.body };
 //   setItems((items) => {
@@ -16,35 +15,25 @@ import { useFormik } from 'formik';
 
 // TODO: Последовательность шагов в сторе при отправке нового канала
 // 1 - установить текущий канал 2 - закрыть модал 3 - добавить канал
-const validation = yup.object().shape({
-  body: yup.string().min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов'),
-});
 
 const Add = (props) => {
-  const { isOpened, onHide } = props;
-  // const [currentBody, setCurrentBody] = useState('');
-  // const schema = validate(allChannels);
-  // console.log(schema.validate);
-  // const validateC = yup.object().shape({
-  //   body: yup.string().min(3, 'коротко'),
-  // });
+  const inputRef = useRef();
+
+  const {
+    isOpened, onHide, allChannels, validateChannelName,
+  } = props;
+  const validate = validateChannelName(allChannels);
 
   const f = useFormik({
     initialValues: { body: '' },
-    // validationSchema: yup.object().shape({
-    //   body: schema.validate(currentBody),
-    // }),
-    validationSchema: validation,
+    validationSchema: validate,
     onSubmit: ({ body }) => {
-      // setCurrentBody(body);
       console.log(body);
     },
-    // isValidating: true,
     validateOnChange: false,
     validateOnBlur: false,
   });
 
-  const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
   }, []);

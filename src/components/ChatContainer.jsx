@@ -30,17 +30,25 @@ const ChatContainer = () => {
     if (!isOpen) {
       return null;
     }
-    const validateChannelName = (channels) => () => {
+    const validateChannelName = (channels) => {
       const blackListNames = channels.map((channel) => channel.name);
-      return yup.string().min(3, 'коротко').notOneOf(blackListNames, 'уже есть такое');
+      return () => {
+        const res = yup.object().shape({
+          body: yup.string().min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов').notOneOf(blackListNames, 'Должно быть уникальным'),
+        });
+        return res;
+      };
     };
+
+    // const validate = validateChannelName(allChannels);
+    // console.log(validate)
     const Component = getModal(type);
     // modalInfo={modalInfo} setItems={setItems} onHide={hideModal}
     return (
       <Component
         isOpened={isOpened}
         onHide={onHide}
-        validate={validateChannelName}
+        validateChannelName={validateChannelName}
         allChannels={allChannels}
       />
     );
