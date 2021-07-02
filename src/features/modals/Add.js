@@ -27,7 +27,7 @@ const Add = (props) => {
     onSubmit: ({ body }) => {
       setIsDisabled(true);
       socket.volatile.emit('newChannel', { name: body }, withTimeout((response) => {
-        console.log(response);
+        // console.log(response);
         const { data } = response;
         dispatch(setActiveChannel({ id: data.id }));
 

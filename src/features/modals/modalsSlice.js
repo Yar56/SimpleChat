@@ -13,6 +13,7 @@ const modalSlice = createSlice({
     openModal(state, action) {
       state.isOpened = true;
       state.type = action.payload.type;
+      state.extra = action.payload.extra || null;
     },
     closeModal(state) {
       state.isOpened = false;
@@ -40,3 +41,4 @@ export const { openModal, closeModal } = modalSlice.actions;
 
 export const selectModalType = (state) => state.modal.type;
 export const selectIsOpenedModal = (state) => state.modal.isOpened;
+export const selectExtraModal = (state) => state.modal.extra;

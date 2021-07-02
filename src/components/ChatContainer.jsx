@@ -8,7 +8,6 @@ import useAuth from '../hooks/useAuth/index.js';
 import getModal from '../features/modals/index.js';
 import { selectModalType, selectIsOpenedModal, closeModal } from '../features/modals/modalsSlice.js';
 
-// import AddFeedButton from '../features/channels/AddChannelButton.js';
 import FeedsList from '../features/channels/ChannelsList.js';
 import MessagesTitle from '../features/messages/MessagesTitle.js';
 import MessagesBox from '../features/messages/MessagesBox.js';
@@ -20,6 +19,7 @@ const ChatContainer = () => {
   const dispatch = useDispatch();
   const { token } = auth.getAuthHeader();
 
+  // const currentChannelId = useSelector(selectActiveChannelId);
   const allChannels = useSelector(selectAllChannels);
   const channelsStatus = useSelector((state) => state.channelsInfo.status);
   const isOpened = useSelector(selectIsOpenedModal);

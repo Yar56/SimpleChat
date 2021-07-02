@@ -1,32 +1,42 @@
-import React, { } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import {
   Nav, Button, ButtonGroup, Dropdown,
 } from 'react-bootstrap';
 import { PlusSquare } from 'react-bootstrap-icons';
-import { selectAllChannels, selectActiveChannelId, setActiveChannel } from './channelsSlice.js';
+import {
+  selectAllChannels, selectActiveChannelId, setActiveChannel, removeChannel,
+} from './channelsSlice.js';
 import { openModal } from '../modals/modalsSlice.js';
+import useSocket from '../../hooks/useSocket/index.js';
 
 const ChannelsList = () => {
   const channels = useSelector(selectAllChannels);
   const activeChannelId = useSelector(selectActiveChannelId);
   const dispatch = useDispatch();
+  const socket = useSocket();
 
   const handleChangeChannel = (id) => (e) => {
+    // FIXME: нужно чтобы при нажатии удаления канала он не переключался
     if (e.target.id) {
       console.log('dropdown!');
       return;
     }
-    dispatch(setActiveChannel({ id }));
+    if (!e.target.id) {
+      dispatch(setActiveChannel({ id }));
+    }
   };
 
-  // useEffect(() => {
-  //   effect
-  //   return () => {
-  //     cleanup
-  //   }
-  // }, [channels]);
+  useEffect(() => {
+    socket.on('removeChannel', ({ id: channelId }) => {
+      console.log(channelId);
+      dispatch(removeChannel({ channelId }));
+      // TODO: исправить id
+      dispatch(setActiveChannel({ id: 1 }));
+    });
+    return () => socket.off('newMessage');
+  }, []);
 
   const createButton = (channelName, style) => (
     <Button type="button" variant="" className={style}>
@@ -49,8 +59,20 @@ const ChannelsList = () => {
 
         <Dropdown.Toggle split variant="" id="dropdown-split-basic" className={toggleButtonStyle} />
         <Dropdown.Menu>
-          <Dropdown.Item href="#">Удалить</Dropdown.Item>
-          <Dropdown.Item href="#">Переименовать</Dropdown.Item>
+          <Dropdown.Item
+            active={false}
+            href="#"
+            onClick={() => dispatch(openModal({ type: 'removeChannel', extra: { channelId: channel.id } }))}
+          >
+            Удалить
+          </Dropdown.Item>
+          <Dropdown.Item
+            active={false}
+            href="#"
+            onClick={() => dispatch(openModal({ type: 'renameChannel' }))}
+          >
+            Переименовать
+          </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     );
