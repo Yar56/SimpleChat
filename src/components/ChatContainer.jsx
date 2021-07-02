@@ -24,12 +24,13 @@ const ChatContainer = () => {
   const channelsStatus = useSelector((state) => state.channelsInfo.status);
   const isOpened = useSelector(selectIsOpenedModal);
   const typeModal = useSelector(selectModalType);
-  const onHide = () => dispatch(closeModal());
 
   const renderModal = (isOpen, type) => {
     if (!isOpen) {
       return null;
     }
+    const onHide = () => dispatch(closeModal());
+
     const validateChannelName = (channels) => {
       const blackListNames = channels.map((channel) => channel.name);
       return () => {
@@ -40,8 +41,6 @@ const ChatContainer = () => {
       };
     };
 
-    // const validate = validateChannelName(allChannels);
-    // console.log(validate)
     const Component = getModal(type);
     // modalInfo={modalInfo} setItems={setItems} onHide={hideModal}
     return (

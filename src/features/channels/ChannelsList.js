@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import {
@@ -20,6 +20,13 @@ const ChannelsList = () => {
     }
     dispatch(setActiveChannel({ id }));
   };
+
+  // useEffect(() => {
+  //   effect
+  //   return () => {
+  //     cleanup
+  //   }
+  // }, [channels]);
 
   const createButton = (channelName, style) => (
     <Button type="button" variant="" className={style}>

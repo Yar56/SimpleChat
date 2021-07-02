@@ -1,23 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import {
   Modal, FormGroup, FormControl, Button, Form,
 } from 'react-bootstrap';
-// import _ from 'lodash';
+
 import { useFormik } from 'formik';
-
-// const generateOnSubmit = ({ setItems, onHide }) => (values) => {
-//   const item = { id: _.uniqueId(), body: values.body };
-//   setItems((items) => {
-//     items.push(item);
-//   });
-//   onHide();
-// };
-
-// TODO: Последовательность шагов в сторе при отправке нового канала
-// 1 - установить текущий канал 2 - закрыть модал 3 - добавить канал
+import useSocket from '../../hooks/useSocket/index.js';
+import { setActiveChannel, addChannel } from '../channels/channelsSlice.js';
+import withTimeout from '../../utils/withTimeout.js';
 
 const Add = (props) => {
   const inputRef = useRef();
+  const [isDisabled, setIsDisabled] = useState(false);
+  const socket = useSocket();
+  const dispatch = useDispatch();
 
   const {
     isOpened, onHide, allChannels, validateChannelName,
@@ -28,7 +25,22 @@ const Add = (props) => {
     initialValues: { body: '' },
     validationSchema: validate,
     onSubmit: ({ body }) => {
-      console.log(body);
+      setIsDisabled(true);
+      socket.volatile.emit('newChannel', { name: body }, withTimeout((response) => {
+        console.log(response);
+        const { data } = response;
+        dispatch(setActiveChannel({ id: data.id }));
+
+        setTimeout(() => {
+          onHide();
+        }, 200);
+
+        dispatch(addChannel(data));
+      }, () => {
+        setIsDisabled(false);
+        inputRef.current.select();
+        console.log('timeout!');
+      }, 2000));
     },
     validateOnChange: false,
     validateOnBlur: false,
@@ -57,6 +69,7 @@ const Add = (props) => {
               name="body"
               className="mb-2"
               isInvalid={!!f.errors.body}
+              disabled={isDisabled}
             />
             <Form.Control.Feedback type="invalid">{f.errors.body}</Form.Control.Feedback>
             <div className="d-flex justify-content-end">

@@ -9,25 +9,26 @@ import useSocket from '../../hooks/useSocket/index.js';
 import useAuth from '../../hooks/useAuth/index.js';
 import { addMessage } from './messagesSlice.js';
 import { selectActiveChannelId } from '../channels/channelsSlice.js';
+import withTimeout from '../../utils/withTimeout.js';
 
-const withTimeout = (onSuccess, onTimeout, timeout) => {
-  // eslint-disable-next-line functional/no-let
-  let called = false;
+// const withTimeout = (onSuccess, onTimeout, timeout) => {
+//   // eslint-disable-next-line functional/no-let
+//   let called = false;
 
-  const timer = setTimeout(() => {
-    if (called) return;
-    called = true;
-    onTimeout();
-  }, timeout);
+//   const timer = setTimeout(() => {
+//     if (called) return;
+//     called = true;
+//     onTimeout();
+//   }, timeout);
 
-  return (...args) => {
-    if (called) return;
-    called = true;
-    clearTimeout(timer);
-    // eslint-disable-next-line functional/no-this-expression
-    onSuccess.apply(this, args);
-  };
-};
+//   return (...args) => {
+//     if (called) return;
+//     called = true;
+//     clearTimeout(timer);
+//     // eslint-disable-next-line functional/no-this-expression
+//     onSuccess.apply(this, args);
+//   };
+// };
 
 const AddMessageForm = () => {
   const dispatch = useDispatch();
