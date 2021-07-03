@@ -32,7 +32,7 @@ const ChannelsList = () => {
     socket.on('removeChannel', ({ id: channelId }) => {
       console.log(channelId);
       dispatch(removeChannel({ channelId }));
-      // TODO: подумать над дефолтным id и удалить все сообщения этого канала
+      // TODO: подумать над дефолтным id
       dispatch(setActiveChannel({ id: 1 }));
     });
     return () => socket.off('newMessage');

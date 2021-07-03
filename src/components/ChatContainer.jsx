@@ -42,7 +42,6 @@ const ChatContainer = () => {
     };
 
     const Component = getModal(type);
-    // modalInfo={modalInfo} setItems={setItems} onHide={hideModal}
     return (
       <Component
         isOpened={isOpened}

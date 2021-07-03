@@ -11,7 +11,6 @@ const messagesSlice = createSlice({
   reducers: {
     addMessage: {
       reducer(state, action) {
-        // console.log(action.payload)
         state.messages.push(action.payload);
       },
       prepare({

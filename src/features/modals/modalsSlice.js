@@ -21,16 +21,6 @@ const modalSlice = createSlice({
     },
   },
   extraReducers: () => {
-    // builder.addCase(setInitialState.pending, (state) => {
-    //   state.status = 'loading';
-    // });
-    // builder.addCase(setInitialState.fulfilled, (state, action) => {
-    //   state.status = 'succeeded';
-    //   state.channels = [];
-    //   state.currentChannelId = null;
-    //   state.currentChannelId = action.payload.currentChannelId;
-    //   state.channels = state.channels.concat(action.payload.channels);
-    // });
   },
 });
 
