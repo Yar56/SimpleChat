@@ -1,8 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { selectActiveChannelId, selectChannelById } from '../channels/channelsSlice.js';
 
 const MessagesTitle = () => {
+  // const [messagesCount, setMessagesCount] = useState(0);
+  const { t } = useTranslation();
   const activeChannelId = useSelector(selectActiveChannelId);
 
   const currentChannel = useSelector((state) => selectChannelById(state, activeChannelId));
@@ -11,7 +14,6 @@ const MessagesTitle = () => {
   // где то еще, иначе оставить так
   const messagesCount = useSelector((state) => state.messagesInfo.messages
     .filter((message) => message.channelId === activeChannelId)).length;
-
   if (!currentChannel) {
     return null;
   }
@@ -23,9 +25,7 @@ const MessagesTitle = () => {
         <b>{currentChannel.name}</b>
       </p>
       <span className="text-muted">
-        {messagesCount}
-        {' '}
-        сообщение
+        {t('messages.count', { count: messagesCount })}
       </span>
     </div>
   );

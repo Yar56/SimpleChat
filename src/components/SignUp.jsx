@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Card, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -14,6 +15,7 @@ const schema = yup.object().shape({
 });
 
 const SignUp = () => {
+  const { t } = useTranslation();
   const auth = useAuth();
   const history = useHistory();
 
@@ -57,10 +59,10 @@ const SignUp = () => {
           <Card className="shadow-sm">
             <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
               <div className="pe-4">
-                <img src={imgReg} alt="Регистрация" />
+                <img src={imgReg} alt={t('signUpForm.signUp')} />
               </div>
               <Form className="w-50" onSubmit={formik.handleSubmit}>
-                <h1 className="text-center mb-4">Регистрация</h1>
+                <h1 className="text-center mb-4">{t('signUpForm.signUp')}</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     placeholder="От 3 до 20 символов"
@@ -73,7 +75,7 @@ const SignUp = () => {
                     isInvalid={!!formik.errors.username}
                     value={formik.values.username}
                   />
-                  <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+                  <Form.Label htmlFor="username">{t('signUpForm.username')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip>{formik.errors.username}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
@@ -88,7 +90,7 @@ const SignUp = () => {
                     value={formik.values.password}
                     isInvalid={!!formik.errors.password}
                   />
-                  <Form.Label htmlFor="password">Пароль</Form.Label>
+                  <Form.Label htmlFor="password">{t('signUpForm.password')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
@@ -103,10 +105,10 @@ const SignUp = () => {
                     value={formik.values.confirmPassword}
                     isInvalid={!!formik.errors.confirmPassword}
                   />
-                  <Form.Label htmlFor="confirmPassword">Подтвердите пароль</Form.Label>
+                  <Form.Label htmlFor="confirmPassword">{t('signUpForm.confirmPassword')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
                 </Form.Group>
-                <button disabled={isDisabled} type="submit" className="w-100 btn btn-outline-primary">Зарегистрироваться</button>
+                <button disabled={isDisabled} type="submit" className="w-100 btn btn-outline-primary">{t('signUpForm.signUpButtom')}</button>
                 {userIsExists && <div>Пользваотель уже существует</div>}
               </Form>
             </Card.Body>

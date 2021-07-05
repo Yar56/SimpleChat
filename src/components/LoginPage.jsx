@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
@@ -16,6 +17,7 @@ import imgLogin from '../../assets/images/login.png';
 // });
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
@@ -55,15 +57,15 @@ const LoginPage = () => {
           <div className="card shadow-sm">
             <div className="card-body row p-5">
               <Col className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img src={imgLogin} alt="Войти" />
+                <img src={imgLogin} alt={t('loginForm.signIn')} />
               </Col>
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
-                <h1>Войти</h1>
+                <h1>{t('loginForm.signIn')}</h1>
                 <Form.Group className="form-floating mb-3 form-group">
                   <Form.Control
                     onChange={formik.handleChange}
                     value={formik.values.username}
-                    placeholder="Ваш ник"
+                    placeholder={t('loginForm.username')}
                     name="username"
                     id="username"
                     autoComplete="username"
@@ -79,7 +81,7 @@ const LoginPage = () => {
                   <Form.Control
                     onChange={formik.handleChange}
                     value={formik.values.password}
-                    placeholder="Пароль"
+                    placeholder={t('loginForm.password')}
                     type="password"
                     name="password"
                     id="password"
@@ -92,14 +94,14 @@ const LoginPage = () => {
                   </Form.Label>
                   <Form.Control.Feedback type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
                 </Form.Group>
-                <Button type="submit" className="w-100 mb-3" variant="outline-primary">Войти</Button>
+                <Button type="submit" className="w-100 mb-3" variant="outline-primary">{t('loginForm.signIn')}</Button>
               </Form>
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span className="m-2">Нет аккаунта?</span>
+                <span className="m-2">{t('loginForm.hasAccount')}</span>
                 <Link to="/signup">
-                  Регистрация
+                  {t('loginForm.linkToSignUp')}
                 </Link>
               </div>
             </div>
