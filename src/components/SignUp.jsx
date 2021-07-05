@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Card, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
 import imgReg from '../../assets/images/reg.png';
+import useAuth from '../hooks/useAuth/index.js';
 
 const schema = yup.object().shape({
   username: yup.string().min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов').required('Обязательное поле'),
@@ -11,11 +14,37 @@ const schema = yup.object().shape({
 });
 
 const SignUp = () => {
+  const auth = useAuth();
+  const history = useHistory();
+
+  const [isDisabled, setDisabled] = useState(false);
+  const [userIsExists, setUserIsExists] = useState(false);
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
       confirmPassword: '',
+    },
+    onSubmit: async ({ username, password }) => {
+      setUserIsExists(false);
+      setDisabled(true);
+      try {
+        const res = await axios.post('/api/v1/signup', { username, password });
+        const { data } = res;
+        console.log(data);
+
+        localStorage.setItem('userId', JSON.stringify(data));
+        auth.logIn();
+        history.replace('/');
+      } catch (err) {
+        if (err.isAxiosError && err.response.status === 409) {
+          // setAuthFailed(true);
+          // inputRef.current.select();
+          setUserIsExists(true);
+          console.log(err);
+          setDisabled(false);
+        }
+      }
     },
     validationSchema: schema,
     validateOnChange: true,
@@ -37,7 +66,7 @@ const SignUp = () => {
                     placeholder="От 3 до 20 символов"
                     type="text"
                     name="username"
-                    autocomplete="username"
+                    autoComplete="username"
                     required
                     id="username"
                     onChange={formik.handleChange}
@@ -53,7 +82,7 @@ const SignUp = () => {
                     type="password"
                     name="password"
                     id="password"
-                    autocomplete="new-password"
+                    autoComplete="new-password"
                     required
                     onChange={formik.handleChange}
                     value={formik.values.password}
@@ -68,7 +97,7 @@ const SignUp = () => {
                     type="password"
                     name="confirmPassword"
                     required
-                    autocomplete="new-password"
+                    autoComplete="new-password"
                     id="confirmPassword"
                     onChange={formik.handleChange}
                     value={formik.values.confirmPassword}
@@ -77,7 +106,8 @@ const SignUp = () => {
                   <Form.Label htmlFor="confirmPassword">Подтвердите пароль</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
                 </Form.Group>
-                <button type="submit" className="w-100 btn btn-outline-primary">Зарегистрироваться</button>
+                <button disabled={isDisabled} type="submit" className="w-100 btn btn-outline-primary">Зарегистрироваться</button>
+                {userIsExists && <div>Пользваотель уже существует</div>}
               </Form>
             </Card.Body>
           </Card>
