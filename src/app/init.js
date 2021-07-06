@@ -1,8 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-// import i18next from 'i18next';
 import { I18nextProvider } from 'react-i18next';
-// import ru from '../locales/ru.js';
 import i18nInstance from './i18n.js';
 
 import store from '../store/index.js';

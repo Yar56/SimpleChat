@@ -7,7 +7,7 @@ const defaultLanguage = 'ru';
 
 i18nInstance.use(initReactI18next)
   .init({
-    debug: true,
+    debug: false,
     lng: defaultLanguage,
     resources: {
       ru,
