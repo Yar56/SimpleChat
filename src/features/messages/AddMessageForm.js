@@ -63,7 +63,7 @@ const AddMessageForm = () => {
         setIsSending(true);
         formik.resetForm();
         input.current.focus();
-        console.log('success!');
+        // console.log('success!');
       }, () => {
         // TODO: Нужно блокировать input на 2 сек
         setIsSending(true);

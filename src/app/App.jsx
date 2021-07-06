@@ -14,8 +14,8 @@ import SignUp from '../components/SignUp.jsx';
 import ChatContainer from '../components/ChatContainer.jsx';
 
 import AuthContext from '../contexts/AuthContext.js';
-import SocketContext from '../contexts/SocketContext.js';
-import useSocket from '../hooks/useSocket/index.js';
+// import SocketContext from '../contexts/SocketContext.js';
+// import useSocket from '../hooks/useSocket/index.js';
 import useAuth from '../hooks/useAuth/index.js';
 
 const AuthProvider = ({ children }) => {
@@ -61,14 +61,14 @@ const AuthButton = () => {
 
 const ChatRoute = ({ children, path }) => {
   const auth = useAuth();
-  const socket = useSocket(SocketContext);
+  // const socket = useSocket(SocketContext);
   const token = auth.getAuthHeader();
 
   return (
     <Route
       path={path}
       render={() => (token
-        ? <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+        ? children
         : <Redirect to="/login" />)}
     />
   );
