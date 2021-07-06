@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Card, Form } from 'react-bootstrap';
@@ -14,8 +14,6 @@ const SignUp = () => {
   const auth = useAuth();
   const history = useHistory();
 
-  const [isDisabled, setDisabled] = useState(false);
-  const [userIsExists, setUserIsExists] = useState(false);
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -23,8 +21,6 @@ const SignUp = () => {
       confirmPassword: '',
     },
     onSubmit: async ({ username, password }) => {
-      setUserIsExists(false);
-      setDisabled(true);
       try {
         const res = await axios.post('/api/v1/signup', { username, password });
         const { data } = res;
@@ -35,11 +31,8 @@ const SignUp = () => {
         history.replace('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
-          // setAuthFailed(true);
-          // inputRef.current.select();
-          setUserIsExists(true);
+          formik.errors.confirmPassword = t('signUpForm.errors.userIsExists');
           console.log(err);
-          setDisabled(false);
         }
       }
     },
@@ -103,8 +96,7 @@ const SignUp = () => {
                   <Form.Label htmlFor="confirmPassword">{t('signUpForm.confirmPassword')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
                 </Form.Group>
-                <button disabled={isDisabled} type="submit" className="w-100 btn btn-outline-primary">{t('signUpForm.signUpButtom')}</button>
-                {userIsExists && <div>Пользваотель уже существует</div>}
+                <button disabled={!!formik.isSubmitting} type="submit" className="w-100 btn btn-outline-primary">{t('signUpForm.signUpButtom')}</button>
               </Form>
             </Card.Body>
           </Card>

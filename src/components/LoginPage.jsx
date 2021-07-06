@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -19,7 +19,7 @@ import imgLogin from '../../assets/images/login.png';
 const LoginPage = () => {
   const { t } = useTranslation();
   const auth = useAuth();
-  const [authFailed, setAuthFailed] = useState(false);
+  // const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const history = useHistory();
 
@@ -33,7 +33,6 @@ const LoginPage = () => {
       password: '',
     },
     onSubmit: async (values) => {
-      setAuthFailed(false);
       try {
         const res = await axios.post(routes.loginPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
@@ -41,7 +40,8 @@ const LoginPage = () => {
         history.replace('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
-          setAuthFailed(true);
+          formik.errors.password = t('loginForm.errors.wrongData');
+
           inputRef.current.select();
           return;
         }
@@ -69,8 +69,8 @@ const LoginPage = () => {
                     name="username"
                     id="username"
                     autoComplete="username"
-                    isInvalid={authFailed}
                     required
+                    isInvalid={!!formik.errors.password}
                     ref={inputRef}
                   />
                   <Form.Label htmlFor="username">
@@ -86,15 +86,15 @@ const LoginPage = () => {
                     name="password"
                     id="password"
                     autoComplete="password"
-                    isInvalid={authFailed}
+                    isInvalid={!!formik.errors.password}
                     required
                   />
                   <Form.Label htmlFor="password">
                     Пароль
                   </Form.Label>
-                  <Form.Control.Feedback type="invalid">{t('loginForm.errors.wrongData')}</Form.Control.Feedback>
+                  {formik.errors.password && <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password}</Form.Control.Feedback>}
                 </Form.Group>
-                <Button type="submit" className="w-100 mb-3" variant="outline-primary">{t('loginForm.signIn')}</Button>
+                <Button disabled={!!formik.isSubmitting} type="submit" className="w-100 mb-3" variant="outline-primary">{t('loginForm.signIn')}</Button>
               </Form>
             </div>
             <div className="card-footer p-4">
