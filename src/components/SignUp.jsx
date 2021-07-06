@@ -69,7 +69,7 @@ const SignUp = () => {
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     placeholder="Не менее 6 символов"
-                    type="signUpPassword"
+                    type="password"
                     name="signUpPassword"
                     id="signUpPassword"
                     autoComplete="new-password"
@@ -78,7 +78,7 @@ const SignUp = () => {
                     value={formik.values.signUpPassword}
                     isInvalid={!!formik.errors.signUpPassword}
                   />
-                  <Form.Label htmlFor="password">{t('signUpForm.password')}</Form.Label>
+                  <Form.Label htmlFor="signUpPassword">{t('signUpForm.password')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip>{formik.errors.signUpPassword}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
