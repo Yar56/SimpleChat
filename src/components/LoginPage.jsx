@@ -92,7 +92,7 @@ const LoginPage = () => {
                   <Form.Label htmlFor="password">
                     Пароль
                   </Form.Label>
-                  <Form.Control.Feedback type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">{t('loginForm.errors.wrongData')}</Form.Control.Feedback>
                 </Form.Group>
                 <Button type="submit" className="w-100 mb-3" variant="outline-primary">{t('loginForm.signIn')}</Button>
               </Form>

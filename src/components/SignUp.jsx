@@ -3,16 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Card, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
+
 import axios from 'axios';
 import imgReg from '../../assets/images/reg.png';
 import useAuth from '../hooks/useAuth/index.js';
-
-const schema = yup.object().shape({
-  username: yup.string().min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов').required('Обязательное поле'),
-  password: yup.string().min(6, 'Не менее 6 символов').required('Обязательное поле'),
-  confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Пароли должны совпадать'),
-});
+import signUpChema from './validateSignUp.js';
 
 const SignUp = () => {
   const { t } = useTranslation();
@@ -48,7 +43,7 @@ const SignUp = () => {
         }
       }
     },
-    validationSchema: schema,
+    validationSchema: signUpChema(),
     validateOnChange: true,
     validateOnBlur: true,
   });

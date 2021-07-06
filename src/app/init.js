@@ -12,15 +12,6 @@ const init = () => {
   // const socket = io();
   // console.log(socket);
 
-  // const i18nInstance = i18next.createInstance();
-  // i18nInstance.use(initReactI18next)
-  //   .init({
-  //     lng: 'ru',
-  //     resources: {
-  //       ru,
-  //     },
-  //   });
-
   const vdom = (
 
     <Provider store={store}>

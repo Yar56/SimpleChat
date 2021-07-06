@@ -6,6 +6,9 @@ export default {
       password: 'Пароль',
       hasAccount: 'Нет аккаунта?',
       linkToSignUp: 'Регистрация',
+      errors: {
+        wrongData: 'Неверные имя пользователя или пароль',
+      },
     },
     signUpForm: {
       signUp: 'Регистрация',
@@ -13,6 +16,12 @@ export default {
       password: 'Пароль',
       confirmPassword: 'Подтвердите пароль',
       signUpButtom: 'Зарегистрироваться',
+      errors: {
+        required: 'Обязательное поле',
+        usernameLength: 'От 3 до 20 символов',
+        passwordLenght: 'Не менее 6 символов',
+        anotherPassword: 'Пароли должны совпадать',
+      },
     },
     messages: {
       count_0: '{{count}} сообщение',
