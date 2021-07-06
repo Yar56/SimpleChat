@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "0.0.1",
-  "description": "",
+  "description": "Chat on React",
   "main": "server/index.js",
   "type": "module",
   "engines": {

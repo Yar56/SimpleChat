@@ -88,6 +88,7 @@ const AddMessageForm = () => {
             className="border-0 p-0 ps-2"
             ref={input}
             disabled={isSending}
+            data-testid="new-message"
           />
           <InputGroup.Append>
             <Button type="submit" variant="btn btn-group-vertical" disabled={!formik.isValid || !formik.dirty}>

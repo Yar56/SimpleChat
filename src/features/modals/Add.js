@@ -65,7 +65,7 @@ const Add = (props) => {
               ref={inputRef}
               onChange={f.handleChange}
               value={f.values.body}
-              data-testid="input-body"
+              data-testid="add-channel"
               name="body"
               className="mb-2"
               isInvalid={!!f.errors.body}

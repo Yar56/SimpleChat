@@ -19,3 +19,7 @@ $ make install
 $ make start
 # open http://localhost:5000
 ```
+## Heroku
+<span style="font-size: 18px;"> You can see the project here </span> -> <a href="https://frontend-project-chat-slack.herokuapp.com" target="_blank">Chat</a>
+
+
