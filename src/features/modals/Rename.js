@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-
+import { useTranslation } from 'react-i18next';
 import {
   Modal, FormGroup, FormControl, Button, Form,
 } from 'react-bootstrap';
@@ -12,6 +12,7 @@ import { selectChannelById } from '../channels/channelsSlice.js';
 import withTimeout from '../../utils/withTimeout.js';
 
 const Rename = (props) => {
+  const { t } = useTranslation();
   const inputRef = useRef();
   const [isDisabled, setIsDisabled] = useState(false);
   const socket = useSocket();
@@ -52,7 +53,7 @@ const Rename = (props) => {
   return (
     <Modal dialogAs={Modal.Dialog} show={isOpened} centered onHide={onHide}>
       <Modal.Header>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('modals.renameChannel')}</Modal.Title>
         <button onClick={onHide} aria-label="Close" data-bs-dismiss="modal" type="button" className="btn btn-close" />
       </Modal.Header>
 
@@ -72,8 +73,12 @@ const Rename = (props) => {
             />
             <Form.Control.Feedback type="invalid">{f.errors.body}</Form.Control.Feedback>
             <div className="d-flex justify-content-end">
-              <Button onClick={onHide} type="button" variant="secondary" className="me-2">Отменить</Button>
-              <Button type="submit" variant="primary">Отправить</Button>
+              <Button onClick={onHide} type="button" variant="secondary" className="me-2">
+                {t('modals.buttons.cancel')}
+              </Button>
+              <Button type="submit" variant="primary">
+                {t('modals.buttons.send')}
+              </Button>
             </div>
           </FormGroup>
         </Form>

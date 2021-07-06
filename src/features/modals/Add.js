@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
+import { useTranslation } from 'react-i18next';
 import {
   Modal, FormGroup, FormControl, Button, Form,
 } from 'react-bootstrap';
@@ -11,6 +11,7 @@ import { setActiveChannel, addChannel } from '../channels/channelsSlice.js';
 import withTimeout from '../../utils/withTimeout.js';
 
 const Add = (props) => {
+  const { t } = useTranslation();
   const inputRef = useRef();
   const [isDisabled, setIsDisabled] = useState(false);
   const socket = useSocket();
@@ -27,7 +28,6 @@ const Add = (props) => {
     onSubmit: ({ body }) => {
       setIsDisabled(true);
       socket.volatile.emit('newChannel', { name: body }, withTimeout((response) => {
-        // console.log(response);
         const { data } = response;
         dispatch(setActiveChannel({ id: data.id }));
 
@@ -53,7 +53,7 @@ const Add = (props) => {
   return (
     <Modal dialogAs={Modal.Dialog} show={isOpened} centered onHide={onHide}>
       <Modal.Header>
-        <Modal.Title>Add</Modal.Title>
+        <Modal.Title>{t('modals.addChannel')}</Modal.Title>
         <button onClick={onHide} aria-label="Close" data-bs-dismiss="modal" type="button" className="btn btn-close" />
       </Modal.Header>
 
@@ -73,8 +73,12 @@ const Add = (props) => {
             />
             <Form.Control.Feedback type="invalid">{f.errors.body}</Form.Control.Feedback>
             <div className="d-flex justify-content-end">
-              <Button onClick={onHide} type="button" variant="secondary" className="me-2">Отменить</Button>
-              <Button type="submit" variant="primary">Отправить</Button>
+              <Button onClick={onHide} type="button" variant="secondary" className="me-2">
+                {t('modals.buttons.cancel')}
+              </Button>
+              <Button type="submit" variant="primary">
+                {t('modals.buttons.send')}
+              </Button>
             </div>
           </FormGroup>
         </Form>

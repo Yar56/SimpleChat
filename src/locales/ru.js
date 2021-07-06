@@ -23,6 +23,23 @@ export default {
         anotherPassword: 'Пароли должны совпадать',
       },
     },
+    modals: {
+      buttons: {
+        send: 'Отправить',
+        cancel: 'Отменить',
+        remove: 'Удалить',
+      },
+      errors: {
+        channeNamelLength: 'От 3 до 20 символов',
+        uniqChannelName: 'Должно быть уникальным',
+      },
+      addChannel: 'Добавить канал',
+      renameChannel: 'Переименовать канал',
+      removeChannel: {
+        remove: 'Удалить канал',
+        isSure: 'Уверены?',
+      },
+    },
     messages: {
       count_0: '{{count}} сообщение',
       count_1: '{{count}} сообщения',

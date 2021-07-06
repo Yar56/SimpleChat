@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import { setInitialState, selectAllChannels } from '../features/channels/channelsSlice.js';
 import useAuth from '../hooks/useAuth/index.js';
 
@@ -15,11 +16,10 @@ import AddMessageForm from '../features/messages/AddMessageForm.js';
 
 const ChatContainer = () => {
   const auth = useAuth();
-
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { token } = auth.getAuthHeader();
 
-  // const currentChannelId = useSelector(selectActiveChannelId);
   const allChannels = useSelector(selectAllChannels);
   const channelsStatus = useSelector((state) => state.channelsInfo.status);
   const isOpened = useSelector(selectIsOpenedModal);
@@ -32,10 +32,11 @@ const ChatContainer = () => {
     const onHide = () => dispatch(closeModal());
 
     const validateChannelName = (channels) => {
+      const errorLenght = t('modals.errors.channeNamelLength');
       const blackListNames = channels.map((channel) => channel.name);
       return () => {
         const res = yup.object().shape({
-          body: yup.string().min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов').notOneOf(blackListNames, 'Должно быть уникальным'),
+          body: yup.string().min(3, errorLenght).max(20, errorLenght).notOneOf(blackListNames, t('modals.errors.uniqChannelName')),
         });
         return res;
       };
