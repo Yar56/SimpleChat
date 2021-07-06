@@ -70,7 +70,7 @@ const LoginPage = () => {
                     id="username"
                     autoComplete="username"
                     required
-                    isInvalid={!!formik.errors.password}
+                    isInvalid={!!formik.errors.username}
                     ref={inputRef}
                   />
                   <Form.Label htmlFor="username">
@@ -92,7 +92,7 @@ const LoginPage = () => {
                   <Form.Label htmlFor="password">
                     Пароль
                   </Form.Label>
-                  {formik.errors.password && <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password}</Form.Control.Feedback>}
+                  {!!formik.errors.password && <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password}</Form.Control.Feedback>}
                 </Form.Group>
                 <Button disabled={!!formik.isSubmitting} type="submit" className="w-100 mb-3" variant="outline-primary">{t('loginForm.signIn')}</Button>
               </Form>

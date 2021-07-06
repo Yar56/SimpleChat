@@ -17,7 +17,7 @@ const SignUp = () => {
   const formik = useFormik({
     initialValues: {
       username: '',
-      password: '',
+      signUpPassword: '',
       confirmPassword: '',
     },
     onSubmit: async ({ username, password }) => {
@@ -69,17 +69,17 @@ const SignUp = () => {
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     placeholder="Не менее 6 символов"
-                    type="password"
-                    name="password"
-                    id="password"
+                    type="signUpPassword"
+                    name="signUpPassword"
+                    id="signUpPassword"
                     autoComplete="new-password"
                     required
                     onChange={formik.handleChange}
-                    value={formik.values.password}
-                    isInvalid={!!formik.errors.password}
+                    value={formik.values.signUpPassword}
+                    isInvalid={!!formik.errors.signUpPassword}
                   />
                   <Form.Label htmlFor="password">{t('signUpForm.password')}</Form.Label>
-                  <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password}</Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid" tooltip>{formik.errors.signUpPassword}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
