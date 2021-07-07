@@ -20,9 +20,9 @@ const SignUp = () => {
       signUpPassword: '',
       confirmPassword: '',
     },
-    onSubmit: async ({ username, password }) => {
+    onSubmit: async ({ username, signUpPassword }) => {
       try {
-        const res = await axios.post('/api/v1/signup', { username, password });
+        const res = await axios.post('/api/v1/signup', { username, password: signUpPassword });
         const { data } = res;
         console.log(data);
 
