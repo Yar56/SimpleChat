@@ -14,7 +14,7 @@ import SignUp from '../components/SignUp.jsx';
 import ChatContainer from '../components/ChatContainer.jsx';
 
 import AuthContext from '../contexts/AuthContext.js';
-// import SocketContext from '../contexts/SocketContext.js';
+import SocketContext from '../contexts/SocketContext.js';
 // import useSocket from '../hooks/useSocket/index.js';
 import useAuth from '../hooks/useAuth/index.js';
 
@@ -46,8 +46,11 @@ const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-// const SocketProvider = ({ children, io }) => (
-//   <SocketContext.Provider value={io}>{children}</SocketContext.Provider>);
+
+// const SocketProvider = ({ children, io }) => {
+
+//   return <SocketContext.Provider value={io}>{children}</SocketContext.Provider>;
+// }
 
 const AuthButton = () => {
   const auth = useContext(AuthContext);
@@ -59,22 +62,22 @@ const AuthButton = () => {
   return null;
 };
 
-const ChatRoute = ({ children, path }) => {
+const ChatRoute = ({ children, isntanceSocket, path }) => {
   const auth = useAuth();
-  // const socket = useSocket(SocketContext);
+  // const socket = useSocket();
   const token = auth.getAuthHeader();
-
+  // console.log(isntanceSocket)
   return (
     <Route
       path={path}
       render={() => (token
-        ? children
+        ? <SocketContext.Provider value={isntanceSocket}>{children}</SocketContext.Provider>
         : <Redirect to="/login" />)}
     />
   );
 };
 
-const App = () => (
+const App = ({ socket }) => (
   <AuthProvider>
     <Router>
       <div className="d-flex flex-column h-100">
@@ -91,7 +94,8 @@ const App = () => (
           <Route path="/signup">
             <SignUp />
           </Route>
-          <ChatRoute exact path="/">
+          <ChatRoute isntanceSocket={socket} exact path="/">
+            {/* {console.log(socket)} */}
             <ChatContainer />
           </ChatRoute>
           <Route path="*">

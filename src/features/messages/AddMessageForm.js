@@ -37,7 +37,6 @@ const AddMessageForm = () => {
   const { user: { username } } = useAuth();
   const input = useRef();
   const currentChannelId = useSelector(selectActiveChannelId);
-
   useEffect(() => {
     setTimeout(() => {
       setIsSending(false);

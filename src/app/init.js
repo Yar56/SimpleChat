@@ -8,14 +8,15 @@ import store from '../store/index.js';
 import App from './App.jsx';
 
 const init = () => {
+  // const socket = io();
+  // console.log(socket);
   // eslint-disable-next-line new-cap
   const socket = new io();
-  socket.on();
   const vdom = (
 
     <Provider store={store}>
       <I18nextProvider i18n={i18nInstance}>
-        <App />
+        <App socket={socket} />
       </I18nextProvider>
     </Provider>
 
