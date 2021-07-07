@@ -5,9 +5,16 @@ import {
   Nav, Button, ButtonGroup, Dropdown,
 } from 'react-bootstrap';
 import { PlusSquare } from 'react-bootstrap-icons';
+
 import {
-  selectAllChannels, selectActiveChannelId, setActiveChannel, removeChannel, renameChannel,
+  selectAllChannels,
+  selectActiveChannelId,
+  setActiveChannel,
+  removeChannel,
+  renameChannel,
+  addChannel,
 } from './channelsSlice.js';
+
 import { openModal } from '../modals/modalsSlice.js';
 import useSocket from '../../hooks/useSocket/index.js';
 
@@ -29,13 +36,20 @@ const ChannelsList = () => {
   };
 
   useEffect(() => {
+    socket.on('newChannel', (data) => {
+      dispatch(setActiveChannel({ id: data.id }));
+      dispatch(addChannel(data));
+    });
+    return () => socket.off('removeChannel');
+  }, []);
+
+  useEffect(() => {
     socket.on('removeChannel', ({ id: channelId }) => {
-      console.log(channelId);
       dispatch(removeChannel({ channelId }));
       // TODO: подумать над дефолтным id
       dispatch(setActiveChannel({ id: 1 }));
     });
-    return () => socket.off('newMessage');
+    return () => socket.off('removeChannel');
   }, []);
 
   useEffect(() => {

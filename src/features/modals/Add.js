@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
   Modal, FormGroup, FormControl, Button, Form,
@@ -7,7 +7,7 @@ import {
 
 import { useFormik } from 'formik';
 import useSocket from '../../hooks/useSocket/index.js';
-import { setActiveChannel, addChannel } from '../channels/channelsSlice.js';
+
 import withTimeout from '../../utils/withTimeout.js';
 
 const Add = (props) => {
@@ -15,7 +15,7 @@ const Add = (props) => {
   const inputRef = useRef();
   const [isDisabled, setIsDisabled] = useState(false);
   const socket = useSocket();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const {
     isOpened, onHide, allChannels, validateChannelName,
@@ -27,15 +27,10 @@ const Add = (props) => {
     validationSchema: validate,
     onSubmit: ({ body }) => {
       setIsDisabled(true);
-      socket.volatile.emit('newChannel', { name: body }, withTimeout((response) => {
-        const { data } = response;
-        dispatch(setActiveChannel({ id: data.id }));
-
+      socket.volatile.emit('newChannel', { name: body }, withTimeout(() => {
         setTimeout(() => {
           onHide();
         }, 200);
-
-        dispatch(addChannel(data));
       }, () => {
         setIsDisabled(false);
         inputRef.current.select();
