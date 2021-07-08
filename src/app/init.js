@@ -12,7 +12,7 @@ const init = () => {
   // console.log(socket);
   // eslint-disable-next-line new-cap
   const socket = new io();
-  socket.on();
+  socket.on('/');
   const vdom = (
 
     <Provider store={store}>
