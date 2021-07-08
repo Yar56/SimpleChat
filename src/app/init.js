@@ -14,10 +14,8 @@ import { addMessage } from '../features/messages/messagesSlice.js';
 import store from '../store/index.js';
 import App from './App.jsx';
 
-const socket = io();
-
 const init = () => {
-  socket.on();
+  const socket = io();
   socket.on('newMessage', (message) => {
     store.dispatch(addMessage(message));
   });
