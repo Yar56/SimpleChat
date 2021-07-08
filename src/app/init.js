@@ -17,22 +17,20 @@ import App from './App.jsx';
 const socket = io();
 
 const init = () => {
-  socket.on('connect', () => {
-    socket.on('newMessage', (message) => {
-      store.dispatch(addMessage(message));
-    });
-    socket.on('newChannel', (data) => {
-      store.dispatch(setActiveChannel({ id: data.id }));
-      store.dispatch(addChannel(data));
-    });
-    socket.on('removeChannel', ({ id: channelId }) => {
-      store.dispatch(removeChannel({ channelId }));
-      // TODO: подумать над дефолтным id
-      store.dispatch(setActiveChannel({ id: 1 }));
-    });
-    socket.on('renameChannel', (response) => {
-      store.dispatch(renameChannel({ id: response.id, name: response.name }));
-    });
+  socket.on('newMessage', (message) => {
+    store.dispatch(addMessage(message));
+  });
+  socket.on('newChannel', (data) => {
+    store.dispatch(setActiveChannel({ id: data.id }));
+    store.dispatch(addChannel(data));
+  });
+  socket.on('removeChannel', ({ id: channelId }) => {
+    store.dispatch(removeChannel({ channelId }));
+    // TODO: подумать над дефолтным id
+    store.dispatch(setActiveChannel({ id: 1 }));
+  });
+  socket.on('renameChannel', (response) => {
+    store.dispatch(renameChannel({ id: response.id, name: response.name }));
   });
 
   const vdom = (
