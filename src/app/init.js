@@ -1,7 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
-import { io } from 'socket.io-client';
 import i18nInstance from './i18n.js';
 import {
   setActiveChannel,
@@ -14,9 +13,7 @@ import { addMessage } from '../features/messages/messagesSlice.js';
 import store from '../store/index.js';
 import App from './App.jsx';
 
-const socket = io();
-
-const init = () => {
+const init = (socket) => {
   socket.on('newMessage', (message) => {
     store.dispatch(addMessage(message));
   });
