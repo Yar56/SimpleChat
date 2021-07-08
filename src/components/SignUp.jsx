@@ -24,11 +24,13 @@ const SignUp = () => {
       try {
         const res = await axios.post('/api/v1/signup', { username, password: signUpPassword });
         const { data } = res;
-        console.log(data);
+        // console.log(history);
 
         localStorage.setItem('userId', JSON.stringify(data));
         auth.logIn();
-        history.replace('/');
+        history.push('/');
+        console.log(history);
+        console.log(window.location.pathname);
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
           formik.errors.confirmPassword = t('signUpForm.errors.userIsExists');
