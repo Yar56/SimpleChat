@@ -70,9 +70,10 @@ const ChatRoute = ({ children, isntanceSocket, path }) => {
   return (
     <Route
       path={path}
-      render={() => (token
+      render={({ location }) => (token
         ? <SocketContext.Provider value={isntanceSocket}>{children}</SocketContext.Provider>
-        : <Redirect to="/login" />)}
+        : <Redirect to={{ pathname: '/login', state: { from: location } }} />
+      )}
     />
   );
 };
@@ -88,16 +89,15 @@ const App = ({ socket }) => (
           </div>
         </Navbar>
         <Switch>
+          <ChatRoute isntanceSocket={socket} exact path="/">
+            <ChatContainer />
+          </ChatRoute>
           <Route path="/login">
             <Login />
           </Route>
           <Route path="/signup">
             <SignUp />
           </Route>
-          <ChatRoute isntanceSocket={socket} exact path="/">
-            {/* {console.log(socket)} */}
-            <ChatContainer />
-          </ChatRoute>
           <Route path="*">
             <NotFound />
           </Route>
