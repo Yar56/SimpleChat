@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import {
@@ -10,19 +10,19 @@ import {
   selectAllChannels,
   selectActiveChannelId,
   setActiveChannel,
-  removeChannel,
-  renameChannel,
-  addChannel,
+  // removeChannel,
+  // renameChannel,
+  // addChannel,
 } from './channelsSlice.js';
 
 import { openModal } from '../modals/modalsSlice.js';
-import useSocket from '../../hooks/useSocket/index.js';
+// import useSocket from '../../hooks/useSocket/index.js';
 
 const ChannelsList = () => {
   const channels = useSelector(selectAllChannels);
   const activeChannelId = useSelector(selectActiveChannelId);
   const dispatch = useDispatch();
-  const socket = useSocket();
+  // const socket = useSocket();
 
   const handleChangeChannel = (id) => (e) => {
     // FIXME: нужно чтобы при нажатии удаления канала он не переключался
@@ -35,29 +35,29 @@ const ChannelsList = () => {
     }
   };
 
-  useEffect(() => {
-    socket.on('newChannel', (data) => {
-      dispatch(setActiveChannel({ id: data.id }));
-      dispatch(addChannel(data));
-    });
-    return () => socket.off('removeChannel');
-  }, []);
+  // useEffect(() => {
+  //   socket.on('newChannel', (data) => {
+  //     dispatch(setActiveChannel({ id: data.id }));
+  //     dispatch(addChannel(data));
+  //   });
+  //   return () => socket.off('removeChannel');
+  // }, []);
 
-  useEffect(() => {
-    socket.on('removeChannel', ({ id: channelId }) => {
-      dispatch(removeChannel({ channelId }));
-      // TODO: подумать над дефолтным id
-      dispatch(setActiveChannel({ id: 1 }));
-    });
-    return () => socket.off('removeChannel');
-  }, []);
+  // useEffect(() => {
+  //   socket.on('removeChannel', ({ id: channelId }) => {
+  //     dispatch(removeChannel({ channelId }));
+  //     // TODO: подумать над дефолтным id
+  //     dispatch(setActiveChannel({ id: 1 }));
+  //   });
+  //   return () => socket.off('removeChannel');
+  // }, []);
 
-  useEffect(() => {
-    socket.on('renameChannel', (response) => {
-      dispatch(renameChannel({ id: response.id, name: response.name }));
-    });
-    return () => socket.off('renameChannel');
-  }, []);
+  // useEffect(() => {
+  //   socket.on('renameChannel', (response) => {
+  //     dispatch(renameChannel({ id: response.id, name: response.name }));
+  //   });
+  //   return () => socket.off('renameChannel');
+  // }, []);
 
   const createButton = (channelName, style) => (
     <Button type="button" variant="" className={style}>

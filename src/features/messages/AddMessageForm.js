@@ -4,10 +4,10 @@ import {
   Button, Form, InputGroup, FormControl,
 } from 'react-bootstrap';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import useSocket from '../../hooks/useSocket/index.js';
 import useAuth from '../../hooks/useAuth/index.js';
-import { addMessage } from './messagesSlice.js';
+// import { addMessage } from './messagesSlice.js';
 import { selectActiveChannelId } from '../channels/channelsSlice.js';
 import withTimeout from '../../utils/withTimeout.js';
 
@@ -31,7 +31,7 @@ import withTimeout from '../../utils/withTimeout.js';
 // };
 
 const AddMessageForm = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [isSending, setIsSending] = useState(false);
   const socket = useSocket();
   const { user: { username } } = useAuth();
@@ -44,14 +44,14 @@ const AddMessageForm = () => {
     input.current.focus();
   }, [isSending]);
 
-  useEffect(() => {
-    input.current.focus();
-    socket.on('newMessage', (message) => {
-      // console.log(message);
-      dispatch(addMessage(message));
-    });
-    return () => socket.off('newMessage');
-  }, [socket]);
+  // useEffect(() => {
+  //   input.current.focus();
+  //   socket.on('newMessage', (message) => {
+  //     // console.log(message);
+  //     dispatch(addMessage(message));
+  //   });
+  //   return () => socket.off('newMessage');
+  // }, [socket]);
 
   const formik = useFormik({
     initialValues: {
