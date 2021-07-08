@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Card, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 
@@ -13,6 +13,7 @@ const SignUp = () => {
   const { t } = useTranslation();
   const auth = useAuth();
   const history = useHistory();
+  const location = useLocation();
 
   const formik = useFormik({
     initialValues: {
@@ -28,9 +29,9 @@ const SignUp = () => {
 
         localStorage.setItem('userId', JSON.stringify(data));
         auth.logIn();
-        history.push('/');
-        console.log(history);
-        console.log(window.location.pathname);
+        const { from } = location.state || { from: { pathname: '/' } };
+        console.log(from);
+        history.replace(from);
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
           formik.errors.confirmPassword = t('signUpForm.errors.userIsExists');
