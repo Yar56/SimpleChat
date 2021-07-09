@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
   Button, Form, Container, Row, Col,
@@ -15,6 +15,11 @@ const LoginPage = () => {
   const { t } = useTranslation();
   const auth = useAuth();
   const inputRef = useRef();
+  const history = useHistory();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -26,7 +31,7 @@ const LoginPage = () => {
         const res = await axios.post(routes.loginPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
         auth.logIn();
-        // history.replace('/');
+        history.replace('/');
         // setSubmitting(false);
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
