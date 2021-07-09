@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Card, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 
@@ -8,12 +8,22 @@ import axios from 'axios';
 import imgReg from '../../assets/images/reg.png';
 import useAuth from '../hooks/useAuth/index.js';
 import signUpChema from './validateSignUp.js';
+import routes from '../routes.js';
 
 const SignUp = () => {
   const { t } = useTranslation();
   const auth = useAuth();
   const history = useHistory();
-  const location = useLocation();
+
+  const inputRef = useRef();
+  const [isAuth, setIsAuth] = useState(null);
+
+  useEffect(() => {
+    if (isAuth) {
+      history.replace('/');
+    }
+    inputRef.current.select();
+  }, [isAuth]);
 
   const formik = useFormik({
     initialValues: {
@@ -21,22 +31,23 @@ const SignUp = () => {
       signUpPassword: '',
       confirmPassword: '',
     },
-    onSubmit: async ({ username, signUpPassword }) => {
+    onSubmit: async ({ username, signUpPassword }, { setSubmitting, setFieldError }) => {
       try {
-        const res = await axios.post('/api/v1/signup', { username, password: signUpPassword });
+        const res = await axios.post(routes.signUpPath(), { username, password: signUpPassword });
         const { data } = res;
-        // console.log(history);
 
         localStorage.setItem('userId', JSON.stringify(data));
         auth.logIn();
-        const { from } = location.state || { from: { pathname: '/' } };
-        console.log(from);
-        history.replace(from);
+        setIsAuth(true);
+        setSubmitting(false);
       } catch (err) {
-        if (err.isAxiosError && err.response.status === 409) {
-          formik.errors.confirmPassword = t('signUpForm.errors.userIsExists');
-          console.log(err);
+        setIsAuth(false);
+        if (err.response.status === 409) {
+          setFieldError('username', ' ');
+          setFieldError('signUpPassword', ' ');
+          setFieldError('confirmPassword', t('signUpForm.errors.userIsExists'));
         }
+        setSubmitting(false);
       }
     },
     validationSchema: signUpChema(),
@@ -56,6 +67,7 @@ const SignUp = () => {
                 <h1 className="text-center mb-4">{t('signUpForm.signUp')}</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
+                    ref={inputRef}
                     placeholder="От 3 до 20 символов"
                     type="text"
                     name="username"
