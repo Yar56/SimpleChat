@@ -16,9 +16,23 @@ import ChatContainer from '../components/ChatContainer.jsx';
 import AuthContext from '../contexts/AuthContext.js';
 import SocketContext from '../contexts/SocketContext.js';
 // import useSocket from '../hooks/useSocket/index.js';
-import useAuth from '../hooks/useAuth/index.js';
+// import useAuth from '../hooks/useAuth/index.js';
 
-const AuthProvider = ({ children }) => {
+// const ChatRoute = ({ children, isntanceSocket, path }) => {
+//   const auth = useAuth();
+//   const token = auth.getAuthHeader();
+//   return (
+//     <Route
+//       path={path}
+//       render={({ location }) => (token
+//         ? <SocketContext.Provider value={isntanceSocket}>{children}</SocketContext.Provider>
+//         : <Redirect to={{ pathname: '/login', state: { from: location } }} />
+//       )}
+//     />
+//   );
+// };
+
+const App = ({ socket }) => {
   // FIXME: возможно нужно переделать получения head с хранилища
   const getAuthHeader = () => JSON.parse(localStorage.getItem('userId'));
 
@@ -33,78 +47,83 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem('userId');
     setUserData(null);
   };
-  return (
-    <AuthContext.Provider
-      value={{
-        getAuthHeader,
-        user,
-        logIn,
-        logOut,
-      }}
+
+  const AuthButton = () => {
+    const auth = useContext(AuthContext);
+    const head = auth.getAuthHeader();
+
+    if (head) {
+      return <Button onClick={auth.logOut}>Выйти</Button>;
+    }
+    return null;
+  };
+
+  const AppProviders = ({ children }) => (
+    <AuthContext.Provider value={{
+      getAuthHeader,
+      user,
+      logIn,
+      logOut,
+    }}
     >
-      {children}
+      <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
     </AuthContext.Provider>
   );
-};
 
-// const SocketProvider = ({ children, io }) => {
-
-//   return <SocketContext.Provider value={io}>{children}</SocketContext.Provider>;
-// }
-
-const AuthButton = () => {
-  const auth = useContext(AuthContext);
-  const head = auth.getAuthHeader();
-
-  if (head) {
-    return <Button onClick={auth.logOut}>Выйти</Button>;
-  }
-  return null;
-};
-
-const ChatRoute = ({ children, isntanceSocket, path }) => {
-  const auth = useAuth();
-  // const socket = useSocket();
-  const token = auth.getAuthHeader();
-  // console.log(isntanceSocket)
   return (
-    <Route
-      path={path}
-      render={({ location }) => (token
-        ? <SocketContext.Provider value={isntanceSocket}>{children}</SocketContext.Provider>
-        : <Redirect to={{ pathname: '/login', state: { from: location } }} />
-      )}
-    />
+    <AppProviders>
+      <Router>
+        <div className="d-flex flex-column h-100">
+          <Navbar bg="white" expand="lg" className="shadow-sm">
+            <div className="container">
+              <Navbar.Brand as={Link} to="/" className="navbar-brand">Hexlet Chat</Navbar.Brand>
+              <AuthButton />
+            </div>
+          </Navbar>
+          <Switch>
+            <Route exact path="/">
+              {user ? <ChatContainer /> : <Redirect to="/login" /> }
+            </Route>
+            <Route exact path="/login">
+              {user ? <Redirect to="/" /> : <Login />}
+            </Route>
+            <Route exact path="/signup">
+              {user ? <Redirect to="/" /> : <SignUp />}
+            </Route>
+            <Route path="*">
+              <NotFound />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </AppProviders>
+    // <AuthProvider>
+    //   <Router>
+    //     <div className="d-flex flex-column h-100">
+    //       <Navbar bg="white" expand="lg" className="shadow-sm">
+    //         <div className="container">
+    //           <Navbar.Brand as={Link} to="/" className="navbar-brand">Hexlet Chat</Navbar.Brand>
+    //           <AuthButton />
+    //         </div>
+    //       </Navbar>
+    //       <Switch>
+    //         <ChatRoute isntanceSocket={socket} exact path="/">
+    //           <ChatContainer />
+    //         </ChatRoute>
+    //         <Route path="/login">
+    //           <Login />
+    //         </Route>
+    //         <Route path="/signup">
+    //           <SignUp />
+    //         </Route>
+    //         <Route path="*">
+    //           <NotFound />
+    //         </Route>
+    //       </Switch>
+    //     </div>
+    //   </Router>
+    // </AuthProvider>
   );
 };
-
-const App = ({ socket }) => (
-  <AuthProvider>
-    <Router>
-      <div className="d-flex flex-column h-100">
-        <Navbar bg="white" expand="lg" className="shadow-sm">
-          <div className="container">
-            <Navbar.Brand as={Link} to="/" className="navbar-brand">Hexlet Chat</Navbar.Brand>
-            <AuthButton />
-          </div>
-        </Navbar>
-        <Switch>
-          <ChatRoute isntanceSocket={socket} exact path="/">
-            <ChatContainer />
-          </ChatRoute>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/signup">
-            <SignUp />
-          </Route>
-          <Route path="*">
-            <NotFound />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
-  </AuthProvider>
-);
 
 export default App;

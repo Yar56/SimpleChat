@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { Card, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 
@@ -13,17 +13,7 @@ import routes from '../routes.js';
 const SignUp = () => {
   const { t } = useTranslation();
   const auth = useAuth();
-  const history = useHistory();
-
   const inputRef = useRef();
-  const [isAuth, setIsAuth] = useState(null);
-
-  useEffect(() => {
-    if (isAuth) {
-      history.replace('/');
-    }
-    inputRef.current.select();
-  }, [isAuth]);
 
   const formik = useFormik({
     initialValues: {
@@ -38,10 +28,9 @@ const SignUp = () => {
 
         localStorage.setItem('userId', JSON.stringify(data));
         auth.logIn();
-        setIsAuth(true);
         setSubmitting(false);
       } catch (err) {
-        setIsAuth(false);
+        inputRef.current.select();
         if (err.response.status === 409) {
           setFieldError('username', ' ');
           setFieldError('signUpPassword', ' ');

@@ -1,6 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
   Button, Form, Container, Row, Col,
@@ -11,21 +11,10 @@ import routes from '../routes.js';
 
 import imgLogin from '../../assets/images/login.png';
 
-// const SignupSchema = Yup.object().shape({
-//   username: Yup.string().required(),
-//   password: Yup.string().required(),
-// });
-
 const LoginPage = () => {
   const { t } = useTranslation();
   const auth = useAuth();
-  // const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
-  const history = useHistory();
-
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -37,7 +26,7 @@ const LoginPage = () => {
         const res = await axios.post(routes.loginPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
         auth.logIn();
-        history.replace('/');
+        // history.replace('/');
         setSubmitting(false);
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
