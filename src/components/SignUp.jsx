@@ -21,14 +21,14 @@ const SignUp = () => {
       signUpPassword: '',
       confirmPassword: '',
     },
-    onSubmit: async ({ username, signUpPassword }, { setSubmitting, setFieldError }) => {
+    onSubmit: async ({ username, signUpPassword }, { setFieldError }) => {
       try {
         const res = await axios.post(routes.signUpPath(), { username, password: signUpPassword });
         const { data } = res;
 
         localStorage.setItem('userId', JSON.stringify(data));
         auth.logIn();
-        setSubmitting(false);
+        // setSubmitting(false);
       } catch (err) {
         inputRef.current.select();
         if (err.response.status === 409) {
@@ -36,7 +36,7 @@ const SignUp = () => {
           setFieldError('signUpPassword', ' ');
           setFieldError('confirmPassword', t('signUpForm.errors.userIsExists'));
         }
-        setSubmitting(false);
+        // setSubmitting(false);
       }
     },
     validationSchema: signUpChema(),

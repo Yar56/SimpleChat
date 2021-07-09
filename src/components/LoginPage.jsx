@@ -21,17 +21,16 @@ const LoginPage = () => {
       username: '',
       password: '',
     },
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async (values) => {
       try {
         const res = await axios.post(routes.loginPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
         auth.logIn();
         // history.replace('/');
-        setSubmitting(false);
+        // setSubmitting(false);
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
           formik.errors.password = t('loginForm.errors.wrongData');
-
           inputRef.current.select();
           return;
         }
