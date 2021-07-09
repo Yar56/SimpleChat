@@ -81,15 +81,9 @@ const App = ({ socket }) => {
             </div>
           </Navbar>
           <Switch>
-            <Route exact path="/">
-              {user ? <ChatContainer /> : <Redirect to="/login" /> }
-            </Route>
-            <Route exact path="/login">
-              {user ? <Redirect to="/" /> : <Login />}
-            </Route>
-            <Route exact path="/signup">
-              {user ? <Redirect to="/" /> : <SignUp />}
-            </Route>
+            <Route exact path="/" render={() => (user ? <ChatContainer /> : <Redirect to="/login" />)} />
+            <Route exact path="/login" render={() => (user ? <Redirect to="/" /> : <Login />)} />
+            <Route exact path="/signup" render={() => (user ? <Redirect to="/" /> : <SignUp />)} />
             <Route path="*">
               <NotFound />
             </Route>

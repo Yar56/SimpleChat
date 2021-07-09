@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { Card, Form } from 'react-bootstrap';
+import { Card, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 
 import axios from 'axios';
@@ -23,12 +23,12 @@ const SignUp = () => {
   const formik = useFormik({
     initialValues: {
       username: '',
-      signUpPassword: '',
+      password: '',
       confirmPassword: '',
     },
-    onSubmit: async ({ username, signUpPassword }, { setFieldError }) => {
+    onSubmit: async ({ username, password }, { setFieldError }) => {
       try {
-        const res = await axios.post(routes.signUpPath(), { username, password: signUpPassword });
+        const res = await axios.post(routes.signUpPath(), { username, password });
         const { data } = res;
 
         localStorage.setItem('userId', JSON.stringify(data));
@@ -37,10 +37,11 @@ const SignUp = () => {
 
         // setSubmitting(false);
       } catch (err) {
+        console.log(err);
         inputRef.current.select();
         if (err.response.status === 409) {
           setFieldError('username', ' ');
-          setFieldError('signUpPassword', ' ');
+          setFieldError('password', ' ');
           setFieldError('confirmPassword', t('signUpForm.errors.userIsExists'));
         }
         // setSubmitting(false);
@@ -64,7 +65,7 @@ const SignUp = () => {
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     ref={inputRef}
-                    placeholder="От 3 до 20 символов"
+                    placeholder={t('signUpForm.errors.usernameLength')}
                     type="text"
                     name="username"
                     autoComplete="username"
@@ -79,22 +80,22 @@ const SignUp = () => {
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
-                    placeholder="Не менее 6 символов"
+                    placeholder={t('signUpForm.errors.passwordLenght')}
                     type="password"
-                    name="signUpPassword"
-                    id="signUpPassword"
+                    name="password"
+                    id="password"
                     autoComplete="new-password"
                     required
                     onChange={formik.handleChange}
-                    value={formik.values.signUpPassword}
-                    isInvalid={!!formik.errors.signUpPassword}
+                    value={formik.values.password}
+                    isInvalid={!!formik.errors.password}
                   />
-                  <Form.Label htmlFor="signUpPassword">{t('signUpForm.password')}</Form.Label>
-                  <Form.Control.Feedback type="invalid" tooltip>{formik.errors.signUpPassword}</Form.Control.Feedback>
+                  <Form.Label htmlFor="password">{t('signUpForm.password')}</Form.Label>
+                  <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
-                    placeholder="Пароли должны совпадать"
+                    placeholder={t('signUpForm.errors.anotherPassword')}
                     type="password"
                     name="confirmPassword"
                     required
@@ -107,7 +108,9 @@ const SignUp = () => {
                   <Form.Label htmlFor="confirmPassword">{t('signUpForm.confirmPassword')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
                 </Form.Group>
-                <button disabled={!!formik.isSubmitting} type="submit" className="w-100 btn btn-outline-primary">{t('signUpForm.signUpButtom')}</button>
+                <Button disabled={formik.isSubmitting} variant="outline-primary" type="submit" className="w-100">
+                  {t('signUpForm.signUpButtom')}
+                </Button>
               </Form>
             </Card.Body>
           </Card>
