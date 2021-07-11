@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Card, Form, Button } from 'react-bootstrap';
@@ -16,9 +16,20 @@ const SignUp = () => {
   const auth = useAuth();
   const inputRef = useRef();
 
+  const redirectAuthorized = useCallback(
+    () => {
+      console.log(auth);
+      if (auth.user) {
+        history.replace('/');
+      }
+    },
+    [auth.loggedIn, history],
+  );
+
   useEffect(() => {
+    redirectAuthorized();
     inputRef.current.focus();
-  }, []);
+  }, [redirectAuthorized]);
 
   const formik = useFormik({
     initialValues: {
@@ -26,7 +37,8 @@ const SignUp = () => {
       password: '',
       confirmPassword: '',
     },
-    onSubmit: async ({ username, password }, { setFieldError }) => {
+    onSubmit: async ({ username, password }, { setFieldError, setSubmitting }) => {
+      // history.replace('/');
       console.log(window.location.pathname);
       try {
         const res = await axios.post(routes.signUpPath(), { username, password });
@@ -34,9 +46,9 @@ const SignUp = () => {
         console.log(window.location.pathname);
         localStorage.setItem('userId', JSON.stringify(data));
         auth.logIn();
-        history.replace('/');
+
         console.log(window.location.pathname);
-        // setSubmitting(false);
+        history.push('/');
       } catch (err) {
         console.log(err);
         inputRef.current.select();
@@ -45,7 +57,7 @@ const SignUp = () => {
           setFieldError('password', ' ');
           setFieldError('confirmPassword', t('signUpForm.errors.userIsExists'));
         }
-        // setSubmitting(false);
+        setSubmitting(false);
       }
     },
     validationSchema: signUpChema(),

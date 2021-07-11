@@ -37,6 +37,7 @@ const App = ({ socket }) => {
   const getAuthHeader = () => JSON.parse(localStorage.getItem('userId'));
 
   const initState = getAuthHeader() ? { username: getAuthHeader().username } : null;
+  // FIXME: change user to loggedIn, вынести добавление в локал сторадж в одну функцию (logIn)
   const [user, setUserData] = useState(initState);
 
   const logIn = () => {

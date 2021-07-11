@@ -8,7 +8,7 @@
     "node": "14.x"
   },
   "scripts": {
-    "test": "node './src/App.test.js'",
+    "test": "",
     "prebuild": "rm -rf dist",
     "build": "NODE_ENV=production npx webpack --mode production",
     "start": "node bin/slack.js"
