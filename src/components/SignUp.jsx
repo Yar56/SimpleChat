@@ -26,6 +26,8 @@ const SignUp = () => {
     // const { username } = authData;
     localStorage.setItem('userId', JSON.stringify(authData));
     auth.logIn();
+    console.log(window.location.pathname);
+    console.log(auth);
     // history.push('/');
   }, [authData]);
 
