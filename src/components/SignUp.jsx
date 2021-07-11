@@ -18,6 +18,7 @@ const SignUp = () => {
 
   const redirectAuthorized = useCallback(
     () => {
+      console.log(window.location.pathname);
       console.log(auth);
       if (auth.user) {
         history.replace('/');
