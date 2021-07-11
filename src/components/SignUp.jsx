@@ -27,14 +27,15 @@ const SignUp = () => {
       confirmPassword: '',
     },
     onSubmit: async ({ username, password }, { setFieldError }) => {
+      console.log(window.location.pathname);
       try {
         const res = await axios.post(routes.signUpPath(), { username, password });
         const { data } = res;
-
+        console.log(window.location.pathname);
         localStorage.setItem('userId', JSON.stringify(data));
         auth.logIn();
         history.replace('/');
-
+        console.log(window.location.pathname);
         // setSubmitting(false);
       } catch (err) {
         console.log(err);
