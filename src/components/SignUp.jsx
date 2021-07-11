@@ -41,8 +41,10 @@ const SignUp = () => {
     onSubmit: async ({ username, password }, { setFieldError, setSubmitting }) => {
       // history.replace('/');
       console.log(window.location.pathname);
+      setSubmitting(true);
+      const url = routes.signUpPath();
       try {
-        const res = await axios.post(routes.signUpPath(), { username, password });
+        const res = await axios.post(url, { username, password }, { timeout: 5000, timeoutErrorMessage: 'Network Error' });
         const { data } = res;
         console.log(window.location.pathname);
         localStorage.setItem('userId', JSON.stringify(data));
@@ -54,6 +56,7 @@ const SignUp = () => {
         console.log(err);
         inputRef.current.select();
         if (err.response.status === 409) {
+          inputRef.current.select();
           setFieldError('username', ' ');
           setFieldError('password', ' ');
           setFieldError('confirmPassword', t('signUpForm.errors.userIsExists'));
