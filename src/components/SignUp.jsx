@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Card, Form, Button } from 'react-bootstrap';
@@ -15,22 +15,23 @@ const SignUp = () => {
   const history = useHistory();
   const auth = useAuth();
   const inputRef = useRef();
-
-  const redirectAuthorized = useCallback(
-    () => {
-      console.log(window.location.pathname);
-      console.log(auth);
-      if (auth.user) {
-        history.replace('/');
-      }
-    },
-    [auth.user, history],
-  );
+  const [authData, setAuthData] = useState(null);
 
   useEffect(() => {
-    redirectAuthorized();
+    console.log(window.location.pathname);
+    console.log(auth);
+    if (!authData) {
+      return;
+    }
+    // const { username } = authData;
+    localStorage.setItem('userId', JSON.stringify(authData));
+    auth.logIn();
+    // history.push('/');
+  }, [authData]);
+
+  useEffect(() => {
     inputRef.current.focus();
-  }, [redirectAuthorized]);
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -39,19 +40,13 @@ const SignUp = () => {
       confirmPassword: '',
     },
     onSubmit: async ({ username, password }, { setFieldError, setSubmitting }) => {
-      // history.replace('/');
-      console.log(window.location.pathname);
       setSubmitting(true);
       const url = routes.signUpPath();
       try {
         const res = await axios.post(url, { username, password }, { timeout: 5000, timeoutErrorMessage: 'Network Error' });
         const { data } = res;
-        console.log(window.location.pathname);
-        localStorage.setItem('userId', JSON.stringify(data));
-        auth.logIn();
-
-        console.log(window.location.pathname);
-        // history.replace('/');
+        setAuthData(data);
+        history.replace('/');
       } catch (err) {
         console.log(err);
         inputRef.current.select();
