@@ -51,7 +51,7 @@ const SignUp = () => {
         auth.logIn();
 
         console.log(window.location.pathname);
-        history.push('/');
+        // history.replace('/');
       } catch (err) {
         console.log(err);
         inputRef.current.select();
