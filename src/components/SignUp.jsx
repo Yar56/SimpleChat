@@ -24,7 +24,7 @@ const SignUp = () => {
         history.replace('/');
       }
     },
-    [auth.loggedIn, history],
+    [auth.user, history],
   );
 
   useEffect(() => {
