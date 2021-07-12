@@ -1,4 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import React, {
+  useRef, useEffect, useState, useCallback,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Card, Form, Button } from 'react-bootstrap';
@@ -15,37 +17,7 @@ const SignUp = () => {
   const history = useHistory();
   const auth = useAuth();
   const inputRef = useRef();
-  // const [authData, setAuthData] = useState(null);
-
-  // const redirect = useCallback(
-  //   () => {
-  //     console.log(window.location.pathname);
-  //     console.log(auth);
-  //     console.log(auth.getAuthData());
-  //     if (!auth.isAuth) {
-  //       return;
-  //     }
-  //     // const { username } = authData;
-  //     // localStorage.setItem('userId', JSON.stringify(authData));
-  //     auth.logIn(authData);
-  //     history.replace('/');
-  //     console.log(window.location.pathname);
-  //     console.log(auth);
-  //     console.log(auth.getAuthData());
-  //   },
-  //   [auth],
-  // );
-
-  useEffect(() => {
-    // redirect();
-    console.log(auth.isAuth);
-    console.log(auth.getAuthData());
-    console.log(window.location.pathname);
-    inputRef.current.focus();
-    return () => {
-      history.replace('/');
-    };
-  }, [auth.isAuth]);
+  const [signUpError, setSignUpError] = useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -53,29 +25,51 @@ const SignUp = () => {
       password: '',
       confirmPassword: '',
     },
-    onSubmit: async ({ username, password }, { setFieldError, setSubmitting }) => {
+    onSubmit: async ({ username, password }, { setSubmitting }) => {
       setSubmitting(true);
       const url = routes.signUpPath();
       try {
-        const { data } = await axios.post(url, { username, password });
+        const { data } = await axios.post(url, { username, password }, { timeout: 10000, timeoutErrorMessage: 'Network Error' });
         auth.logIn(data);
-        // setAuthData(data);
+        history.push('/');
       } catch (err) {
         console.log(err.response);
         inputRef.current.select();
-        if (err.response.status === 409) {
+        if (err.isAxiosError && err.response && err.response.status === 409) {
+          setSignUpError('userExists');
           inputRef.current.select();
-          setFieldError('username', ' ');
-          setFieldError('password', ' ');
-          setFieldError('confirmPassword', t('signUpForm.errors.userIsExists'));
+        } else if (err.isAxiosError && err.message === 'Network Error') {
+          setSignUpError('networkError');
+        } else {
+          setSignUpError('unknown');
+          console.error(err);
         }
         setSubmitting(false);
       }
     },
-    validationSchema: signUpChema(),
-    validateOnChange: true,
-    validateOnBlur: true,
+    validationSchema: () => {
+      setSignUpError(null);
+
+      return signUpChema();
+    },
   });
+
+  const redirectAuthorized = useCallback(
+    () => {
+      if (auth.isAuth) {
+        history.replace('/');
+        console.log(auth.isAuth);
+        console.log(window.location.pathname);
+      }
+    },
+    [auth.isAuth, history],
+  );
+
+  useEffect(() => {
+    redirectAuthorized();
+    inputRef.current.focus();
+  }, [redirectAuthorized]);
+
   return (
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
@@ -96,11 +90,13 @@ const SignUp = () => {
                     required
                     id="username"
                     onChange={formik.handleChange}
-                    isInvalid={!!formik.errors.username}
+                    isInvalid={formik.errors.username || signUpError}
                     value={formik.values.username}
+                    readOnly={formik.isSubmitting}
                   />
                   <Form.Label htmlFor="username">{t('signUpForm.username')}</Form.Label>
-                  <Form.Control.Feedback type="invalid" tooltip>{formik.errors.username}</Form.Control.Feedback>
+                  {formik.errors.username
+                    && <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.username)}</Form.Control.Feedback>}
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
@@ -112,10 +108,12 @@ const SignUp = () => {
                     required
                     onChange={formik.handleChange}
                     value={formik.values.password}
-                    isInvalid={!!formik.errors.password}
+                    isInvalid={formik.errors.password || signUpError}
+                    readOnly={formik.isSubmitting}
                   />
                   <Form.Label htmlFor="password">{t('signUpForm.password')}</Form.Label>
-                  <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password}</Form.Control.Feedback>
+                  {formik.errors.password
+                    && <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.password)}</Form.Control.Feedback>}
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -127,10 +125,14 @@ const SignUp = () => {
                     id="confirmPassword"
                     onChange={formik.handleChange}
                     value={formik.values.confirmPassword}
-                    isInvalid={!!formik.errors.confirmPassword}
+                    isInvalid={formik.errors.confirmPassword || signUpError}
+                    readOnly={formik.isSubmitting}
                   />
                   <Form.Label htmlFor="confirmPassword">{t('signUpForm.confirmPassword')}</Form.Label>
-                  <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
+                  {formik.errors.confirmPassword
+                    && <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.confirmPassword)}</Form.Control.Feedback>}
+                  {signUpError
+                    && <Form.Control.Feedback type="invalid">{t(`signUpForm.errors.${signUpError}`)}</Form.Control.Feedback>}
                 </Form.Group>
                 <Button disabled={formik.isSubmitting} variant="outline-primary" type="submit" className="w-100">
                   {t('signUpForm.signUpButtom')}

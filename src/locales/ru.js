@@ -21,8 +21,9 @@ export default {
         usernameLength: 'От 3 до 20 символов',
         passwordLenght: 'Не менее 6 символов',
         anotherPassword: 'Пароли должны совпадать',
-        userIsExists: 'Такой пользователь уже существует',
+        userExists: 'Такой пользователь уже существует',
         networkError: 'Нет соединения',
+        unknown: 'Что-то пошло не так, попробуйте снова',
       },
     },
     modals: {
