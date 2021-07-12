@@ -1,5 +1,5 @@
 import React, {
-  useRef, useEffect, useCallback, useState,
+  useRef, useEffect, useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
@@ -20,19 +20,9 @@ const LoginPage = () => {
   const history = useHistory();
   const [loginError, setLoginError] = useState(null);
 
-  const redirectAuthorized = useCallback(
-    () => {
-      if (auth.loggedIn) {
-        history.replace('/');
-      }
-    },
-    [auth.loggedIn, history],
-  );
-
   useEffect(() => {
-    redirectAuthorized();
     inputRef.current.focus();
-  }, [redirectAuthorized]);
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -44,7 +34,7 @@ const LoginPage = () => {
       try {
         const { data } = await axios.post(routes.loginPath(), values);
         auth.logIn(data);
-        history.push('/');
+        history.replace('/');
       } catch (err) {
         if (err.isAxiosError && err.response && err.response.status === 401) {
           setLoginError('wrongData');

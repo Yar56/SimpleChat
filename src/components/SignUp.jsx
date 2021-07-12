@@ -1,5 +1,5 @@
 import React, {
-  useRef, useEffect, useState, useCallback,
+  useRef, useEffect, useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -33,7 +33,7 @@ const SignUp = () => {
       try {
         const { data } = await axios.post(url, { username, password }, { timeout: 10000, timeoutErrorMessage: 'Network Error' });
         auth.logIn(data);
-        history.push('/');
+        history.replace('/');
       } catch (err) {
         console.log(err.response);
         inputRef.current.select();
@@ -56,21 +56,9 @@ const SignUp = () => {
     },
   });
 
-  const redirectAuthorized = useCallback(
-    () => {
-      if (auth.isAuth) {
-        history.replace('/');
-        console.log(auth.isAuth);
-        console.log(window.location.pathname);
-      }
-    },
-    [auth.isAuth, history],
-  );
-
   useEffect(() => {
-    redirectAuthorized();
     inputRef.current.focus();
-  }, [redirectAuthorized]);
+  }, []);
 
   return (
     <Container fluid className="h-100">
