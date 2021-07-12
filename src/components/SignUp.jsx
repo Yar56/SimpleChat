@@ -42,7 +42,10 @@ const SignUp = () => {
     console.log(auth.getAuthData());
     console.log(window.location.pathname);
     inputRef.current.focus();
-  }, []);
+    return () => {
+      history.replace('/');
+    };
+  }, [auth.isAuth]);
 
   const formik = useFormik({
     initialValues: {
@@ -57,7 +60,6 @@ const SignUp = () => {
         const { data } = await axios.post(url, { username, password });
         auth.logIn(data);
         // setAuthData(data);
-        history.replace('/');
       } catch (err) {
         console.log(err.response);
         inputRef.current.select();
@@ -89,7 +91,6 @@ const SignUp = () => {
                   <Form.Control
                     ref={inputRef}
                     placeholder={t('signUpForm.errors.usernameLength')}
-                    type="text"
                     name="username"
                     autoComplete="username"
                     required

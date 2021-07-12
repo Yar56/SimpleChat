@@ -23,7 +23,7 @@ const ChatContainer = () => {
   const channelsStatus = useSelector((state) => state.channelsInfo.status);
   const isOpened = useSelector(selectIsOpenedModal);
   const typeModal = useSelector(selectModalType);
-  console.log(auth.getAuthData());
+
   const renderModal = (isOpen, type) => {
     if (!isOpen) {
       return null;
