@@ -3,7 +3,9 @@ import React, {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { Card, Form, Button } from 'react-bootstrap';
+import {
+  Card, Form, Button, Container, Row, Col,
+} from 'react-bootstrap';
 import { useFormik } from 'formik';
 
 import axios from 'axios';
@@ -71,12 +73,12 @@ const SignUp = () => {
   }, [redirectAuthorized]);
 
   return (
-    <div className="container-fluid h-100">
-      <div className="row justify-content-center align-content-center h-100">
-        <div className="col-12 col-md-8 col-lg-6 col-xxl-6">
+    <Container fluid className="h-100">
+      <Row className="justify-content-center align-content-center h-100">
+        <Col className="col-12 col-md-8 col-xxl-6">
           <Card className="shadow-sm">
             <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-              <div className="pe-4">
+              <div className="">
                 <img src={imgReg} alt={t('signUpForm.signUp')} />
               </div>
               <Form className="w-50" onSubmit={formik.handleSubmit}>
@@ -140,9 +142,9 @@ const SignUp = () => {
               </Form>
             </Card.Body>
           </Card>
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 export default SignUp;

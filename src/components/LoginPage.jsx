@@ -1,9 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, {
+  useRef, useEffect, useCallback, useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
-  Button, Form, Container, Row, Col,
+  Button, Form, Container, Row, Col, Card,
 } from 'react-bootstrap';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth/index.js';
@@ -16,40 +18,55 @@ const LoginPage = () => {
   const auth = useAuth();
   const inputRef = useRef();
   const history = useHistory();
+  const [loginError, setLoginError] = useState(null);
+
+  const redirectAuthorized = useCallback(
+    () => {
+      if (auth.loggedIn) {
+        history.replace('/');
+      }
+    },
+    [auth.loggedIn, history],
+  );
 
   useEffect(() => {
-    // console.log(auth.getAuthData());
+    redirectAuthorized();
     inputRef.current.focus();
-  }, []);
+  }, [redirectAuthorized]);
 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(true);
       try {
         const { data } = await axios.post(routes.loginPath(), values);
         auth.logIn(data);
-        history.replace('/');
-        // setSubmitting(false);
+        history.push('/');
       } catch (err) {
-        if (err.isAxiosError && err.response.status === 401) {
-          formik.errors.password = t('loginForm.errors.wrongData');
+        if (err.isAxiosError && err.response && err.response.status === 401) {
+          setLoginError('wrongData');
           inputRef.current.select();
-          return;
+        } else if (err.isAxiosError && err.message === 'Network Error') {
+          setLoginError('networkError');
+        } else {
+          setLoginError('unknown');
+          console.error(err);
         }
-        throw err;
+
+        setSubmitting(false);
       }
     },
   });
 
   return (
     <Container fluid className="h-100">
-      <Row className="row justify-content-center align-content-center h-100">
-        <Col className="col-12 col-md-10 col-lg-8 col-xxl-6">
-          <div className="card shadow-sm">
-            <div className="card-body row p-5">
+      <Row className="justify-content-center align-content-center h-100">
+        <Col className="col-12 col-md-8 col-xxl-6">
+          <Card className="shadow-sm">
+            <Card.Body className="row p-5">
               <Col className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                 <img src={imgLogin} alt={t('loginForm.signIn')} />
               </Col>
@@ -64,7 +81,8 @@ const LoginPage = () => {
                     id="username"
                     autoComplete="username"
                     required
-                    isInvalid={!!formik.errors.username}
+                    readOnly={formik.isSubmitting}
+                    isInvalid={!!loginError}
                     ref={inputRef}
                   />
                   <Form.Label htmlFor="username">
@@ -80,17 +98,18 @@ const LoginPage = () => {
                     name="password"
                     id="password"
                     autoComplete="password"
-                    isInvalid={!!formik.errors.password}
+                    readOnly={formik.isSubmitting}
+                    isInvalid={!!loginError}
                     required
                   />
                   <Form.Label htmlFor="password">
                     Пароль
                   </Form.Label>
-                  {!!formik.errors.password && <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password}</Form.Control.Feedback>}
+                  {loginError && <Form.Control.Feedback type="invalid" tooltip>{t(`loginForm.errors.${loginError}`)}</Form.Control.Feedback>}
                 </Form.Group>
                 <Button disabled={!!formik.isSubmitting} type="submit" className="w-100 mb-3" variant="outline-primary">{t('loginForm.signIn')}</Button>
               </Form>
-            </div>
+            </Card.Body>
             <div className="card-footer p-4">
               <div className="text-center">
                 <span className="m-2">{t('loginForm.hasAccount')}</span>
@@ -99,7 +118,7 @@ const LoginPage = () => {
                 </Link>
               </div>
             </div>
-          </div>
+          </Card>
         </Col>
       </Row>
     </Container>

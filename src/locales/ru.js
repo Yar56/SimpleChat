@@ -8,6 +8,8 @@ export default {
       linkToSignUp: 'Регистрация',
       errors: {
         wrongData: 'Неверные имя пользователя или пароль',
+        networkError: 'Нет соединения',
+        unknown: 'Что-то пошло не так, попробуйте снова',
       },
     },
     signUpForm: {
