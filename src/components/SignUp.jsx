@@ -21,37 +21,28 @@ const SignUp = () => {
   //   () => {
   //     console.log(window.location.pathname);
   //     console.log(auth);
-  //     if (!authData) {
+  //     console.log(auth.getAuthData());
+  //     if (!auth.isAuth) {
   //       return;
   //     }
   //     // const { username } = authData;
   //     // localStorage.setItem('userId', JSON.stringify(authData));
   //     auth.logIn(authData);
+  //     history.replace('/');
   //     console.log(window.location.pathname);
   //     console.log(auth);
+  //     console.log(auth.getAuthData());
   //   },
-  //   [authData],
+  //   [auth],
   // );
 
-  // useEffect(() => {
-  //   // console.log(window.location.pathname);
-  //   // console.log(auth);
-  //   if (!authData) {
-  //     return;
-  //   }
-  //   // const { username } = authData;
-  //   // localStorage.setItem('userId', JSON.stringify(authData));
-  //   auth.logIn(authData);
-  //   console.log(window.location.pathname);
-  //   console.log(auth);
-  //   inputRef.current.focus();
-  // }, [authData]);
-
   useEffect(() => {
+    // redirect();
     console.log(auth.isAuth);
+    console.log(auth.getAuthData());
     console.log(window.location.pathname);
     inputRef.current.focus();
-  }, [auth]);
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -68,7 +59,7 @@ const SignUp = () => {
         // setAuthData(data);
         history.replace('/');
       } catch (err) {
-        console.log(err);
+        console.log(err.response);
         inputRef.current.select();
         if (err.response.status === 409) {
           inputRef.current.select();

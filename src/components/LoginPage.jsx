@@ -18,6 +18,7 @@ const LoginPage = () => {
   const history = useHistory();
 
   useEffect(() => {
+    console.log(auth.getAuthData());
     inputRef.current.focus();
   }, []);
 
