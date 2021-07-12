@@ -28,9 +28,8 @@ const LoginPage = () => {
     },
     onSubmit: async (values) => {
       try {
-        const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
+        const { data } = await axios.post(routes.loginPath(), values);
+        auth.logIn(data);
         history.replace('/');
         // setSubmitting(false);
       } catch (err) {

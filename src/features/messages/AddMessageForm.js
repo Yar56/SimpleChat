@@ -34,7 +34,8 @@ const AddMessageForm = () => {
   // const dispatch = useDispatch();
   const [isSending, setIsSending] = useState(false);
   const socket = useSocket();
-  const { user: { username } } = useAuth();
+  const auth = useAuth();
+  const { username } = auth.getAuthData();
   const input = useRef();
   const currentChannelId = useSelector(selectActiveChannelId);
   useEffect(() => {

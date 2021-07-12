@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Card, Form, Button } from 'react-bootstrap';
@@ -15,25 +15,43 @@ const SignUp = () => {
   const history = useHistory();
   const auth = useAuth();
   const inputRef = useRef();
-  const [authData, setAuthData] = useState(null);
+  // const [authData, setAuthData] = useState(null);
+
+  // const redirect = useCallback(
+  //   () => {
+  //     console.log(window.location.pathname);
+  //     console.log(auth);
+  //     if (!authData) {
+  //       return;
+  //     }
+  //     // const { username } = authData;
+  //     // localStorage.setItem('userId', JSON.stringify(authData));
+  //     auth.logIn(authData);
+  //     console.log(window.location.pathname);
+  //     console.log(auth);
+  //   },
+  //   [authData],
+  // );
+
+  // useEffect(() => {
+  //   // console.log(window.location.pathname);
+  //   // console.log(auth);
+  //   if (!authData) {
+  //     return;
+  //   }
+  //   // const { username } = authData;
+  //   // localStorage.setItem('userId', JSON.stringify(authData));
+  //   auth.logIn(authData);
+  //   console.log(window.location.pathname);
+  //   console.log(auth);
+  //   inputRef.current.focus();
+  // }, [authData]);
 
   useEffect(() => {
+    console.log(auth.isAuth);
     console.log(window.location.pathname);
-    console.log(auth);
-    if (!authData) {
-      return;
-    }
-    // const { username } = authData;
-    localStorage.setItem('userId', JSON.stringify(authData));
-    auth.logIn();
-    console.log(window.location.pathname);
-    console.log(auth);
-    // history.push('/');
-  }, [authData]);
-
-  useEffect(() => {
     inputRef.current.focus();
-  }, []);
+  }, [auth]);
 
   const formik = useFormik({
     initialValues: {
@@ -45,9 +63,9 @@ const SignUp = () => {
       setSubmitting(true);
       const url = routes.signUpPath();
       try {
-        const res = await axios.post(url, { username, password }, { timeout: 5000, timeoutErrorMessage: 'Network Error' });
-        const { data } = res;
-        setAuthData(data);
+        const { data } = await axios.post(url, { username, password });
+        auth.logIn(data);
+        // setAuthData(data);
         history.replace('/');
       } catch (err) {
         console.log(err);

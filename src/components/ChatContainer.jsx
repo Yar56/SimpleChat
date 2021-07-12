@@ -18,8 +18,7 @@ const ChatContainer = () => {
   const auth = useAuth();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { token } = auth.getAuthHeader();
-
+  const { token } = auth.getAuthData();
   const allChannels = useSelector(selectAllChannels);
   const channelsStatus = useSelector((state) => state.channelsInfo.status);
   const isOpened = useSelector(selectIsOpenedModal);
