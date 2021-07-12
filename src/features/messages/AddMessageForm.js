@@ -91,8 +91,9 @@ const AddMessageForm = () => {
             data-testid="new-message"
           />
           <InputGroup.Append>
-            <Button type="submit" variant="btn btn-group-vertical" disabled={!formik.isValid || !formik.dirty}>
+            <Button type="submit" variant="group-vertical" disabled={!formik.isValid || !formik.dirty}>
               <ArrowRightSquare size={20} fill="currentColor" />
+              <span className="visually-hidden">Отправить</span>
             </Button>
           </InputGroup.Append>
         </InputGroup>
