@@ -54,7 +54,7 @@ const ChatContainer = () => {
 
   useEffect(() => {
     dispatch(setInitialState(token));
-  }, []);
+  }, [dispatch, token]);
 
   if (channelsStatus === 'loading') {
     return (
