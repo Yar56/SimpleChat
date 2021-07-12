@@ -9,7 +9,7 @@ import useAuth from '../hooks/useAuth/index.js';
 import getModal from '../features/modals/index.js';
 import { selectModalType, selectIsOpenedModal, closeModal } from '../features/modals/modalsSlice.js';
 
-import FeedsList from '../features/channels/ChannelsList.js';
+import FeedsList from '../features/channels/ChannelsList.jsx';
 import MessagesTitle from '../features/messages/MessagesTitle.js';
 import MessagesBox from '../features/messages/MessagesBox.js';
 import AddMessageForm from '../features/messages/AddMessageForm.js';
