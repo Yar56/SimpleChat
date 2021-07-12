@@ -12,8 +12,10 @@ import init from './app/init.jsx';
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
-const socket = io();
-
-const app = init(socket);
-
-ReactDOM.render(app, document.querySelector('#chat'));
+const render = async () => {
+  const socket = io();
+  const app = await init(socket);
+  console.log(init);
+  ReactDOM.render(app, document.querySelector('#chat'));
+};
+render();
