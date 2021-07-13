@@ -1,3 +1,6 @@
+// @ts-check
+/* eslint-disable no-param-reassign */
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -22,7 +25,7 @@ const initialState = {
 //   status: 'idle',
 //   error: null,
 // });
-// console.log(initialState)
+
 const channelsSlice = createSlice({
   name: 'channelsInfo',
   initialState,
