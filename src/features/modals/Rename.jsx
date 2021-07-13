@@ -48,7 +48,7 @@ const Rename = (props) => {
   useEffect(() => {
     inputRef.current.value = activeChannel.name;
     inputRef.current.select();
-  }, []);
+  }, [activeChannel.name]);
 
   return (
     <Modal dialogAs={Modal.Dialog} show={isOpened} centered onHide={onHide}>
