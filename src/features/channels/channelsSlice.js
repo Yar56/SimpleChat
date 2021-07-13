@@ -15,19 +15,26 @@ const initialState = {
   status: 'idle',
   error: null,
 };
-
+// const channelsAdapter = createEntityAdapter({
+//   sortComparer: (a, b) => b.date.localeCompare(a.date),
+// });
+// const initialState = channelsAdapter.getInitialState({
+//   status: 'idle',
+//   error: null,
+// });
+// console.log(initialState)
 const channelsSlice = createSlice({
   name: 'channelsInfo',
   initialState,
   reducers: {
-    setActiveChannel(state, action) {
-      state.currentChannelId = action.payload.id;
+    setActiveChannel(state, { payload: { id } }) {
+      state.currentChannelId = id;
     },
-    addChannel(state, action) {
-      state.channels = state.channels.concat(action.payload);
+    addChannel(state, { payload }) {
+      state.channels = state.channels.concat(payload);
     },
-    removeChannel(state, action) {
-      state.channels = state.channels.filter((channel) => channel.id !== action.payload.channelId);
+    removeChannel(state, { payload: { channelId } }) {
+      state.channels = state.channels.filter((channel) => channel.id !== channelId);
     },
     renameChannel(state, { payload }) {
       state.channels[state.channels
@@ -38,12 +45,13 @@ const channelsSlice = createSlice({
     builder.addCase(setInitialState.pending, (state) => {
       state.status = 'loading';
     });
-    builder.addCase(setInitialState.fulfilled, (state, action) => {
+    builder.addCase(setInitialState.fulfilled, (state, { payload }) => {
       state.status = 'succeeded';
+
       state.channels = [];
       state.currentChannelId = null;
-      state.currentChannelId = action.payload.currentChannelId;
-      state.channels = state.channels.concat(action.payload.channels);
+      state.currentChannelId = payload.currentChannelId;
+      state.channels = state.channels.concat(payload.channels);
     });
   },
 });

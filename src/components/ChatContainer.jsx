@@ -10,9 +10,9 @@ import getModal from '../features/modals/index.js';
 import { selectModalType, selectIsOpenedModal, closeModal } from '../features/modals/modalsSlice.js';
 
 import FeedsList from '../features/channels/ChannelsList.jsx';
-import MessagesTitle from '../features/messages/MessagesTitle.js';
-import MessagesBox from '../features/messages/MessagesBox.js';
-import AddMessageForm from '../features/messages/AddMessageForm.js';
+import MessagesTitle from '../features/messages/MessagesTitle.jsx';
+import MessagesBox from '../features/messages/MessagesBox.jsx';
+import AddMessageForm from '../features/messages/AddMessageForm.jsx';
 
 const ChatContainer = () => {
   const auth = useAuth();

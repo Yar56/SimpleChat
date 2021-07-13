@@ -11,9 +11,9 @@ const MessagesBox = () => {
   const allMessages = useSelector(selectAllMessages);
   const messagesBox = useRef();
 
-  if (!messagesByCurrentChannel) {
-    return null;
-  }
+  // if (!messagesByCurrentChannel) {
+  //   return null;
+  // }
 
   useEffect(() => {
     messagesBox.current.scrollTop = messagesBox.current.scrollHeight;
