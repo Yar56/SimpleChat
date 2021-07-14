@@ -2,9 +2,10 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import routes from '../../routes.js';
 
 export const setInitialState = createAsyncThunk('channelsInfo/setInitialState', async (token) => {
-  const response = await axios.get('/api/v1/data', {
+  const response = await axios.get(routes.dataPath(), {
     headers: {
       Authorization: `Bearer ${token}`,
     },
