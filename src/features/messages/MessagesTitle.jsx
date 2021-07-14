@@ -4,14 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { selectActiveChannelId, selectChannelById } from '../channels/channelsSlice.js';
 
 const MessagesTitle = () => {
-  // const [messagesCount, setMessagesCount] = useState(0);
   const { t } = useTranslation();
   const activeChannelId = useSelector(selectActiveChannelId);
 
   const currentChannel = useSelector((state) => selectChannelById(state, activeChannelId));
 
-  // TODO: cделать селектор в messagesSlice если он будет использоватся
-  // где то еще, иначе оставить так
   const messagesCount = useSelector((state) => state.messagesInfo.messages
     .filter((message) => message.channelId === activeChannelId)).length;
   if (!currentChannel) {
