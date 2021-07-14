@@ -39,7 +39,7 @@ const LoginPage = () => {
         if (err.isAxiosError && err.response && err.response.status === 401) {
           setLoginError('wrongData');
           inputRef.current.select();
-        } else if (err.isAxiosError && err.message === 'Network Error') {
+        } else if (err.isAxiosError) {
           setLoginError('networkError');
         } else {
           setLoginError('unknown');
