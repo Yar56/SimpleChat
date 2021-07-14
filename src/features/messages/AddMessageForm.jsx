@@ -16,7 +16,7 @@ const AddMessageForm = () => {
   const { username } = auth.getAuthData();
   const input = useRef();
   const currentChannelId = useSelector(selectActiveChannelId);
-
+  // const [isDis, setIsDis] = useState(false);
   const formik = useFormik({
     initialValues: {
       message: '',

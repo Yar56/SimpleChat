@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+// import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
   Modal, FormGroup, FormControl, Button, Form,
@@ -14,6 +15,7 @@ const Add = (props) => {
   const inputRef = useRef();
   const [isDisabled, setIsDisabled] = useState(false);
   const socket = useSocket();
+  // const dispatch = useDispatch();
 
   const {
     isOpened, onHide, allChannels, validateChannelName,
@@ -32,6 +34,7 @@ const Add = (props) => {
       }, () => {
         setIsDisabled(false);
         inputRef.current.select();
+        console.log('timeout!');
       }, 2000));
     },
     validateOnChange: false,
