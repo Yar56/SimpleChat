@@ -23,7 +23,6 @@ const init = (socket) => {
   });
   socket.on('removeChannel', ({ id: channelId }) => {
     store.dispatch(removeChannel({ channelId }));
-    // TODO: подумать над дефолтным id
     store.dispatch(setActiveChannel({ id: 1 }));
   });
   socket.on('renameChannel', (response) => {

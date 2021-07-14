@@ -31,7 +31,7 @@ const SignUp = () => {
       setSubmitting(true);
       const url = routes.signUpPath();
       try {
-        const { data } = await axios.post(url, { username, password }, { timeout: 10000, timeoutErrorMessage: 'Network Error' });
+        const { data } = await axios.post(url, { username, password });
         auth.logIn(data);
         history.replace('/');
       } catch (err) {
@@ -40,7 +40,7 @@ const SignUp = () => {
         if (err.isAxiosError && err.response && err.response.status === 409) {
           setSignUpError('userExists');
           inputRef.current.select();
-        } else if (err.isAxiosError && err.message === 'Network Error') {
+        } else if (err.isAxiosError) {
           setSignUpError('networkError');
         } else {
           setSignUpError('unknown');
