@@ -14,12 +14,12 @@
 
 <details open>
 <summary>EN description</summary>
-    <h3>The project is a chat with an auto-authorization and registration form. After a successful login (or registration), a chat will open in front of you, in which you can create, rename and delete your channels. The project is implemented in React js and WebSocket (SocketIO). The application on the server is made with Fastify</h3>
+    <h3>The project is a chat with an auto-authorization and registration form. After a successful login (or registration), a chat will open in front of you, in which you can create, rename and delete your channels. The project is implemented in React(Hooks, Context API), Redux(Redux Toolkit) and WebSocket (SocketIO). The application on the server is made with Fastify</h3>
 </details>
 <br>
 <details>
 <summary>RU description</summary>
-    <h3>Проект представляет из себя чат с формой авторизации и регистрации. После успешного входа (или регистрации), перед вами открывется чат, в котором можно создавать, переименовывать и удалять ваши каналы. Проект реализован на ReactJs и WebSocket(SocketIO). Приложение на сервере сделано с помощью Fastify</h3>
+    <h3>Проект представляет из себя чат с формой авторизации и регистрации. После успешного входа (или регистрации), перед вами открывется чат, в котором можно создавать, переименовывать и удалять ваши каналы. Проект реализован на React(Hooks, Context API), Redux(Redux Toolkit) и WebSocket(SocketIO). Приложение на сервере сделано с помощью Fastify</h3>
 </details>
 <br>
 
