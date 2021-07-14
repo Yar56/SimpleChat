@@ -1,6 +1,3 @@
-// @ts-check
-/* eslint-disable no-param-reassign */
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -18,13 +15,6 @@ const initialState = {
   status: 'idle',
   error: null,
 };
-// const channelsAdapter = createEntityAdapter({
-//   sortComparer: (a, b) => b.date.localeCompare(a.date),
-// });
-// const initialState = channelsAdapter.getInitialState({
-//   status: 'idle',
-//   error: null,
-// });
 
 const channelsSlice = createSlice({
   name: 'channelsInfo',

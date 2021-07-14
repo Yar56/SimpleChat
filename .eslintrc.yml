@@ -24,7 +24,7 @@ settings:
 
 rules:
   import/extensions: 0
-  no-param-reassign: ["error", { "props": false }]
+  no-param-reassign: 0
   import/no-extraneous-dependencies: ["error", {"devDependencies": true}]
   react/prop-types: 0
   no-console: 0

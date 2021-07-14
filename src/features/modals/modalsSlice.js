@@ -1,6 +1,3 @@
-// @ts-check
-/* eslint-disable no-param-reassign */
-
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -30,7 +27,6 @@ const modalSlice = createSlice({
 export default modalSlice.reducer;
 
 export const { openModal, closeModal } = modalSlice.actions;
-// рендирить модал будем от type который возьмем селектором
 
 export const selectModalType = (state) => state.modal.type;
 export const selectIsOpenedModal = (state) => state.modal.isOpened;

@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import { createSlice } from '@reduxjs/toolkit';
 import { setInitialState, removeChannel } from '../channels/channelsSlice.js';
 
