@@ -7,6 +7,7 @@ import {
   Link,
 } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
+import getInitialAuth from './getInitialAuth.js';
 
 import Login from '../components/LoginPage.jsx';
 import NotFound from '../components/NotFound.jsx';
@@ -18,9 +19,7 @@ import SocketContext from '../contexts/SocketContext.js';
 import useAuth from '../hooks/useAuth/index.js';
 
 const AuthProvider = ({ children }) => {
-  const getAuthData = () => JSON.parse(localStorage.getItem('user'));
-  const initState = getAuthData() ? { user: getAuthData().user } : null;
-  const [isAuth, setIsAuth] = useState(!!initState);
+  const [isAuth, setIsAuth] = useState(!!getInitialAuth());
 
   const logIn = (authData) => {
     setIsAuth(true);
@@ -33,7 +32,7 @@ const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        getAuthData,
+        getInitialAuth,
         isAuth,
         logIn,
         logOut,
@@ -45,17 +44,15 @@ const AuthProvider = ({ children }) => {
 };
 
 const AuthButton = () => {
-  const auth = useContext(AuthContext);
-  const { isAuth } = auth;
+  const { isAuth, logOut } = useContext(AuthContext);
   if (isAuth) {
-    return <Button onClick={auth.logOut}>Выйти</Button>;
+    return <Button onClick={logOut}>Выйти</Button>;
   }
   return null;
 };
 
 const ChatRoute = ({ children, isntanceSocket, path }) => {
-  const auth = useAuth();
-  const { isAuth } = auth;
+  const { isAuth } = useAuth();
   return (
     <Route
       path={path}

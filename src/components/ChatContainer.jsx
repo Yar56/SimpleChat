@@ -15,10 +15,10 @@ import MessagesBox from '../features/messages/MessagesBox.jsx';
 import AddMessageForm from '../features/messages/AddMessageForm.jsx';
 
 const ChatContainer = () => {
-  const auth = useAuth();
+  const { getInitialAuth } = useAuth();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { token } = auth.getAuthData();
+  const { token } = getInitialAuth();
   const allChannels = useSelector(selectAllChannels);
   const channelsStatus = useSelector((state) => state.channelsInfo.status);
   const isOpened = useSelector(selectIsOpenedModal);
