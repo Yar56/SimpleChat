@@ -1,4 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, {
+  useState, useContext, useCallback, useMemo,
+} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -21,22 +23,24 @@ import useAuth from '../hooks/useAuth/index.js';
 const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(!!getInitialAuth());
 
-  const logIn = (authData) => {
+  const logIn = useCallback((authData) => {
     setIsAuth(true);
     localStorage.setItem('user', JSON.stringify(authData));
-  };
-  const logOut = () => {
+  }, [isAuth]);
+
+  const logOut = useCallback(() => {
     localStorage.removeItem('user');
     setIsAuth(false);
-  };
+  }, [isAuth]);
+
   return (
     <AuthContext.Provider
-      value={{
+      value={useMemo(() => ({
         getInitialAuth,
         isAuth,
         logIn,
         logOut,
-      }}
+      }), [isAuth])}
     >
       {children}
     </AuthContext.Provider>
