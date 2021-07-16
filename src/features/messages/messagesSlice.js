@@ -35,7 +35,7 @@ const messagesSlice = createSlice({
       state.messages = state.messages.concat(action.payload.messages);
     });
     builder.addCase(removeChannel, (state, { payload }) => {
-      state.messages = state.messages.filter((message) => message.id === payload.id);
+      state.messages = state.messages.filter((message) => message.channelId !== payload.channelId);
     });
   },
 });
