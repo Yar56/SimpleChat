@@ -9,7 +9,7 @@ import {
   addChannel,
 } from '../features/channels/channelsSlice.js';
 import { addMessage } from '../features/messages/messagesSlice.js';
-
+import SocketContext from '../contexts/SocketContext.js';
 import createStore from '../store/index.js';
 import App from './App.jsx';
 
@@ -30,12 +30,12 @@ const init = (socket) => {
   socket.on('renameChannel', (response) => {
     store.dispatch(renameChannel({ id: response.id, name: response.name }));
   });
-
   const vdom = (
-
     <Provider store={store}>
       <I18nextProvider i18n={i18nInstance}>
-        <App socket={socket} />
+        <SocketContext.Provider value={socket}>
+          <App />
+        </SocketContext.Provider>
       </I18nextProvider>
     </Provider>
 

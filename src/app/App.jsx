@@ -1,6 +1,7 @@
 import React, {
   useState, useContext, useCallback, useMemo,
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,14 +11,15 @@ import {
 } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
 import getInitialAuth from './getInitialAuth.js';
+import { selectIsOpenedModal, closeModal, selectModalType } from '../features/modals/modalsSlice.js';
+import { selectAllChannels } from '../features/channels/channelsSlice.js';
 
 import Login from '../components/LoginPage.jsx';
 import NotFound from '../components/NotFound.jsx';
 import SignUp from '../components/SignUp.jsx';
 import ChatContainer from '../components/ChatContainer.jsx';
-
+import RenderModal from '../components/RenderModal.jsx';
 import AuthContext from '../contexts/AuthContext.js';
-import SocketContext from '../contexts/SocketContext.js';
 import useAuth from '../hooks/useAuth/index.js';
 
 const AuthProvider = ({ children }) => {
@@ -55,46 +57,60 @@ const AuthButton = () => {
   return null;
 };
 
-const ChatRoute = ({ children, isntanceSocket, path }) => {
+const ChatRoute = ({ children, path }) => {
   const { isAuth } = useAuth();
   return (
     <Route
       path={path}
       render={() => (isAuth
-        ? <SocketContext.Provider value={isntanceSocket}>{children}</SocketContext.Provider>
+        ? children
         : <Redirect to="/login" />
       )}
     />
   );
 };
 
-const App = ({ socket }) => (
-  <AuthProvider>
-    <Router>
-      <div className="d-flex flex-column h-100">
-        <Navbar bg="white" expand="lg" className="shadow-sm">
-          <div className="container">
-            <Navbar.Brand as={Link} to="/" className="navbar-brand">Hexlet Chat</Navbar.Brand>
-            <AuthButton />
-          </div>
-        </Navbar>
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/signup">
-            <SignUp />
-          </Route>
-          <ChatRoute isntanceSocket={socket} exact path="/">
-            <ChatContainer />
-          </ChatRoute>
-          <Route path="*">
-            <NotFound />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
-  </AuthProvider>
-);
+const App = () => {
+  const dispatch = useDispatch();
+  const onHide = () => dispatch(closeModal());
+  const allChannels = useSelector(selectAllChannels);
+  const isOpened = useSelector(selectIsOpenedModal);
+  const typeModal = useSelector(selectModalType);
+
+  return (
+    <AuthProvider>
+      <Router>
+        <div className="d-flex flex-column h-100">
+          <Navbar bg="white" expand="lg" className="shadow-sm">
+            <div className="container">
+              <Navbar.Brand as={Link} to="/" className="navbar-brand">Hexlet Chat</Navbar.Brand>
+              <AuthButton />
+            </div>
+          </Navbar>
+          <Switch>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/signup">
+              <SignUp />
+            </Route>
+            <ChatRoute exact path="/">
+              <ChatContainer />
+            </ChatRoute>
+            <Route path="*">
+              <NotFound />
+            </Route>
+          </Switch>
+          <RenderModal
+            isOpened={isOpened}
+            type={typeModal}
+            onHide={onHide}
+            channels={allChannels}
+          />
+        </div>
+      </Router>
+    </AuthProvider>
+  );
+};
 
 export default App;

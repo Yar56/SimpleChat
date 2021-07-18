@@ -29,9 +29,7 @@ const Rename = (props) => {
     validationSchema: validate,
     onSubmit: ({ body }) => {
       setIsDisabled(true);
-      socket.volatile.emit('renameChannel', { id: channelId, name: body }, withTimeout((response) => {
-        console.log(response);
-
+      socket.volatile.emit('renameChannel', { id: channelId, name: body }, withTimeout(() => {
         setTimeout(() => {
           onHide();
         }, 200);

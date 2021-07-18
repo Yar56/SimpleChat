@@ -1,13 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
-import * as yup from 'yup';
-import { useTranslation } from 'react-i18next';
-import { setInitialState, selectAllChannels, channelsStatus } from '../features/channels/channelsSlice.js';
-import useAuth from '../hooks/useAuth/index.js';
 
-import getModal from '../features/modals/index.js';
-import { selectModalType, selectIsOpenedModal, closeModal } from '../features/modals/modalsSlice.js';
+import { setInitialState, channelsStatus } from '../features/channels/channelsSlice.js';
+import useAuth from '../hooks/useAuth/index.js';
 
 import FeedsList from '../features/channels/ChannelsList.jsx';
 import MessagesTitle from '../features/messages/MessagesTitle.jsx';
@@ -16,41 +12,12 @@ import AddMessageForm from '../features/messages/AddMessageForm.jsx';
 
 const ChatContainer = () => {
   const { getInitialAuth } = useAuth();
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { token } = getInitialAuth();
-  const allChannels = useSelector(selectAllChannels);
+  // const allChannels = useSelector(selectAllChannels);
   const status = useSelector(channelsStatus);
-  const isOpened = useSelector(selectIsOpenedModal);
-  const typeModal = useSelector(selectModalType);
-
-  const renderModal = (isOpen, type) => {
-    if (!isOpen) {
-      return null;
-    }
-    const onHide = () => dispatch(closeModal());
-
-    const validateChannelName = (channels) => {
-      const errorLenght = t('modals.errors.channeNamelLength');
-      const blackListNames = channels.map((channel) => channel.name);
-      return () => {
-        const res = yup.object().shape({
-          body: yup.string().min(3, errorLenght).max(20, errorLenght).notOneOf(blackListNames, t('modals.errors.uniqChannelName')),
-        });
-        return res;
-      };
-    };
-
-    const Component = getModal(type);
-    return (
-      <Component
-        isOpened={isOpened}
-        onHide={onHide}
-        validateChannelName={validateChannelName}
-        allChannels={allChannels}
-      />
-    );
-  };
+  // const isOpened = useSelector(selectIsOpenedModal);
+  // const typeModal = useSelector(selectModalType);
 
   useEffect(() => {
     dispatch(setInitialState(token));
@@ -80,7 +47,6 @@ const ChatContainer = () => {
             </div>
           </div>
         </div>
-        {renderModal(isOpened, typeModal)}
       </>
     );
   }

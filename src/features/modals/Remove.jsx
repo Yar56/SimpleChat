@@ -21,8 +21,6 @@ const Remove = (props) => {
     setIsDisabledButton(true);
     const { channelId } = id;
     socket.volatile.emit('removeChannel', { id: channelId }, withTimeout(() => {
-      console.log('success!');
-
       setTimeout(() => {
         onHide();
       }, 200);

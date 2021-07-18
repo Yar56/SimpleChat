@@ -16,14 +16,15 @@ const Add = (props) => {
   const socket = useSocket();
 
   const {
-    isOpened, onHide, allChannels, validateChannelName,
+    isOpened, onHide, validateChannelName, allChannels,
   } = props;
   const validate = validateChannelName(allChannels);
 
   const f = useFormik({
     initialValues: { body: '' },
     validationSchema: validate,
-    onSubmit: ({ body }) => {
+    onSubmit: ({ body }, { setSubmitting }) => {
+      setSubmitting(true);
       setIsDisabled(true);
       socket.volatile.emit('newChannel', { name: body }, withTimeout(() => {
         setTimeout(() => {
@@ -34,6 +35,7 @@ const Add = (props) => {
         inputRef.current.select();
         console.log('timeout!');
       }, 2000));
+      setSubmitting(false);
     },
     validateOnChange: false,
     validateOnBlur: false,
