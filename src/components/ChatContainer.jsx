@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
-import { setInitialState, selectAllChannels } from '../features/channels/channelsSlice.js';
+import { setInitialState, selectAllChannels, channelsStatus } from '../features/channels/channelsSlice.js';
 import useAuth from '../hooks/useAuth/index.js';
 
 import getModal from '../features/modals/index.js';
@@ -20,7 +20,7 @@ const ChatContainer = () => {
   const dispatch = useDispatch();
   const { token } = getInitialAuth();
   const allChannels = useSelector(selectAllChannels);
-  const channelsStatus = useSelector((state) => state.channelsInfo.status);
+  const status = useSelector(channelsStatus);
   const isOpened = useSelector(selectIsOpenedModal);
   const typeModal = useSelector(selectModalType);
 
@@ -56,14 +56,14 @@ const ChatContainer = () => {
     dispatch(setInitialState(token));
   }, [dispatch, token]);
 
-  if (channelsStatus === 'loading') {
+  if (status === 'loading') {
     return (
       <div className="h-100 d-flex justify-content-center align-items-center">
         <Spinner animation="border" variant="primary" />
       </div>
     );
   }
-  if (channelsStatus === 'succeeded') {
+  if (status === 'succeeded') {
     return (
       <>
         <div className="container h-100 my-4 overflow-hidden rounded shadow">

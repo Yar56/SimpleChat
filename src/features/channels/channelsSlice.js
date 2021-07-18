@@ -62,3 +62,4 @@ export const selectAllChannels = (state) => state.channelsInfo.channels;
 export const selectActiveChannelId = (state) => state.channelsInfo.currentChannelId;
 export const selectChannelById = (state, channelId) => state.channelsInfo
   .channels.find((channel) => channel.id === channelId);
+export const channelsStatus = (state) => state.channelsInfo.status;
