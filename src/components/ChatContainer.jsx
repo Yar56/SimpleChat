@@ -14,10 +14,7 @@ const ChatContainer = () => {
   const { getInitialAuth } = useAuth();
   const dispatch = useDispatch();
   const { token } = getInitialAuth();
-  // const allChannels = useSelector(selectAllChannels);
   const status = useSelector(channelsStatus);
-  // const isOpened = useSelector(selectIsOpenedModal);
-  // const typeModal = useSelector(selectModalType);
 
   useEffect(() => {
     dispatch(setInitialState(token));

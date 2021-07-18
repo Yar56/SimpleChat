@@ -1,6 +1,6 @@
 import React from 'react';
 import * as yup from 'yup';
-import { useTranslation } from 'react-i18next';
+
 import getModal from '../features/modals/index.js';
 
 const RenderModal = ({
@@ -8,12 +8,11 @@ const RenderModal = ({
   type,
   onHide,
   channels,
+  t,
 }) => {
   if (!isOpened) {
     return null;
   }
-  const { t } = useTranslation();
-
   const validateChannelName = (currentChannels) => {
     const errorLenght = t('modals.errors.channeNamelLength');
     const blackListNames = currentChannels.map((channel) => channel.name);

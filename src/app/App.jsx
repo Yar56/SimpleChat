@@ -10,6 +10,7 @@ import {
   Link,
 } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import getInitialAuth from './getInitialAuth.js';
 import { selectIsOpenedModal, closeModal, selectModalType } from '../features/modals/modalsSlice.js';
 import { selectAllChannels } from '../features/channels/channelsSlice.js';
@@ -28,12 +29,12 @@ const AuthProvider = ({ children }) => {
   const logIn = useCallback((authData) => {
     setIsAuth(true);
     localStorage.setItem('user', JSON.stringify(authData));
-  }, [isAuth]);
+  }, []);
 
   const logOut = useCallback(() => {
     localStorage.removeItem('user');
     setIsAuth(false);
-  }, [isAuth]);
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -42,7 +43,7 @@ const AuthProvider = ({ children }) => {
         isAuth,
         logIn,
         logOut,
-      }), [isAuth])}
+      }), [])}
     >
       {children}
     </AuthContext.Provider>
@@ -76,6 +77,7 @@ const App = () => {
   const allChannels = useSelector(selectAllChannels);
   const isOpened = useSelector(selectIsOpenedModal);
   const typeModal = useSelector(selectModalType);
+  const { t } = useTranslation();
 
   return (
     <AuthProvider>
@@ -106,6 +108,7 @@ const App = () => {
             type={typeModal}
             onHide={onHide}
             channels={allChannels}
+            t={t}
           />
         </div>
       </Router>
