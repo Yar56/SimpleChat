@@ -36,7 +36,7 @@ const LoginPage = () => {
         auth.logIn(data);
         history.replace('/');
       } catch (err) {
-        if (err.isAxiosError && err.response && err.response.status === 401) {
+        if (err.isAxiosError && err.response?.status === 401) {
           setLoginError('wrongData');
           inputRef.current.select();
         } else if (err.isAxiosError) {
@@ -95,7 +95,7 @@ const LoginPage = () => {
                   <Form.Label htmlFor="password">
                     Пароль
                   </Form.Label>
-                  {loginError && <Form.Control.Feedback type="invalid" tooltip>{t(`loginForm.errors.${loginError}`)}</Form.Control.Feedback>}
+                  {loginError && <Form.Control.Feedback type="invalid">{t(`loginForm.errors.${loginError}`)}</Form.Control.Feedback>}
                 </Form.Group>
                 <Button disabled={!!formik.isSubmitting} type="submit" className="w-100 mb-3" variant="outline-primary">{t('loginForm.signIn')}</Button>
               </Form>
