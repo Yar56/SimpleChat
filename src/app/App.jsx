@@ -29,12 +29,12 @@ const AuthProvider = ({ children }) => {
   const logIn = useCallback((authData) => {
     setIsAuth(true);
     localStorage.setItem('user', JSON.stringify(authData));
-  }, []);
+  });
 
   const logOut = useCallback(() => {
     localStorage.removeItem('user');
     setIsAuth(false);
-  }, []);
+  });
 
   return (
     <AuthContext.Provider
@@ -43,7 +43,7 @@ const AuthProvider = ({ children }) => {
         isAuth,
         logIn,
         logOut,
-      }), [])}
+      }))}
     >
       {children}
     </AuthContext.Provider>
