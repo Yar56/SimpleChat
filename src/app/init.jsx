@@ -10,10 +10,12 @@ import {
 } from '../features/channels/channelsSlice.js';
 import { addMessage } from '../features/messages/messagesSlice.js';
 
-import store from '../store/index.js';
+import createStore from '../store/index.js';
 import App from './App.jsx';
 
 const init = (socket) => {
+  const store = createStore();
+
   socket.on('newMessage', (message) => {
     store.dispatch(addMessage(message));
   });
