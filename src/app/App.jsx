@@ -24,7 +24,7 @@ import AuthContext from '../contexts/AuthContext.js';
 import useAuth from '../hooks/useAuth/index.js';
 
 const AuthProvider = ({ children }) => {
-  const [isAuth, setIsAuth] = useState(!!getInitialAuth());
+  const [isAuth, setIsAuth] = useState(() => !!getInitialAuth());
 
   const logIn = useCallback((authData) => {
     setIsAuth(true);
