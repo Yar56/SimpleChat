@@ -37,7 +37,7 @@ const SignUp = () => {
       } catch (err) {
         console.log(err.response);
         inputRef.current.select();
-        if (err.isAxiosError && err.response && err.response.status === 409) {
+        if (err.isAxiosError && err.response?.status === 409) {
           setSignUpError('userExists');
           inputRef.current.select();
         } else if (err.isAxiosError) {
