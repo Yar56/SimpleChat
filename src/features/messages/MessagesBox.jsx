@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { selectAllMessages } from './messagesSlice.js';
+import { selectAllMessages, selectCurrentMessagesByChannel } from './messagesSlice.js';
 import { selectActiveChannelId } from '../channels/channelsSlice.js';
 
 const MessagesBox = () => {
   const currentChannelId = useSelector(selectActiveChannelId);
-  const messagesByCurrentChannel = useSelector((state) => state.messagesInfo.messages
-    .filter((message) => message.channelId === currentChannelId));
+
+  const messagesByCurrentChannel = useSelector((state) => (
+    selectCurrentMessagesByChannel(state, currentChannelId)));
 
   const allMessages = useSelector(selectAllMessages);
   const messagesBox = useRef();
