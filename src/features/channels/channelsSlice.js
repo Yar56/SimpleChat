@@ -2,7 +2,7 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import routes from '../../routes.js';
+import routes from '../../api/routes.js';
 
 export const setInitialState = createAsyncThunk('channelsInfo/setInitialState', async (token) => {
   const response = await axios.get(routes.dataPath(), {
@@ -12,11 +12,10 @@ export const setInitialState = createAsyncThunk('channelsInfo/setInitialState', 
   });
   return response.data;
 });
+
 const initialState = {
   channels: [],
   currentChannelId: null,
-  status: 'idle',
-  error: null,
 };
 
 const channelsSlice = createSlice({
@@ -38,12 +37,7 @@ const channelsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(setInitialState.pending, (state) => {
-      state.status = 'loading';
-    });
     builder.addCase(setInitialState.fulfilled, (state, { payload }) => {
-      state.status = 'succeeded';
-
       state.channels = [];
       state.currentChannelId = null;
       state.currentChannelId = payload.currentChannelId;
@@ -62,4 +56,3 @@ export const selectAllChannels = (state) => state.channelsInfo.channels;
 export const selectActiveChannelId = (state) => state.channelsInfo.currentChannelId;
 export const selectChannelById = (state, channelId) => state.channelsInfo
   .channels.find((channel) => channel.id === channelId);
-export const channelsStatus = (state) => state.channelsInfo.status;

@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
-
-import { setInitialState, channelsStatus } from '../features/channels/channelsSlice.js';
+import { setInitialState } from '../features/channels/channelsSlice.js';
 import useAuth from '../hooks/useAuth/index.js';
-
+import { useThunkStatus } from '../store/fetchingStatesSlice.js';
 import FeedsList from '../features/channels/ChannelsList.jsx';
 import MessagesTitle from '../features/messages/MessagesTitle.jsx';
 import MessagesBox from '../features/messages/MessagesBox.jsx';
@@ -14,20 +13,20 @@ const ChatContainer = () => {
   const { getInitialAuth } = useAuth();
   const dispatch = useDispatch();
   const { token } = getInitialAuth();
-  const status = useSelector(channelsStatus);
+  const statusThunk = useThunkStatus(setInitialState);
 
   useEffect(() => {
     dispatch(setInitialState(token));
   }, [dispatch, token]);
 
-  if (status === 'loading') {
+  if (statusThunk.isPending) {
     return (
       <div className="h-100 d-flex justify-content-center align-items-center">
         <Spinner animation="border" variant="primary" />
       </div>
     );
   }
-  if (status === 'succeeded') {
+  if (statusThunk.isSuccess) {
     return (
       <>
         <div className="container h-100 my-4 overflow-hidden rounded shadow">

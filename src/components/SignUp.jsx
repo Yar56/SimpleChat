@@ -12,7 +12,7 @@ import axios from 'axios';
 import imgReg from '../../assets/images/reg.png';
 import useAuth from '../hooks/useAuth/index.js';
 import signUpChema from './validateSignUp.js';
-import routes from '../routes.js';
+import routes from '../api/routes.js';
 
 const SignUp = () => {
   const { t } = useTranslation();
