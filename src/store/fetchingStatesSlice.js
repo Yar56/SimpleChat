@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { createSlice } from '@reduxjs/toolkit';
 import { useMemo } from 'react';
 import { trimStart } from 'lodash';
