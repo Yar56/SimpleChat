@@ -36,15 +36,15 @@ const AuthProvider = ({ children }) => {
     setIsAuth(false);
   }, [setIsAuth]);
 
+  const memoizedAuthContextValue = useMemo(() => ({
+    getInitialAuth,
+    isAuth,
+    logIn,
+    logOut,
+  }), [isAuth, logIn, logOut]);
+
   return (
-    <AuthContext.Provider
-      value={useMemo(() => ({
-        getInitialAuth,
-        isAuth,
-        logIn,
-        logOut,
-      }), [isAuth, logIn, logOut])}
-    >
+    <AuthContext.Provider value={memoizedAuthContextValue}>
       {children}
     </AuthContext.Provider>
   );
