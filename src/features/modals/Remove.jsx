@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import useSocket from '../../hooks/useSocket/index.js';
 
-import { selectExtraModal } from './modalsSlice.js';
+import { selectModalState } from './modalsSlice.js';
 import withTimeout from '../../utils/withTimeout.js';
 
 const Remove = (props) => {
@@ -15,12 +15,12 @@ const Remove = (props) => {
   const [isDisabledButton, setIsDisabledButton] = useState(false);
 
   const socket = useSocket();
-  const removedСhannelId = useSelector(selectExtraModal);
+  const { extra: { channelId } } = useSelector(selectModalState);
 
   const handleDeleteChannel = (id) => () => {
     setIsDisabledButton(true);
-    const { channelId } = id;
-    socket.volatile.emit('removeChannel', { id: channelId }, withTimeout(() => {
+
+    socket.volatile.emit('removeChannel', { id }, withTimeout(() => {
       setTimeout(() => {
         onHide();
       }, 200);
@@ -43,7 +43,7 @@ const Remove = (props) => {
           <Button onClick={onHide} type="button" variant="secondary" className="me-2" disabled={isDisabledButton}>
             {t('modals.buttons.cancel')}
           </Button>
-          <Button onClick={handleDeleteChannel(removedСhannelId)} type="button" variant="danger" disabled={isDisabledButton}>
+          <Button onClick={handleDeleteChannel(channelId)} type="button" variant="danger" disabled={isDisabledButton}>
             {t('modals.buttons.remove')}
           </Button>
         </div>

@@ -7,7 +7,7 @@ import {
 
 import { useFormik } from 'formik';
 import useSocket from '../../hooks/useSocket/index.js';
-import { selectExtraModal } from './modalsSlice.js';
+import { selectModalState } from './modalsSlice.js';
 import { selectChannelById } from '../channels/channelsSlice.js';
 import withTimeout from '../../utils/withTimeout.js';
 
@@ -16,12 +16,14 @@ const Rename = (props) => {
   const inputRef = useRef();
   const [isDisabled, setIsDisabled] = useState(false);
   const socket = useSocket();
-  const { channelId } = useSelector(selectExtraModal);
-  const activeChannel = useSelector((state) => selectChannelById(state, channelId));
+  const { extra: { channelId } } = useSelector(selectModalState);
+
+  const activeChannel = useSelector(selectChannelById);
 
   const {
     isOpened, onHide, validateChannelName, allChannels,
   } = props;
+
   const validate = validateChannelName(allChannels);
 
   const f = useFormik({
@@ -37,7 +39,6 @@ const Rename = (props) => {
       }, () => {
         setIsDisabled(false);
         inputRef.current.select();
-        console.log('timeout!');
       }, 2000));
       setSubmitting(false);
     },

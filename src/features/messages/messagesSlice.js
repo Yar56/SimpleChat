@@ -45,6 +45,7 @@ export const { addMessage } = messagesSlice.actions;
 export default messagesSlice.reducer;
 
 export const selectAllMessages = (state) => state.messagesInfo.messages;
+
 export const selectCurrentMessagesByChannel = (state, currentChannelId) => state
   .messagesInfo.messages.filter((message) => message.channelId === currentChannelId);
 

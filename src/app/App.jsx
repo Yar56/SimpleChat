@@ -1,7 +1,7 @@
 import React, {
   useState, useContext, useCallback, useMemo,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,8 +12,6 @@ import {
 import { Button, Navbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import getInitialAuth from './getInitialAuth.js';
-import { selectIsOpenedModal, closeModal, selectModalType } from '../features/modals/modalsSlice.js';
-import { selectAllChannels } from '../features/channels/channelsSlice.js';
 
 import Login from '../components/LoginPage.jsx';
 import NotFound from '../components/NotFound.jsx';
@@ -72,13 +70,8 @@ const ChatRoute = ({ children, path }) => {
 };
 
 const App = () => {
-  const dispatch = useDispatch();
-  const onHide = () => dispatch(closeModal());
-  const allChannels = useSelector(selectAllChannels);
-  const isOpened = useSelector(selectIsOpenedModal);
-  const typeModal = useSelector(selectModalType);
   const { t } = useTranslation();
-
+  console.log('render');
   return (
     <AuthProvider>
       <Router>
@@ -103,13 +96,7 @@ const App = () => {
               <NotFound />
             </Route>
           </Switch>
-          <RenderModal
-            isOpened={isOpened}
-            type={typeModal}
-            onHide={onHide}
-            channels={allChannels}
-            t={t}
-          />
+          <RenderModal t={t} />
         </div>
       </Router>
     </AuthProvider>

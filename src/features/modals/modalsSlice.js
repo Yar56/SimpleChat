@@ -30,6 +30,7 @@ export default modalSlice.reducer;
 
 export const { openModal, closeModal } = modalSlice.actions;
 
-export const selectModalType = (state) => state.modal.type;
-export const selectIsOpenedModal = (state) => state.modal.isOpened;
-export const selectExtraModal = (state) => state.modal.extra;
+// export const selectModalType = (state) => state.modal.type;
+// export const selectIsOpenedModal = (state) => state.modal.isOpened;
+export const selectModalState = (state) => state.modal;
+// export const selectExtraModal = (state) => state.modal.extra;

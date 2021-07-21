@@ -8,7 +8,7 @@ const MessagesTitle = () => {
   const { t } = useTranslation();
   const activeChannelId = useSelector(selectActiveChannelId);
 
-  const currentChannel = useSelector((state) => selectChannelById(state, activeChannelId));
+  const currentChannel = useSelector(selectChannelById);
 
   const messagesCount = useSelector((state) => selectMessagesCount(state, activeChannelId));
 

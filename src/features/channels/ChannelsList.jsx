@@ -21,7 +21,6 @@ const ChannelsList = () => {
 
   const handleChangeChannel = (id) => (e) => {
     if (e.target.id) {
-      console.log('dropdown!');
       return;
     }
     if (!e.target.id) {

@@ -1,18 +1,21 @@
 import React from 'react';
 import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
 
 import getModal from '../features/modals/index.js';
+import { closeModal, selectModalState } from '../features/modals/modalsSlice.js';
+import { selectAllChannels } from '../features/channels/channelsSlice.js';
 
-const RenderModal = ({
-  isOpened,
-  type,
-  onHide,
-  channels,
-  t,
-}) => {
+const RenderModal = ({ t }) => {
+  const dispatch = useDispatch();
+  const onHide = () => dispatch(closeModal());
+  const allChannels = useSelector(selectAllChannels);
+  const { isOpened, type } = useSelector(selectModalState);
+
   if (!isOpened) {
     return null;
   }
+
   const validateChannelName = (currentChannels) => {
     const errorLenght = t('modals.errors.channeNamelLength');
     const blackListNames = currentChannels.map((channel) => channel.name);
@@ -30,7 +33,7 @@ const RenderModal = ({
       isOpened={isOpened}
       onHide={onHide}
       validateChannelName={validateChannelName}
-      allChannels={channels}
+      allChannels={allChannels}
     />
   );
 };
