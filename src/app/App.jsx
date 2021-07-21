@@ -71,7 +71,6 @@ const ChatRoute = ({ children, path }) => {
 
 const App = () => {
   const { t } = useTranslation();
-  console.log('render');
   return (
     <AuthProvider>
       <Router>
