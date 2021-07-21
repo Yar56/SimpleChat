@@ -24,24 +24,24 @@ import AuthContext from '../contexts/AuthContext.js';
 import useAuth from '../hooks/useAuth/index.js';
 
 const AuthProvider = ({ children }) => {
-  const [isAuth, setIsAuth] = useState(() => !!getInitialAuth());
+  const [user, setUser] = useState(() => (getInitialAuth()));
 
   const logIn = useCallback((authData) => {
-    setIsAuth(true);
     localStorage.setItem('user', JSON.stringify(authData));
-  }, [setIsAuth]);
+    setUser(authData);
+  }, [setUser]);
 
   const logOut = useCallback(() => {
     localStorage.removeItem('user');
-    setIsAuth(false);
-  }, [setIsAuth]);
+    setUser(null);
+  }, [setUser]);
 
   const memoizedAuthContextValue = useMemo(() => ({
     getInitialAuth,
-    isAuth,
+    user,
     logIn,
     logOut,
-  }), [isAuth, logIn, logOut]);
+  }), [user, logIn, logOut]);
 
   return (
     <AuthContext.Provider value={memoizedAuthContextValue}>
@@ -51,19 +51,19 @@ const AuthProvider = ({ children }) => {
 };
 
 const AuthButton = () => {
-  const { isAuth, logOut } = useContext(AuthContext);
-  if (isAuth) {
+  const { user, logOut } = useContext(AuthContext);
+  if (user) {
     return <Button onClick={logOut}>Выйти</Button>;
   }
   return null;
 };
 
 const ChatRoute = ({ children, path }) => {
-  const { isAuth } = useAuth();
+  const { user } = useAuth();
   return (
     <Route
       path={path}
-      render={() => (isAuth
+      render={() => (user
         ? children
         : <Redirect to="/login" />
       )}

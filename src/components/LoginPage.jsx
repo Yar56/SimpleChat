@@ -16,6 +16,7 @@ import imgLogin from '../../assets/images/login.png';
 const LoginPage = () => {
   const { t } = useTranslation();
   const auth = useAuth();
+
   const inputRef = useRef();
   const history = useHistory();
   const [loginError, setLoginError] = useState(null);

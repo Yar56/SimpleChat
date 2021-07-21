@@ -10,9 +10,9 @@ import MessagesBox from '../features/messages/MessagesBox.jsx';
 import AddMessageForm from '../features/messages/AddMessageForm.jsx';
 
 const ChatContainer = () => {
-  const { getInitialAuth } = useAuth();
+  const { user: { token } } = useAuth();
   const dispatch = useDispatch();
-  const { token } = getInitialAuth();
+
   const statusThunk = useThunkStatus(setInitialState);
 
   useEffect(() => {
