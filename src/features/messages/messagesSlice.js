@@ -46,17 +46,8 @@ export default messagesSlice.reducer;
 
 export const selectAllMessages = (state) => state.messagesInfo.messages;
 
-// export const selectCurrentMessagesByChannel = (state, currentChannelId) => state
-//   .messagesInfo.messages.filter((message) => message.channelId === currentChannelId);
-
 export const selectCurrentMessagesByChannel = createSelector(
   [selectAllMessages, selectActiveChannelId],
   (messages, currentChannelId) => messages
     .filter((message) => message.channelId === currentChannelId),
-);
-
-export const selectMessagesCount = createSelector(
-  [selectAllMessages, selectActiveChannelId],
-  (messages, currentChannelId) => messages
-    .filter((message) => message.channelId === currentChannelId).length,
 );

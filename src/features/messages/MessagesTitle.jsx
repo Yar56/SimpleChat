@@ -2,12 +2,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { selectChannelById } from '../channels/channelsSlice.js';
-import { selectMessagesCount } from './messagesSlice.js';
+import { selectCurrentMessagesByChannel } from './messagesSlice.js';
 
 const MessagesTitle = () => {
   const { t } = useTranslation();
   const currentChannel = useSelector(selectChannelById);
-  const messagesCount = useSelector(selectMessagesCount);
+  const messagesCount = useSelector(selectCurrentMessagesByChannel).length;
 
   if (!currentChannel) {
     return null;
