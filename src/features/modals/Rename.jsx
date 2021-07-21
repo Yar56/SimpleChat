@@ -20,14 +20,15 @@ const Rename = (props) => {
   const activeChannel = useSelector((state) => selectChannelById(state, channelId));
 
   const {
-    isOpened, onHide, allChannels, validateChannelName,
+    isOpened, onHide, validateChannelName, allChannels,
   } = props;
   const validate = validateChannelName(allChannels);
 
   const f = useFormik({
     initialValues: { body: '' },
     validationSchema: validate,
-    onSubmit: ({ body }) => {
+    onSubmit: ({ body }, { setSubmitting }) => {
+      setSubmitting(true);
       setIsDisabled(true);
       socket.volatile.emit('renameChannel', { id: channelId, name: body }, withTimeout(() => {
         setTimeout(() => {
@@ -38,12 +39,14 @@ const Rename = (props) => {
         inputRef.current.select();
         console.log('timeout!');
       }, 2000));
+      setSubmitting(false);
     },
     validateOnChange: false,
     validateOnBlur: false,
   });
 
   useEffect(() => {
+    f.values.body = activeChannel.name;
     inputRef.current.value = activeChannel.name;
     inputRef.current.select();
   }, [activeChannel.name]);
