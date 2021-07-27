@@ -22,7 +22,7 @@ import AuthContext from '../contexts/AuthContext.js';
 import useAuth from '../hooks/useAuth/index.js';
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => (getInitialAuth()));
+  const [user, setUser] = useState(getInitialAuth);
 
   const logIn = useCallback((authData) => {
     localStorage.setItem('user', JSON.stringify(authData));
@@ -35,7 +35,6 @@ const AuthProvider = ({ children }) => {
   }, [setUser]);
 
   const memoizedAuthContextValue = useMemo(() => ({
-    getInitialAuth,
     user,
     logIn,
     logOut,
