@@ -26,6 +26,7 @@ const Add = (props) => {
     onSubmit: ({ body }, { setSubmitting }) => {
       setSubmitting(true);
       setIsDisabled(true);
+
       const chanell = { name: body };
       const timeout = withTimeout(() => {
         setTimeout(() => {
@@ -34,18 +35,9 @@ const Add = (props) => {
       }, () => {
         setIsDisabled(false);
         inputRef.current.select();
-        console.log('timeout!');
       }, 2000);
       socket.newChannel(chanell, timeout);
-      // socket.volatile.emit('newChannel', { name: body }, withTimeout(() => {
-      //   setTimeout(() => {
-      //     onHide();
-      //   }, 200);
-      // }, () => {
-      //   setIsDisabled(false);
-      //   inputRef.current.select();
-      //   console.log('timeout!');
-      // }, 2000));
+
       setSubmitting(false);
     },
     validateOnChange: false,

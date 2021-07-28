@@ -9,7 +9,7 @@ import {
   addChannel,
 } from '../features/channels/channelsSlice.js';
 import { addMessage } from '../features/messages/messagesSlice.js';
-// import SocketContext from '../contexts/SocketContext.js';
+
 import SocketProvider from './sockerProvider.jsx';
 import createStore from '../store/index.js';
 import App from './App.jsx';
