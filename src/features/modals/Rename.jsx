@@ -32,14 +32,18 @@ const Rename = (props) => {
     onSubmit: ({ body }, { setSubmitting }) => {
       setSubmitting(true);
       setIsDisabled(true);
-      socket.volatile.emit('renameChannel', { id: channelId, name: body }, withTimeout(() => {
+
+      const channelName = { id: channelId, name: body };
+      const timeout = withTimeout(() => {
         setTimeout(() => {
           onHide();
         }, 200);
       }, () => {
         setIsDisabled(false);
         inputRef.current.select();
-      }, 2000));
+      }, 2000);
+      socket.changeChannelName(channelName, timeout);
+
       setSubmitting(false);
     },
     validateOnChange: false,

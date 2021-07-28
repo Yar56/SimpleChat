@@ -9,7 +9,8 @@ import {
   addChannel,
 } from '../features/channels/channelsSlice.js';
 import { addMessage } from '../features/messages/messagesSlice.js';
-import SocketContext from '../contexts/SocketContext.js';
+// import SocketContext from '../contexts/SocketContext.js';
+import SocketProvider from './sockerProvider.jsx';
 import createStore from '../store/index.js';
 import App from './App.jsx';
 
@@ -31,12 +32,32 @@ const init = async (socket) => {
   socket.on('renameChannel', (response) => {
     store.dispatch(renameChannel({ id: response.id, name: response.name }));
   });
+
+  const newMessage = (msg, timeout) => {
+    socket.volatile.emit('newMessage', msg, timeout);
+  };
+  const newChannel = (channel, timeout) => {
+    socket.volatile.emit('newChannel', channel, timeout);
+  };
+
+  const deleteChannel = (id, timeout) => {
+    socket.volatile.emit('removeChannel', id, timeout);
+  };
+  const changeChannelName = (name, timeout) => {
+    socket.volatile.emit('renameChannel', name, timeout);
+  };
+
   const vdom = (
     <Provider store={store}>
       <I18nextProvider i18n={i18nInstance}>
-        <SocketContext.Provider value={socket}>
+        <SocketProvider
+          newMessage={newMessage}
+          newChannel={newChannel}
+          deleteChannel={deleteChannel}
+          changeChannelName={changeChannelName}
+        >
           <App />
-        </SocketContext.Provider>
+        </SocketProvider>
       </I18nextProvider>
     </Provider>
 

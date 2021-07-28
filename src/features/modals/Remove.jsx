@@ -19,15 +19,15 @@ const Remove = (props) => {
 
   const handleDeleteChannel = (id) => () => {
     setIsDisabledButton(true);
-
-    socket.volatile.emit('removeChannel', { id }, withTimeout(() => {
+    const chnlId = { id };
+    const timeout = withTimeout(() => {
       setTimeout(() => {
         onHide();
       }, 200);
     }, () => {
       setIsDisabledButton(false);
-      console.log('timeout!');
-    }, 2000));
+    }, 2000);
+    socket.deleteChannel(chnlId, timeout);
   };
 
   return (

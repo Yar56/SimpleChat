@@ -22,17 +22,18 @@ const AddMessageForm = () => {
     },
     onSubmit: ({ message }, { setSubmitting }) => {
       setSubmitting(true);
-      socket.volatile.emit('newMessage', { body: message, channelId: currentChannelId, username }, withTimeout(() => {
+
+      const msg = { body: message, channelId: currentChannelId, username };
+      const timeout = withTimeout(() => {
         formik.resetForm();
         input.current.focus();
       }, () => {
         input.current.focus();
         console.log('timeout!');
-      }, 2000));
+      }, 2000);
+      socket.newMessage(msg, timeout);
+
       setSubmitting(false);
-    },
-    onChange: (values) => {
-      console.log(values);
     },
   });
   useEffect(() => {
