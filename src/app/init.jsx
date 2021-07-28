@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
-import i18nInstance from './i18n.js';
+import getI18nInstance from './i18n.js';
 import {
   setActiveChannel,
   removeChannel,
@@ -13,8 +13,9 @@ import SocketContext from '../contexts/SocketContext.js';
 import createStore from '../store/index.js';
 import App from './App.jsx';
 
-const init = (socket) => {
+const init = async (socket) => {
   const store = createStore();
+  const i18nInstance = await getI18nInstance();
 
   socket.on('newMessage', (message) => {
     store.dispatch(addMessage(message));

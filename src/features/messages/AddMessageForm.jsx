@@ -12,7 +12,7 @@ import withTimeout from '../../utils/withTimeout.js';
 
 const AddMessageForm = () => {
   const socket = useSocket();
-  const { username } = useAuth();
+  const { user: { username } } = useAuth();
   const input = useRef();
   const currentChannelId = useSelector(selectActiveChannelId);
 
