@@ -4,14 +4,13 @@ import { useTranslation } from 'react-i18next';
 import {
   Modal, Button,
 } from 'react-bootstrap';
-import useSocket from '../../hooks/useSocket/index.js';
+import useSocket from '../../hooks/useSocket.js';
 
 import { selectModalState } from './modalsSlice.js';
 import withTimeout from '../../utils/withTimeout.js';
 
-const Remove = (props) => {
+const Remove = ({ isOpened, onHide }) => {
   const { t } = useTranslation();
-  const { onHide, isOpened } = props;
   const [isDisabledButton, setIsDisabledButton] = useState(false);
 
   const socket = useSocket();

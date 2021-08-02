@@ -6,25 +6,24 @@ import {
 } from 'react-bootstrap';
 
 import { useFormik } from 'formik';
-import useSocket from '../../hooks/useSocket/index.js';
+import validateChannelName from '../../components/validateChannelName.js';
+import useSocket from '../../hooks/useSocket.js';
 import { selectModalState } from './modalsSlice.js';
-import { selectChannelById } from '../channels/channelsSlice.js';
+import { selectChannelById, selectAllChannels } from '../channels/channelsSlice.js';
 import withTimeout from '../../utils/withTimeout.js';
 
-const Rename = (props) => {
+const Rename = ({ isOpened, onHide }) => {
   const { t } = useTranslation();
   const inputRef = useRef();
+  const allChannels = useSelector(selectAllChannels);
+
   const [isDisabled, setIsDisabled] = useState(false);
   const socket = useSocket();
   const { extra: { channelId } } = useSelector(selectModalState);
 
   const activeChannel = useSelector(selectChannelById);
 
-  const {
-    isOpened, onHide, validateChannelName, allChannels,
-  } = props;
-
-  const validate = validateChannelName(allChannels);
+  const validate = validateChannelName(allChannels, t);
 
   const f = useFormik({
     initialValues: { body: '' },

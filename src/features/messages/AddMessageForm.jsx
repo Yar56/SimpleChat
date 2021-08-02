@@ -5,10 +5,10 @@ import {
 } from 'react-bootstrap';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useSelector } from 'react-redux';
-import useSocket from '../../hooks/useSocket/index.js';
-import useAuth from '../../hooks/useAuth/index.js';
+import useSocket from '../../hooks/useSocket.js';
+import useAuth from '../../hooks/useAuth.js';
 import { selectActiveChannelId } from '../channels/channelsSlice.js';
-import withTimeout from '../../utils/withTimeout.js';
+// import withTimeout from '../../utils/withTimeout.js';
 
 const AddMessageForm = () => {
   const socket = useSocket();
@@ -20,20 +20,26 @@ const AddMessageForm = () => {
     initialValues: {
       message: '',
     },
-    onSubmit: ({ message }, { setSubmitting }) => {
-      setSubmitting(true);
-
+    onSubmit: async ({ message }) => {
       const msg = { body: message, channelId: currentChannelId, username };
-      const timeout = withTimeout(() => {
+      try {
+        await socket.newMessage(msg);
         formik.resetForm();
-        input.current.focus();
-      }, () => {
-        input.current.focus();
-        console.log('timeout!');
-      }, 2000);
-      socket.newMessage(msg, timeout);
+      } catch (e) {
+        input.current.disabled = true;
+        console.error(e);
+      }
+      input.current.focus();
 
-      setSubmitting(false);
+      // const timeout = withTimeout(() => {
+      //   formik.resetForm();
+      //   input.current.focus();
+      // }, () => {
+      //   input.current.focus();
+      //   console.log('timeout!');
+      // }, 2000);
+
+      // await socket.newMessage(msg, timeout);
     },
   });
   useEffect(() => {

@@ -1,19 +1,10 @@
-const withTimeout = (onSuccess, onTimeout, timeout) => {
+const withTimeout = (timeout, response) => {
   // eslint-disable-next-line functional/no-let
-  let called = false;
-
-  const timer = setTimeout(() => {
-    if (called) return;
-    called = true;
-    onTimeout();
-  }, timeout);
-
-  return (...args) => {
-    if (called) return;
-    called = true;
-    clearTimeout(timer);
-    // eslint-disable-next-line functional/no-this-expression
-    onSuccess.apply(this, args);
-  };
+  const called = !!response.status;
+  console.log(called);
+  return new Promise((resolve, reject) => {
+    if (!called) reject(new Error('netWork Error'));
+    else resolve(response);
+  });
 };
 export default withTimeout;

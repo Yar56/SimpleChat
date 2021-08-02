@@ -9,6 +9,7 @@ import {
   addChannel,
 } from '../features/channels/channelsSlice.js';
 import { addMessage } from '../features/messages/messagesSlice.js';
+import withTimeout from '../utils/withTimeout.js';
 
 import SocketProvider from './sockerProvider.jsx';
 import createStore from '../store/index.js';
@@ -33,18 +34,20 @@ const init = async (socket) => {
     store.dispatch(renameChannel({ id: response.id, name: response.name }));
   });
 
-  const newMessage = (msg, timeout) => {
-    socket.volatile.emit('newMessage', msg, timeout);
+  const newMessage = (msg) => {
+    socket.volatile.emit('newMessage', msg, (response) => {
+      withTimeout(2000, response).then((res) => console.log(res));
+    });
   };
-  const newChannel = (channel, timeout) => {
-    socket.volatile.emit('newChannel', channel, timeout);
+  const newChannel = (channel) => {
+    socket.volatile.emit('newChannel', channel);
   };
 
-  const deleteChannel = (id, timeout) => {
-    socket.volatile.emit('removeChannel', id, timeout);
+  const deleteChannel = (id) => {
+    socket.volatile.emit('removeChannel', id);
   };
-  const changeChannelName = (name, timeout) => {
-    socket.volatile.emit('renameChannel', name, timeout);
+  const changeChannelName = (name) => {
+    socket.volatile.emit('renameChannel', name);
   };
 
   const vdom = (

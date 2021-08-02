@@ -3,22 +3,23 @@ import { useTranslation } from 'react-i18next';
 import {
   Modal, FormGroup, FormControl, Button, Form,
 } from 'react-bootstrap';
-
+import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
-import useSocket from '../../hooks/useSocket/index.js';
 
+import useSocket from '../../hooks/useSocket.js';
+import validateChannelName from '../../components/validateChannelName.js';
 import withTimeout from '../../utils/withTimeout.js';
+import { selectAllChannels } from '../channels/channelsSlice.js';
 
-const Add = (props) => {
+const Add = ({ isOpened, onHide }) => {
   const { t } = useTranslation();
   const inputRef = useRef();
+  const allChannels = useSelector(selectAllChannels);
+
   const [isDisabled, setIsDisabled] = useState(false);
   const socket = useSocket();
 
-  const {
-    isOpened, onHide, validateChannelName, allChannels,
-  } = props;
-  const validate = validateChannelName(allChannels);
+  const validate = validateChannelName(allChannels, t);
 
   const f = useFormik({
     initialValues: { body: '' },

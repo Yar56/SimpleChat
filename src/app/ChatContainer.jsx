@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 import { setInitialState } from '../features/channels/channelsSlice.js';
-import useAuth from '../hooks/useAuth/index.js';
+import useAuth from '../hooks/useAuth.js';
 import { useThunkStatus } from '../store/fetchingStatesSlice.js';
 import FeedsList from '../features/channels/ChannelsList.jsx';
 import MessagesTitle from '../features/messages/MessagesTitle.jsx';
