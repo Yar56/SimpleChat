@@ -8,7 +8,6 @@ import { useFormik } from 'formik';
 
 import useSocket from '../../hooks/useSocket.js';
 import validateChannelName from '../../components/validateChannelName.js';
-import withTimeout from '../../utils/withTimeout.js';
 import { selectAllChannels } from '../channels/channelsSlice.js';
 
 const Add = ({ isOpened, onHide }) => {
@@ -21,25 +20,21 @@ const Add = ({ isOpened, onHide }) => {
 
   const validate = validateChannelName(allChannels, t);
 
-  const f = useFormik({
+  const formik = useFormik({
     initialValues: { body: '' },
     validationSchema: validate,
-    onSubmit: ({ body }, { setSubmitting }) => {
-      setSubmitting(true);
+    onSubmit: async ({ body }) => {
       setIsDisabled(true);
 
       const chanell = { name: body };
-      const timeout = withTimeout(() => {
-        setTimeout(() => {
-          onHide();
-        }, 200);
-      }, () => {
+      try {
+        await socket.newChannel(chanell);
+        onHide();
+      } catch (e) {
         setIsDisabled(false);
         inputRef.current.select();
-      }, 2000);
-      socket.newChannel(chanell, timeout);
-
-      setSubmitting(false);
+        console.error(e);
+      }
     },
     validateOnChange: false,
     validateOnBlur: false,
@@ -57,20 +52,20 @@ const Add = ({ isOpened, onHide }) => {
       </Modal.Header>
 
       <Modal.Body>
-        <Form onSubmit={f.handleSubmit}>
+        <Form onSubmit={formik.handleSubmit}>
           <FormGroup>
             <FormControl
               required
               ref={inputRef}
-              onChange={f.handleChange}
-              value={f.values.body}
+              onChange={formik.handleChange}
+              value={formik.values.body}
               data-testid="add-channel"
               name="body"
               className="mb-2"
-              isInvalid={!!f.errors.body}
+              isInvalid={!!formik.errors.body}
               disabled={isDisabled}
             />
-            <Form.Control.Feedback type="invalid">{f.errors.body}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{formik.errors.body}</Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button onClick={onHide} type="button" variant="secondary" className="me-2">
                 {t('modals.buttons.cancel')}

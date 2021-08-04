@@ -7,7 +7,6 @@ import {
 import useSocket from '../../hooks/useSocket.js';
 
 import { selectModalState } from './modalsSlice.js';
-import withTimeout from '../../utils/withTimeout.js';
 
 const Remove = ({ isOpened, onHide }) => {
   const { t } = useTranslation();
@@ -16,17 +15,17 @@ const Remove = ({ isOpened, onHide }) => {
   const socket = useSocket();
   const { extra: { channelId } } = useSelector(selectModalState);
 
-  const handleDeleteChannel = (id) => () => {
+  const handleDeleteChannel = (id) => async () => {
     setIsDisabledButton(true);
+
     const chnlId = { id };
-    const timeout = withTimeout(() => {
-      setTimeout(() => {
-        onHide();
-      }, 200);
-    }, () => {
+    try {
+      await socket.deleteChannel(chnlId);
+      onHide();
+    } catch (e) {
       setIsDisabledButton(false);
-    }, 2000);
-    socket.deleteChannel(chnlId, timeout);
+      console.error(e);
+    }
   };
 
   return (

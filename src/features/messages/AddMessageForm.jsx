@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import useSocket from '../../hooks/useSocket.js';
 import useAuth from '../../hooks/useAuth.js';
 import { selectActiveChannelId } from '../channels/channelsSlice.js';
-// import withTimeout from '../../utils/withTimeout.js';
 
 const AddMessageForm = () => {
   const socket = useSocket();
@@ -26,22 +25,12 @@ const AddMessageForm = () => {
         await socket.newMessage(msg);
         formik.resetForm();
       } catch (e) {
-        input.current.disabled = true;
         console.error(e);
       }
       input.current.focus();
-
-      // const timeout = withTimeout(() => {
-      //   formik.resetForm();
-      //   input.current.focus();
-      // }, () => {
-      //   input.current.focus();
-      //   console.log('timeout!');
-      // }, 2000);
-
-      // await socket.newMessage(msg, timeout);
     },
   });
+
   useEffect(() => {
     input.current.focus();
   }, []);

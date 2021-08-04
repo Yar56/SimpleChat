@@ -9,7 +9,6 @@ import {
   addChannel,
 } from '../features/channels/channelsSlice.js';
 import { addMessage } from '../features/messages/messagesSlice.js';
-import withTimeout from '../utils/withTimeout.js';
 
 import SocketProvider from './sockerProvider.jsx';
 import createStore from '../store/index.js';
@@ -34,30 +33,28 @@ const init = async (socket) => {
     store.dispatch(renameChannel({ id: response.id, name: response.name }));
   });
 
-  const newMessage = (msg) => {
-    socket.volatile.emit('newMessage', msg, (response) => {
-      withTimeout(2000, response).then((res) => console.log(res));
+  const withAcknowledgement = (cb) => (msg) => new Promise((resolve, reject) => {
+    cb(msg, (response) => {
+      if (!response) reject(new Error('Network Error'));
+      else resolve(response);
     });
-  };
-  const newChannel = (channel) => {
-    socket.volatile.emit('newChannel', channel);
-  };
+  });
 
-  const deleteChannel = (id) => {
-    socket.volatile.emit('removeChannel', id);
-  };
-  const changeChannelName = (name) => {
-    socket.volatile.emit('renameChannel', name);
+  const api = {
+    sendMessage: withAcknowledgement((...args) => socket.volatile.emit('newMessage', ...args)),
+    createChannel: withAcknowledgement((...args) => socket.volatile.emit('newChannel', ...args)),
+    renameChannel: withAcknowledgement((...args) => socket.volatile.emit('renameChannel', ...args)),
+    removeChannel: withAcknowledgement((...args) => socket.volatile.emit('removeChannel', ...args)),
   };
 
   const vdom = (
     <Provider store={store}>
       <I18nextProvider i18n={i18nInstance}>
         <SocketProvider
-          newMessage={newMessage}
-          newChannel={newChannel}
-          deleteChannel={deleteChannel}
-          changeChannelName={changeChannelName}
+          newMessage={api.sendMessage}
+          newChannel={api.createChannel}
+          deleteChannel={api.removeChannel}
+          changeChannelName={api.renameChannel}
         >
           <App />
         </SocketProvider>
