@@ -10,7 +10,7 @@ import {
   Link,
 } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
-// import { useTranslation } from 'react-i18next';
+import routes from '../api/routes.js';
 import getInitialAuth from './getInitialAuth.js';
 
 import Login from '../components/LoginPage.jsx';
@@ -79,16 +79,16 @@ const App = () => (
           </div>
         </Navbar>
         <Switch>
-          <Route path="/login">
+          <Route path={routes.loginPage}>
             <Login />
           </Route>
-          <Route path="/signup">
+          <Route path={routes.signUpPage}>
             <SignUp />
           </Route>
-          <ChatRoute exact path="/">
+          <ChatRoute exact path={routes.chatPage}>
             <ChatContainer />
           </ChatRoute>
-          <Route path="*">
+          <Route path={routes.notFoundPage}>
             <NotFound />
           </Route>
         </Switch>
