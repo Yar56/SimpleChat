@@ -1,84 +1,11 @@
-import React, { } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import classNames from 'classnames';
-import {
-  Nav, Button, ButtonGroup, Dropdown,
-} from 'react-bootstrap';
+import React from 'react';
 import { PlusSquare } from 'react-bootstrap-icons';
-
-import {
-  selectAllChannels,
-  selectActiveChannelId,
-  setActiveChannel,
-} from './channelsSlice.js';
-
+import { useDispatch } from 'react-redux';
 import { openModal } from '../modals/modalsSlice.js';
+import List from './List.jsx';
 
 const ChannelsList = () => {
-  const channels = useSelector(selectAllChannels);
-  const activeChannelId = useSelector(selectActiveChannelId);
   const dispatch = useDispatch();
-
-  const handleChangeChannel = (id) => (e) => {
-    if (e.target.id) {
-      return;
-    }
-    if (!e.target.id) {
-      dispatch(setActiveChannel({ id }));
-    }
-  };
-  const createButton = (channelName, style) => (
-    <Button type="button" variant="" className={style}>
-      <span className="me-1">#</span>
-      {channelName}
-    </Button>
-  );
-
-  const renderChannels = channels.map((channel) => {
-    const channelButtonStyle = classNames('w-100 rounded-0 shadow-none text-start', {
-      'text-truncate': channel.removable,
-      'btn-secondary': (channel.id === activeChannelId),
-    });
-    const toggleButtonStyle = classNames('flex-grow-0', {
-      'btn-secondary': (channel.id === activeChannelId),
-    });
-    const withDropDown = (
-      <Dropdown as={ButtonGroup} className="d-flex">
-        {createButton(channel.name, channelButtonStyle)}
-
-        <Dropdown.Toggle split variant="" id="dropdown-split-basic" className={toggleButtonStyle} />
-        <Dropdown.Menu>
-          <Dropdown.Item
-            active={false}
-            href="#"
-            onClick={() => dispatch(openModal({ type: 'removeChannel', extra: { channelId: channel.id } }))}
-          >
-            Удалить
-          </Dropdown.Item>
-          <Dropdown.Item
-            active={false}
-            href="#"
-            onClick={() => dispatch(openModal({ type: 'renameChannel', extra: { channelId: channel.id } }))}
-          >
-            Переименовать
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    );
-    const withoutDropDown = (
-      <Button type="button" variant="" className={channelButtonStyle}>
-        <span className="me-1">#</span>
-        {channel.name}
-      </Button>
-    );
-
-    return (
-      <Nav.Item as="li" className="w-100" key={channel.id} onClick={handleChangeChannel(channel.id)}>
-        {channel.removable === false ? withoutDropDown : withDropDown}
-      </Nav.Item>
-    );
-  });
-
   return (
     <>
       <div className="d-flex justify-content-between mb-2 px-4 pe-2">
@@ -88,9 +15,7 @@ const ChannelsList = () => {
           <span className="visually-hidden">+</span>
         </button>
       </div>
-      <Nav as="ul" fill variant="pills" className="flex-column px-2">
-        {renderChannels}
-      </Nav>
+      <List />
     </>
   );
 };
