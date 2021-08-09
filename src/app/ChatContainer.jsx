@@ -16,8 +16,9 @@ const ChatContainer = () => {
   const statusThunk = useThunkStatus(setInitialState);
 
   useEffect(() => {
+    console.log(token);
     dispatch(setInitialState(token));
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
