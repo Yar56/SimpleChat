@@ -57,7 +57,7 @@ const init = async (socket) => {
       resolve(response);
     }, () => {
       reject(new Error('Network Error'));
-    }, 2000));
+    }, 1000));
   });
 
   const api = {

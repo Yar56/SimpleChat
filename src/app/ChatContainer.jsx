@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 import { setInitialState } from '../features/channels/channelsSlice.js';
@@ -15,12 +15,8 @@ const ChatContainer = () => {
 
   const statusThunk = useThunkStatus(setInitialState);
 
-  useEffect(() => {
-    console.log(token);
-    const fetchData = () => {
-      dispatch(setInitialState(token));
-    };
-    fetchData();
+  useLayoutEffect(() => {
+    dispatch(setInitialState(token));
   }, []);
 
   // return (
