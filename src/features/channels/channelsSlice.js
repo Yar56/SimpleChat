@@ -10,6 +10,7 @@ export const setInitialState = createAsyncThunk('channelsInfo/setInitialState', 
       Authorization: `Bearer ${token}`,
     },
   });
+  console.log(response.data);
   return response.data;
 });
 

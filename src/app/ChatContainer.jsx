@@ -17,7 +17,7 @@ const ChatContainer = () => {
 
   useEffect(() => {
     dispatch(setInitialState(token));
-  }, []);
+  }, [dispatch]);
 
   if (statusThunk.isPending) {
     return (
