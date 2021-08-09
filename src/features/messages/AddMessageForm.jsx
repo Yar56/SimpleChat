@@ -28,6 +28,7 @@ const AddMessageForm = () => {
         input.current.disabled = true;
         console.error(e);
       }
+      input.current.disabled = false;
       input.current.focus();
     },
   });
