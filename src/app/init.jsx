@@ -33,11 +33,32 @@ const init = async (socket) => {
     store.dispatch(renameChannel({ id: response.id, name: response.name }));
   });
 
+  const withTimeout = (onSuccess, onTimeout, timeout) => {
+    // eslint-disable-next-line functional/no-let
+    let called = false;
+
+    const timer = setTimeout(() => {
+      if (called) return;
+      called = true;
+      onTimeout();
+    }, timeout);
+
+    return (...args) => {
+      if (called) return;
+      called = true;
+      clearTimeout(timer);
+      // eslint-disable-next-line functional/no-this-expression
+      onSuccess.apply(this, args);
+    };
+  };
+
   const withAcknowledgement = (cb) => (msg) => new Promise((resolve, reject) => {
-    cb(msg, (response) => {
-      if (!response) reject(new Error('Network Error'));
-      else resolve(response);
-    });
+    cb(msg, withTimeout((response) => {
+      console.log(response);
+      resolve(response);
+    }, () => {
+      reject(new Error('Network Error'));
+    }, 2000));
   });
 
   const api = {

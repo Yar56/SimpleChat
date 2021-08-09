@@ -25,6 +25,7 @@ const AddMessageForm = () => {
         await socket.newMessage(msg);
         formik.resetForm();
       } catch (e) {
+        input.current.disabled = true;
         console.error(e);
       }
       input.current.focus();
