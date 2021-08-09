@@ -1,6 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
+import { useHistory } from 'react-router-dom';
 import { setInitialState } from '../features/channels/channelsSlice.js';
 import useAuth from '../hooks/useAuth.js';
 import { useThunkStatus } from '../store/fetchingStatesSlice.js';
@@ -12,11 +13,18 @@ import AddMessageForm from '../features/messages/AddMessageForm.jsx';
 const ChatContainer = () => {
   const { user: { token } } = useAuth();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const statusThunk = useThunkStatus(setInitialState);
 
   useLayoutEffect(() => {
-    dispatch(setInitialState(token));
+    try {
+      dispatch(setInitialState(token));
+    } catch (err) {
+      if (err.isAxiosError && err.response.status === 401) {
+        history.replace('/login');
+      }
+    }
   }, []);
 
   if (statusThunk.isPending) {
@@ -46,6 +54,7 @@ const ChatContainer = () => {
       </>
     );
   }
+
   return null;
 };
 export default ChatContainer;
