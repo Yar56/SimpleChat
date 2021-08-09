@@ -54,11 +54,10 @@ const init = async (socket) => {
 
   const withAcknowledgement = (cb) => (msg) => new Promise((resolve, reject) => {
     cb(msg, withTimeout((response) => {
-      console.log(response);
       resolve(response);
     }, () => {
       reject(new Error('Network Error'));
-    }, 1000));
+    }, 2000));
   });
 
   const api = {

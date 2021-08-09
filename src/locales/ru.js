@@ -1,6 +1,6 @@
 export default {
   translation: {
-    notFoundPage: 'Not Found 404',
+    notFoundPage: 'Страница не найдена. К сожалению, страница, которую вы ищете, не найдена.',
     loginForm: {
       signIn: 'Войти',
       username: 'Ваш ник',

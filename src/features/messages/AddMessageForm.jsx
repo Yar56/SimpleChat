@@ -21,14 +21,15 @@ const AddMessageForm = () => {
     },
     onSubmit: async ({ message }) => {
       const msg = { body: message, channelId: currentChannelId, username };
+      input.current.disabled = true;
       try {
         await socket.newMessage(msg);
         formik.resetForm();
+        input.current.disabled = false;
       } catch (e) {
-        input.current.disabled = true;
+        input.current.disabled = false;
         console.error(e);
       }
-      input.current.disabled = false;
       input.current.focus();
     },
   });
