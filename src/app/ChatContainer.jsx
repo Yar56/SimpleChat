@@ -1,7 +1,6 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
-import { useHistory } from 'react-router-dom';
 import { setInitialState } from '../features/channels/channelsSlice.js';
 import useAuth from '../hooks/useAuth.js';
 import { useThunkStatus } from '../store/fetchingStatesSlice.js';
@@ -11,21 +10,19 @@ import MessagesBox from '../features/messages/MessagesBox.jsx';
 import AddMessageForm from '../features/messages/AddMessageForm.jsx';
 
 const ChatContainer = () => {
-  const { user: { token } } = useAuth();
+  const { user: { token }, logOut } = useAuth();
   const dispatch = useDispatch();
-  const history = useHistory();
-
   const statusThunk = useThunkStatus(setInitialState);
 
-  useLayoutEffect(() => {
-    try {
-      dispatch(setInitialState(token));
-    } catch (err) {
-      if (err.isAxiosError && err.response.status === 401) {
-        history.replace('/login');
-      }
-    }
+  useEffect(() => {
+    dispatch(setInitialState(token));
   }, []);
+
+  useEffect(() => {
+    if (statusThunk.isRejected) {
+      logOut();
+    }
+  }, [statusThunk]);
 
   if (statusThunk.isPending) {
     return (
@@ -54,7 +51,6 @@ const ChatContainer = () => {
       </>
     );
   }
-
   return null;
 };
 export default ChatContainer;

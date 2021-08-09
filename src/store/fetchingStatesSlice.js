@@ -47,6 +47,7 @@ export const useThunkStatus = (thunkAction) => {
     actionStatus,
     isPending: actionStatus === 'pending',
     isSuccess: actionStatus === 'fulfilled',
+    isRejected: actionStatus === 'rejected',
   }), [actionStatus]);
 
   return result;
