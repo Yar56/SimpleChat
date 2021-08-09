@@ -10,7 +10,7 @@ import {
   Link,
 } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
-import routes from '../api/routes.js';
+import routes from '../routes.js';
 import getInitialAuth from './getInitialAuth.js';
 
 import Login from '../components/LoginPage.jsx';
