@@ -56,12 +56,11 @@ const AuthButton = () => {
 };
 
 const ChatRoute = ({ children, path }) => {
-  const { user: { username } } = useAuth();
-  console.log(username);
+  const { user } = useAuth();
   return (
     <Route
       path={path}
-      render={() => (username
+      render={() => ((user !== null)
         ? children
         : <Redirect to={routes.loginPage} />
       )}
