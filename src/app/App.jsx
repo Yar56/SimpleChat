@@ -60,9 +60,9 @@ const ChatRoute = ({ children, path }) => {
   return (
     <Route
       path={path}
-      render={() => ((user !== null)
+      render={({ location }) => ((user !== null)
         ? children
-        : <Redirect to={routes.loginPage} />
+        : <Redirect to={{ pathname: routes.loginPage, state: { from: location } }} />
       )}
     />
   );
