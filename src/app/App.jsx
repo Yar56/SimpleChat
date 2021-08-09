@@ -62,7 +62,7 @@ const ChatRoute = ({ children, path }) => {
     <Route
       path={path}
       render={() => (username
-        ? { children }
+        ? children
         : <Redirect to={routes.loginPage} />
       )}
     />
