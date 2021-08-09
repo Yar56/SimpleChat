@@ -10,7 +10,7 @@ const MessagesBox = () => {
 
   useEffect(() => {
     messagesBox.current.scrollTop = messagesBox.current.scrollHeight;
-  }, [allMessages]);
+  }, [allMessages, messagesByCurrentChannel]);
 
   const renderMessages = messagesByCurrentChannel.map((message) => (
     <div className="text-break mb-2" key={message.id}>
