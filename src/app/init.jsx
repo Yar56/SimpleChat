@@ -39,7 +39,7 @@ const init = async (socket) => {
 
     const timer = setTimeout(() => {
       state = 'rejected';
-      reject();
+      reject(new Error('Network Error'));
     }, 3000);
 
     socketFunc(...args, (response) => {
