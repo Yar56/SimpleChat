@@ -33,31 +33,26 @@ const init = async (socket) => {
     store.dispatch(renameChannel({ id: response.id, name: response.name }));
   });
 
-  const withTimeout = (onSuccess, onTimeout, timeout) => {
+  const withAcknowledgement = (socketFunc) => (...args) => new Promise((resolve, reject) => {
     // eslint-disable-next-line functional/no-let
-    let called = false;
+    let state = 'pending';
 
     const timer = setTimeout(() => {
-      if (called) return;
-      called = true;
-      onTimeout();
-    }, timeout);
+      state = 'rejected';
+      reject();
+    }, 3000);
 
-    return (...args) => {
-      if (called) return;
-      called = true;
+    socketFunc(...args, (response) => {
+      if (state !== 'pending') return;
       clearTimeout(timer);
-      // eslint-disable-next-line functional/no-this-expression
-      onSuccess.apply(this, args);
-    };
-  };
 
-  const withAcknowledgement = (cb) => (msg) => new Promise((resolve, reject) => {
-    cb(msg, withTimeout((response) => {
-      resolve(response);
-    }, () => {
-      reject(new Error('Network Error'));
-    }, 1000));
+      if (response.status === 'ok') {
+        state = 'resolved';
+        resolve(response.data);
+      }
+
+      reject();
+    });
   });
 
   const api = {
