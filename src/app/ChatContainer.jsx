@@ -10,19 +10,18 @@ import MessagesBox from '../features/messages/MessagesBox.jsx';
 import AddMessageForm from '../features/messages/AddMessageForm.jsx';
 
 const ChatContainer = () => {
-  const { user: { token }, logOut } = useAuth();
+  const auth = useAuth();
   const dispatch = useDispatch();
   const statusThunk = useThunkStatus(setInitialState);
 
   useEffect(() => {
-    dispatch(setInitialState(token));
-  }, []);
-
-  useEffect(() => {
-    if (statusThunk.isRejected) {
-      logOut();
-    }
-  }, [statusThunk]);
+    const fetch = () => dispatch(setInitialState(auth.user.token));
+    fetch().then((res) => {
+      if (res.error) {
+        auth.logOut();
+      }
+    });
+  }, [dispatch, auth]);
 
   if (statusThunk.isPending) {
     return (
