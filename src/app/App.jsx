@@ -17,7 +17,7 @@ import Login from '../components/LoginPage.jsx';
 import NotFound from '../components/NotFound.jsx';
 import SignUp from '../components/SignUp.jsx';
 import ChatContainer from './ChatContainer.jsx';
-import RenderModal from '../components/RenderModal.jsx';
+import RenderModal from '../features/modals/RenderModal.jsx';
 import AuthContext from '../contexts/AuthContext.js';
 import useAuth from '../hooks/useAuth.js';
 

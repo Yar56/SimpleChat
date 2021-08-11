@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import modalSelection from '../features/modals/modalSelection.js';
-import { closeModal, selectModalState } from '../features/modals/modalsSlice.js';
+import modalSelection from './modalSelection.js';
+import { closeModal, selectModalState } from './modalsSlice.js';
 
 const RenderModal = () => {
   const dispatch = useDispatch();
@@ -11,11 +11,14 @@ const RenderModal = () => {
 
   const Component = modalSelection(type);
 
-  return type !== null ? (
-    <Component
-      isOpened={isOpened}
-      onHide={onHide}
-    />
-  ) : null;
+  if (type !== null) {
+    return (
+      <Component
+        isOpened={isOpened}
+        onHide={onHide}
+      />
+    );
+  }
+  return null;
 };
 export default RenderModal;
